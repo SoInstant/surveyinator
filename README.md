@@ -1,2 +1,2 @@
 # cssurvey
-Analysing CS Feedback Survey
+Survey response analyser
