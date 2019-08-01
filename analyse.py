@@ -15,8 +15,9 @@ def open_excel(file):
 
 
 def analyse(file):
-    columns = open_excel(file)
-    return columns
+    responces = open_excel(file)
+    categorised = {"Categorical": [], "Numerical": [], "Open-ended": []}
+    return categorised
 
 
 print(analyse("responces.xlsx"))
