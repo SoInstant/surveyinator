@@ -1,0 +1,16 @@
+1 ignore
+2 ignore
+3 ignore
+4 ignore
+5 categorical
+6 categorical
+7 categorical
+8 categorical
+9 categorical
+10 categorical
+11 categorical
+12 openended
+13 openended
+14 openended
+15 openended
+16 openended
