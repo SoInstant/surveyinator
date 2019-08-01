@@ -1,4 +1,8 @@
 # cssurvey
 Survey response analyser
 
-## Package required
+## Packages required
+
+Flask
+Tensorflow
+openpyxl
