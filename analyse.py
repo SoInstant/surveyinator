@@ -1,7 +1,22 @@
 from openpyxl import load_workbook
 
-def analyse(file):
 
-    wb = load_workbook(filename = 'empty_book.xlsx')
-    sheet_ranges = wb['range names']
-    print(sheet_ranges['D18'].value)
+def open_excel(file):
+    wb = load_workbook(filename="responses.xlsx")
+    ws = wb.active
+    cell_values = []
+    for col in ws.columns:
+        col_values = [cell.value for cell in col]
+        cell_values.append(col_values)
+    qn_and_response = {}
+    for col in cell_values:
+        qn_and_response[col[0]] = col[1:]
+    return qn_and_response
+
+
+def analyse(file):
+    columns = open_excel(file)
+    return columns
+
+
+print(analyse("responces.xlsx"))
