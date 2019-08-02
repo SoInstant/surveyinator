@@ -26,27 +26,39 @@ def open_config(config_file):
     return qn_categories
 
 
-def categorise(responces, categories):
+def categorise(responses, categories):
     output = {}
-    for pointer, items in enumerate(responces.items()):
+    for pointer, items in enumerate(responses.items()):
         output[items[0]] = tuple([categories[pointer], items[1]])
     return output
 
 
+def numerical(responses):
+    pass
+
+
+def categorical(responses):
+    pass
+
+
+def openended(responses):
+    pass
+
+
 def analyse(file, config_file):
 
-    responces = open_excel(file)
+    responses = open_excel(file)
     qn_categories = open_config(config_file)
 
-    if len(qn_categories) != len(responces.values()):
+    if len(qn_categories) != len(responses.values()):
         raise IndexError(
             "Config file does not have same number of questions as excel file"
         )
 
-    categorised_responses = categorise(responces, qn_categories)
-    for qn, responce in categorised_responses.items():
-        category = response[0]
-        list_of_responses = response[1]
+    categorised_responses = categorise(responses, qn_categories)
+    for qn, responses in categorised_responses.items():
+        category = responses[0]
+        list_of_responses = responses[1]
         if category == "ignore":
             continue
         elif category == "numerical":
@@ -58,4 +70,4 @@ def analyse(file, config_file):
 
 
 if __name__ == "__main__":
-    print(analyse("responces.xlsx", "config_file.txt"))
+    print(analyse("responses.xlsx", "config_file.txt"))
