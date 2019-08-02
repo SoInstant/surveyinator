@@ -41,8 +41,7 @@ def analysis_page():
         os.path.join(directory, excel_filename),
         os.path.join(directory, config_filename)
     )
-    
+
     return render_template("index.html")
-=
 
 app.run(port=80)

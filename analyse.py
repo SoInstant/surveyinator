@@ -66,7 +66,6 @@ def openended(responses):
 
 
 def analyse(file, config_file):
-
     responses = open_excel(file)
     qn_categories = open_config(config_file)
 
@@ -77,7 +76,7 @@ def analyse(file, config_file):
 
     categorised_responses = categorise(responses, qn_categories)
 
-    analysis = []
+    analysis = {}
     for qn, responses in categorised_responses.items():
         category = responses[0]
         list_of_responses = responses[1]
@@ -89,7 +88,7 @@ def analyse(file, config_file):
             analysed = categorical(list_of_responses)
         elif category == "openended":
             analysed = openended(list_of_responses)
-        analysis.append(tuple([qn,analysed]))
+        analysis[qn]=tuple([analysed])
     return analysis
 
 if __name__ == "__main__":
