@@ -2,15 +2,15 @@ from openpyxl import load_workbook
 
 # File Parsing
 def open_excel(excel_file):
-    with load_workbook(filename="responses.xlsx") as wb:
-        ws = wb.active
-        cell_values = []
-        for col in ws.columns:
-            col_values = [cell.value for cell in col]
-            cell_values.append(col_values)
-        qn_response = {}
-        for col in cell_values:
-            qn_response[col[0]] = col[1:]
+    wb = load_workbook(excel_file)
+    ws = wb.active
+    cell_values = []
+    for col in ws.columns:
+        col_values = [cell.value for cell in col]
+        cell_values.append(col_values)
+    qn_response = {}
+    for col in cell_values:
+        qn_response[col[0]] = col[1:]
     return qn_response
 
 
@@ -28,8 +28,8 @@ def open_config(config_file):
 
 def categorise(responses, categories):
     output = {}
-    for pointer, items in enumerate(responses.items()):
-        output[items[0]] = tuple([categories[pointer], items[1]])
+    for i, items in enumerate(responses.items()):
+        output[items[0]] = tuple([categories[i], items[1]])
     return output
 
 
