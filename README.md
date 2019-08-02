@@ -7,3 +7,4 @@ Survey response analyser
 + [Tensorflow](https://www.tensorflow.org/install)
 + [openpyxl](https://openpyxl.readthedocs.io/en/stable/#installation)
 + [Numpy](https://numpy.org/)
++ [Scipy](https://scipy.org/install.html)
