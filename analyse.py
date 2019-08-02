@@ -18,6 +18,7 @@ def open_config(config_file):
     with open(config_file, mode="r", encoding="utf-8") as f:
         qn_categories = [line.split(" ") for line in f.read().split("\n")][:-1]
         qn_categories = [line[1] for line in qn_categories]
+
     # Idiot-proofing
     allowed = ("ignore", "numerical", "categorical", "openended")
     for category in qn_categories:
@@ -34,7 +35,15 @@ def categorise(responses, categories):
 
 
 def numerical(responses):
-    pass
+    sum = 0
+    for i in responses:
+        sum += float(i)
+    if len(responses)%2 == 0:
+        median_pos =(len(responses) + 1 )/2
+        median = (responses[int(median_pos-0.5)]+responses[int(median_pos+0.5)])/2
+        print(median)
+
+    central_tendencies = {"Mean":sum/len(responses),}
 
 
 def categorical(responses):
