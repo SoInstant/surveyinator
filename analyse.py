@@ -57,8 +57,10 @@ def categorical(responses):
         if freq == max_freq:
             modes.append(category)
         categories[category] = freq/len(responses)
-    analysis = (modes,categories)
-    return analysis
+    output = {}
+    output["Percentages"] = categories
+    output["Modes"] = modes
+    return output
 
 
 def openended(responses):
@@ -88,7 +90,7 @@ def analyse(file, config_file):
             analysed = categorical(list_of_responses)
         elif category == "openended":
             analysed = openended(list_of_responses)
-        analysis[qn]=tuple([analysed])
+        analysis[qn]=analysed
     return analysis
 
 if __name__ == "__main__":
