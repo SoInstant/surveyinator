@@ -12,4 +12,4 @@
 12 openended
 13 openended
 14 openended
-15 openended
+15 categorical
