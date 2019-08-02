@@ -44,23 +44,24 @@ def numerical(responses):
     }
     return central_tendencies
 
+
 def categorical(responses):
     categories = {}
+    # Count responses per category
     for i in responses:
         if i not in categories.keys():
             categories[i] = 1
         else:
             categories[i] += 1
+
+    # Find mode and percentage
     max_freq = max(categories.values())
     modes = []
-    for category,freq in categories.items():
+    for category, freq in categories.items():
         if freq == max_freq:
             modes.append(category)
-        categories[category] = freq/len(responses)
-    output = {}
-    output["Percentages"] = categories
-    output["Modes"] = modes
-    return output
+        categories[category] = freq / len(responses)
+    return {"Percentages": categories, "Modes": modes}
 
 
 def openended(responses):
@@ -90,8 +91,9 @@ def analyse(file, config_file):
             analysed = categorical(list_of_responses)
         elif category == "openended":
             analysed = openended(list_of_responses)
-        analysis[qn]=analysed
+        analysis[qn] = analysed
     return analysis
+
 
 if __name__ == "__main__":
     print(analyse("responses.xlsx", "config_file.txt"))
