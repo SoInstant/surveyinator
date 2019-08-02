@@ -1,4 +1,6 @@
 from openpyxl import load_workbook
+from numpy import mean, median
+from scipy.stats import mode
 
 # File Parsing
 def open_excel(excel_file):
@@ -35,19 +37,28 @@ def categorise(responses, categories):
 
 
 def numerical(responses):
-    sum = 0
-    for i in responses:
-        sum += float(i)
-    if len(responses)%2 == 0:
-        median_pos =(len(responses) + 1 )/2
-        median = (responses[int(median_pos-0.5)]+responses[int(median_pos+0.5)])/2
-        print(median)
-
-    central_tendencies = {"Mean":sum/len(responses),}
-
+    central_tendencies = {
+        "Mean": mean(responses),
+        "Median": median(responses),
+        "Mode": mode(responses),
+    }
+    return central_tendencies
 
 def categorical(responses):
-    pass
+    categories = {}
+    for i in responses:
+        if i not in categories.keys():
+            categories[i] = 1
+        else:
+            categories[i] += 1
+    max_freq = max(categories.values())
+    modes = []
+    for category,freq in categories.items():
+        if freq == max_freq:
+            modes.append(category)
+        categories[category] = freq/len(responses)
+    analysis = (modes,categories)
+    return analysis
 
 
 def openended(responses):
@@ -65,18 +76,21 @@ def analyse(file, config_file):
         )
 
     categorised_responses = categorise(responses, qn_categories)
+
+    analysis = []
     for qn, responses in categorised_responses.items():
         category = responses[0]
         list_of_responses = responses[1]
         if category == "ignore":
             continue
         elif category == "numerical":
-            numerical(list_of_responses)
+            analysed = numerical(list_of_responses)
         elif category == "categorical":
-            categorical(list_of_responses)
+            analysed = categorical(list_of_responses)
         elif category == "openended":
-            openended(list_of_responses)
-
+            analysed = openended(list_of_responses)
+        analysis.append(tuple([qn,analysed]))
+    return analysis
 
 if __name__ == "__main__":
     print(analyse("responses.xlsx", "config_file.txt"))
