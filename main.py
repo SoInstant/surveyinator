@@ -12,14 +12,37 @@ def main(): #Homepage
 
 @app.route("/results", methods=["GET", "POST"])
 def analysis_page():
-    if request.method == "POST":
-        if not request.files:
-            return render_template("upload.html", error="Missing file!")
-        file = request.files['file']
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-    else:
+    #Methods
+    if not request.method == "POST":
         return redirect(url_for('main'))
-    return "no"
 
-app.run()
+    #Checking for files
+    if not len(request.files) == 2:
+        return render_template("upload.html", error="Missing files!")
+    if not request.files["file"]:
+        return render_template("upload.html", error="Missing excel file!")
+    if not request.files["config"]: #Remove when config setup website done
+        return render_template("upload.html", error="Missing config file!")
+
+    #Saving files
+    excel = request.files['file']
+    excel_filename = secure_filename(excel.filename)
+    config = request.files['config']
+    config_filename = secure_filename(config.filename)
+    directory = os.path.join(app.config['UPLOAD_FOLDER'], excel_filename)
+
+    if not os.path.exists(directory):
+        os.mkdir(directory)
+    excel.save(os.path.join(directory, excel_filename))
+    config.save(os.path.join(directory, config_filename))
+
+    #Work on file
+    analyse.analyse(
+        os.path.join(directory, excel_filename),
+        os.path.join(directory, config_filename)
+    )
+    
+    return render_template("index.html")
+=
+
+app.run(port=80)
