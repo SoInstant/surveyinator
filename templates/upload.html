@@ -21,9 +21,11 @@
                             <div class="text-center">
                                 <h4 class="text-dark mb-4">Surveyinator</h4>
                             </div>
-                            <form class="user">
-                                <hr>
-                            </form><input class="d-lg-flex" type="file"></div>
+                            <form name="form" action="/results" method="post" enctype="multipart/form-data">
+                                <input class="d-lg-flex" type="file" name="file">
+                                <input type="submit" value='upload'>
+                            </form></div>
+                            <h5>{{ error }}</h5>
                     </div>
                 </div>
             </div>
