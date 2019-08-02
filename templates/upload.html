@@ -19,13 +19,16 @@
                     <div class="card-body p-0">
                         <div class="p-5">
                             <div class="text-center">
-                                <h4 class="text-dark mb-4">Surveyinator</h4>
+                                <h1 class="text-dark mb-4">Surveyinator</h1>
                             </div>
                             <form name="form" action="/results" method="post" enctype="multipart/form-data">
-                                <input class="d-lg-flex" type="file" name="file">
+                                <h4>Excel file: </h4><input class="d-lg-flex" type="file" name="file">
+                                <h4>Config file: </h4><input class="d-lg-flex" type="file" name="config">
                                 <input type="submit" value='upload'>
                             </form></div>
-                            <h5>{{ error }}</h5>
+                            <div class="text-center">
+                              <h5 class="text-dark mb-4">{{ error }}</h5>
+                            </div>
                     </div>
                 </div>
             </div>
