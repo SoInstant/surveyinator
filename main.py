@@ -49,6 +49,7 @@ def analysis_page():
         if analysis:
             if analysis["Percentages"]:
                 graphs.append(plot.pie(
+                    question,
                     [x for x, y in analysis["Percentages"].items()],
                     [y for x, y in analysis["Percentages"].items()]
                 ))
