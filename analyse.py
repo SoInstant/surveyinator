@@ -55,7 +55,7 @@ def categorical(responses):
             For example: ["Yes","No","Yes"]
 
     Returns:
-        A dictionary containing the Percentages of each response
+        A dictionary containing the sorted percentages of each response
         and the mode(s). For example:
         {'Percentages': {'Yes': 0.6666666666666666, 'No': 0.3333333333333333},
          'Modes': ['Yes']}
@@ -75,6 +75,9 @@ def categorical(responses):
         if freq == max_freq:
             modes.append(category)
         categories[category] = freq / len(responses)
+    sorting = sorted(categories.items(), key = lambda x : x[1])
+    for category,freq in sorting:
+        categories[category] = freq
     return {"Percentages": categories, "Modes": modes}
 
 
