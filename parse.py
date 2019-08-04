@@ -1,5 +1,27 @@
 from openpyxl import load_workbook
+
+
 def open_excel(excel_file):
+    """Parses an Excel file by column
+
+    Parse the Excel file, which has the responses to a survey,
+    represented by excel_file, by column
+    For example:
+     |        A          |
+    1|Do you like python?|
+    2|Yes                |
+    3|No                 |
+    4|Yes                |
+
+    Args:
+        excel_file: The excel_file to be parsed
+
+    Returns:
+        A dictionary mapping the question to a tuple of responses
+        For example:
+        {"Do you like Python?": ("Yes","No","Yes")}
+    """
+
     wb = load_workbook(excel_file)
     ws = wb.active
     cell_values = []
@@ -8,7 +30,7 @@ def open_excel(excel_file):
         cell_values.append(col_values)
     qn_response = {}
     for col in cell_values:
-        qn_response[col[0]] = col[1:]
+        qn_response[col[0]] = tuple(col[1:])
     return qn_response
 
 
