@@ -32,6 +32,7 @@ def analysis_page():
     directory = os.path.join(app.config["UPLOAD_FOLDER"], excel_filename)
 
     if not os.path.exists(directory):
+        # TODO What if it exists
         os.mkdir(directory)
     excel.save(os.path.join(directory, excel_filename))
     config.save(os.path.join(directory, config_filename))
