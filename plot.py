@@ -3,14 +3,15 @@ import plotly
 from flask import Markup
 colors = ['#1cc88a', '#36b9cc', '#4e73df', '#f6c23e', '#e74a3b']
 
-def pie(title, labels, values, hole=.5):
+def pie(title, labels, values, hole=.4):
     fig = go.Figure(data=[go.Pie(
         labels=labels,
         values=values,
         hole=hole,
         hoverinfo="label+percent",
         text=labels,
-        marker=dict(colors=colors, line=dict(color="#FFFFFF", width=2))
+        marker=dict(colors=colors, line=dict(color="#FFFFFF", width=2)),
+        sort=False
     )])
 
     fig.layout.title = title
