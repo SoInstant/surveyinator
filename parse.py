@@ -14,7 +14,7 @@ def open_excel(excel_file):
     4|Yes                |
 
     Args:
-        excel_file: The excel_file to be parsed
+        excel_file(str): The file name of the excel_file to be parsed
 
     Returns:
         A dictionary mapping the question to a tuple of responses
@@ -35,6 +35,24 @@ def open_excel(excel_file):
 
 
 def open_config(config_file):
+    """Parses a config file
+
+    Parses a config file represented by config_file. Config file
+    contains the data-type of the responses.
+    For example:
+    1 Categorical
+
+    Args:
+        config_file(str): The filename of the config file to be parsed
+
+    Returns:
+        A tuple of the data-types
+        For example:
+        ("categorical")
+
+    Raises:
+        ValueError: Data-type not supported
+    """
     with open(config_file, mode="r", encoding="utf-8") as f:
         qn_categories = [line.split(" ") for line in f.read().split("\n")][:-1]
         qn_categories = [line[1] for line in qn_categories]
@@ -44,4 +62,4 @@ def open_config(config_file):
     for category in qn_categories:
         if category.lower() not in allowed:
             raise ValueError("Data-type not supported")
-    return qn_categories
+    return tuple(qn_categories)
