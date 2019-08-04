@@ -76,9 +76,10 @@ def categorical(responses):
             modes.append(category)
         categories[category] = freq / len(responses)
     sorting = sorted(categories.items(), key = lambda x : x[1])
+    output = {}
     for category,freq in sorting:
-        categories[category] = freq
-    return {"Percentages": categories, "Modes": modes}
+        output[category] = freq
+    return {"Percentages": output, "Modes": modes}
 
 
 def openended(responses):
