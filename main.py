@@ -19,8 +19,6 @@ def analysis_page():
         return redirect(url_for("main"))
 
     # Checking for files
-    if not len(request.files) == 2:
-        return render_template("upload.html", error="Missing files!")
     if not request.files["file"]:
         return render_template("upload.html", error="Missing excel file!")
     if not request.files["config"]:  # Remove when config setup website done
