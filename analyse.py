@@ -17,7 +17,8 @@ def categorise(responses, datatypes):
         {"Do you like python?": ("categorical", ("yes", "no", "yes"))}
 
     Raises:
-        IndexError: "Config file does not have same number of questions as excel file"
+        IndexError: "Config file does not have same number of questions
+            as excel file"
     """
     output = {}
     for i, items in enumerate(responses.items()):
@@ -54,8 +55,8 @@ def categorical(responses):
             For example: ["Yes","No","Yes"]
 
     Returns:
-        A dictionary containing the Percentages of each response and the mode(s)
-        For example:
+        A dictionary containing the Percentages of each response
+        and the mode(s). For example:
         {'Percentages': {'Yes': 0.6666666666666666, 'No': 0.3333333333333333},
          'Modes': ['Yes']}
     """
@@ -105,4 +106,4 @@ def analyse(file, config_file):
 
 if __name__ == "__main__":
     print(analyse("responses.xlsx", "config_file.txt"))
-    print(categorical(["Yes","No","Yes"]))
+    print(categorical(["Yes", "No", "Yes"]))
