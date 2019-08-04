@@ -1,6 +1,6 @@
 from numpy import mean, median
 from scipy.stats import mode
-from parse import open_config, open_excel
+from parse import parse_config, parse_excel
 
 
 def categorise(responses, datatypes):
@@ -52,13 +52,13 @@ def categorical(responses):
 
     Args:
         responses(list/tuple): List/tuple of the responses
-            For example: ["Yes","No","Yes"]
+            For example: ["Yes","No","Yes"] or ("Yes","No","Yes")
 
     Returns:
         A dictionary containing the sorted percentages of each response
         and the mode(s). For example:
         {'Percentages': {'Yes': 0.6666666666666666, 'No': 0.3333333333333333},
-         'Modes': ['Yes']}
+         'Modes': ('Yes')}
     """
     categories = {}
     # Count responses per category
@@ -75,23 +75,21 @@ def categorical(responses):
         if freq == max_freq:
             modes.append(category)
         categories[category] = freq / len(responses)
-    sorting = sorted(categories.items(), key = lambda x : x[1])
+    sorting = sorted(categories.items(), key=lambda x: x[1])
     output = {}
-    for category,freq in sorting:
+    for category, freq in sorting:
         output[category] = freq
-    return {"Percentages": output, "Modes": modes}
+    return {"Percentages": output, "Modes": tuple(modes)}
 
 
 def openended(responses):
     pass
 
 
-def analyse(file, config_file):
-    responses = open_excel(file)
-    qn_categories = open_config(config_file)
-
-    categorised_responses = categorise(responses, qn_categories)
-
+def analyse(excel_file, config_file):
+    categorised_responses = categorise(
+        parse_excel(excel_file), parse_config(config_file)
+    )
     analysis = {}
     for qn, responses in categorised_responses.items():
         category = responses[0]
@@ -110,4 +108,3 @@ def analyse(file, config_file):
 
 if __name__ == "__main__":
     print(analyse("responses.xlsx", "config_file.txt"))
-    print(categorical(["Yes", "No", "Yes"]))
