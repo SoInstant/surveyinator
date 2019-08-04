@@ -4,6 +4,8 @@ from parse import open_config, open_excel
 
 
 def categorise(responses, categories):
+    """
+    """
     output = {}
     for i, items in enumerate(responses.items()):
         output[items[0]] = tuple([categories[i], items[1]])
@@ -14,7 +16,7 @@ def numerical(responses):
     central_tendencies = {
         "Mean": mean(responses),
         "Median": median(responses),
-        "Mode": mode(responses),
+        "Mode": mode(responses)[0][0],
     }
     return central_tendencies
 
@@ -71,3 +73,4 @@ def analyse(file, config_file):
 
 if __name__ == "__main__":
     print(analyse("responses.xlsx", "config_file.txt"))
+    print(numerical([1,2,3,1,2,3,4,58,1,5,8]))
