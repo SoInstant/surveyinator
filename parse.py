@@ -1,11 +1,12 @@
 from openpyxl import load_workbook
 
 
-def open_excel(excel_file):
+def parse_excel(excel_file):
     """Parses an Excel file by column
 
     Parse the Excel file, which has the responses to a survey,
     represented by excel_file, by column
+
     For example:
      |        A          |
     1|Do you like python?|
@@ -34,13 +35,17 @@ def open_excel(excel_file):
     return qn_response
 
 
-def open_config(config_file):
+def parse_config(config_file):
     """Parses a config file
 
     Parses a config file represented by config_file. Config file
     contains the data-type of the responses.
+
     For example:
-    1 Categorical
+    1 categorical
+    2 numerical
+    3 ignore
+    4 openended
 
     Args:
         config_file(str): The filename of the config file to be parsed
@@ -48,7 +53,7 @@ def open_config(config_file):
     Returns:
         A tuple of the data-types
         For example:
-        ("categorical")
+        ("categorical","numerical","ignore","openended")
 
     Raises:
         ValueError: Data-type not supported
