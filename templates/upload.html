@@ -22,8 +22,8 @@
                                 <h1 class="text-dark mb-4">Surveyinator</h1>
                             </div>
                             <form name="form" action="/results" method="post" enctype="multipart/form-data">
-                                <h4>Excel file: </h4><input class="d-lg-flex" type="file" name="file">
-                                <h4>Config file: </h4><input class="d-lg-flex" type="file" name="config">
+                                <h4>Excel file: </h4><input class="d-lg-flex" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                                <h4>Config file: </h4><input class="d-lg-flex" type="file" name="config" accept="text/plain">
                                 <input type="submit" value='upload'>
                             </form></div>
                             <div class="text-center">
