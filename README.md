@@ -8,3 +8,4 @@ Survey response analyser
 + [openpyxl](https://openpyxl.readthedocs.io/en/stable/#installation)
 + [Numpy](https://numpy.org/)
 + [Scipy](https://scipy.org/install.html)
++ [Plotly](https://plot.ly/python/getting-started/)
