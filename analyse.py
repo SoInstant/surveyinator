@@ -1,6 +1,6 @@
 from numpy import mean, median
 from scipy.stats import mode
-from parse import parse_config, parse_excel
+from utils import parse_config, parse_excel
 
 
 def categorise(responses, datatypes):
