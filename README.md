@@ -12,4 +12,5 @@ For more information, refer to these websites:
 + [openpyxl](https://openpyxl.readthedocs.io/en/stable/#installation)
 + [Numpy](https://numpy.org/)
 + [Scipy](https://scipy.org/install.html)
++ [Pandas](https://pandas.pydata.org/getpandas.html)
 + [Plotly](https://plot.ly/python/getting-started/)
