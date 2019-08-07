@@ -6,3 +6,4 @@ Numpy
 Scipy
 Plotly
 sentencepiece
+Pandas
