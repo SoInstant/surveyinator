@@ -1,6 +1,11 @@
 from openpyxl import load_workbook
+import tensorflow as tf
+import tensorflow.compat.v1 as compat
+import tensorflow_hub as hub
+import sentencepiece as spm
+import numpy as np
 
-
+# Parsing Utils
 def parse_excel(excel_file):
     """Parses an Excel file by column
 
@@ -69,36 +74,46 @@ def parse_config(config_file):
             raise ValueError("Data-type not supported")
     return tuple(qn_categories)
 
-
-def encode_str(strings):
-    import tensorflow as tf
-    import tensorflow.compat.v1 as compat
-    import tensorflow_hub as hub
-    import sentencepiece as spm
-    import numpy as np
-
-    # Load the module from TF-Hub
-    module = hub.Module("https://tfhub.dev/google/universal-sentence-encoder-lite/2")
-    input_placeholder = compat.sparse.placeholder(tf.int64, shape=[None, None])
-    encodings = module(
-        inputs=dict(
-            values=input_placeholder.values,
-            indices=input_placeholder.indices,
-            dense_shape=input_placeholder.dense_shape,
+# Machine Learning Utils
+class Encoder(object):
+    def __init__(self, questions):
+        sentences = questions
+        module = hub.Module(
+            "https://tfhub.dev/google/universal-sentence-encoder-lite/2"
         )
-    )
+        input_placeholder = compat.sparse.placeholder(compat.int64, shape=[None, None])
+        encodings = module(
+            inputs=dict(
+                values=input_placeholder.values,
+                indices=input_placeholder.indices,
+                dense_shape=input_placeholder.dense_shape,
+            )
+        )
+        with compat.Session() as sess:
+            spm_path = sess.run(module(signature="spm_path"))
+        sp = spm.SentencePieceProcessor()
+        sp.Load(spm_path)
+        values, indices, dense_shape = self.process_to_IDs_in_sparse_format(
+            sp, sentences
+        )
+        with compat.Session() as session:
+            session.run([compat.global_variables_initializer(), compat.tables_initializer()])
+            message_embeddings = session.run(
+                encodings,
+                feed_dict={
+                    input_placeholder.values: values,
+                    input_placeholder.indices: indices,
+                    input_placeholder.dense_shape: dense_shape,
+                },
+            )
+            self.tensor_embeddings = message_embeddings
 
-    # Load SentencePiece model
-    with compat.Session() as sess:
-        spm_path = sess.run(module(signature="spm_path"))
-
-    sp = spm.SentencePieceProcessor()
-    sp.Load(spm_path)
-
-    def process_to_IDs_in_sparse_format(sp, sentences):
-        # An utility method that processes sentences with the sentence piece processor
-        # 'sp' and returns the results in tf.SparseTensor-similar format:
-        # (values, indices, dense_shape)
+    def process_to_IDs_in_sparse_format(self, sp, sentences):
+        """
+        An utility method that processes sentences with the sentence piece processor
+        'sp' and returns the results in tf.SparseTensor-similar format:
+        (values, indices, dense_shape)
+        """
         ids = [sp.EncodeAsIds(x) for x in sentences]
         max_len = max(len(x) for x in ids)
         dense_shape = (len(ids), max_len)
@@ -108,31 +123,6 @@ def encode_str(strings):
         ]
         return (values, indices, dense_shape)
 
-    # Compute a representation for each message, showing various lengths supported.
-    messages = strings
-
-    values, indices, dense_shape = process_to_IDs_in_sparse_format(sp, messages)
-
-    # Reduce logging output.
-    compat.logging.set_verbosity(compat.logging.ERROR)
-
-    with compat.Session() as session:
-        session.run([tf.global_variables_initializer(), tf.tables_initializer()])
-        message_embeddings = session.run(
-            encodings,
-            feed_dict={
-                input_placeholder.values: values,
-                input_placeholder.indices: indices,
-                input_placeholder.dense_shape: dense_shape,
-            },
-        )
-
-        for i, message_embedding in enumerate(np.array(message_embeddings).tolist()):
-            print(f"Message: {messages[i]}")
-            print(f"Embedding size: {len(message_embedding)}")
-            message_embedding_snippet = ", ".join(
-                (str(x) for x in message_embedding[:3])
-            )
-            print(f"Embedding: [{message_embedding_snippet}, ...]\n")
-
-encode_str("Hi I am Junxiang")
+    @property
+    def embeddings(self):
+        return np.array(self.tensor_embeddings).tolist()
