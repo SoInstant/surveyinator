@@ -9,9 +9,13 @@ for i, qn in enumerate(file.keys()):
         grouped[types[i]] = [qn]
     else:
         grouped[types[i]].append(qn)
-max_len = max(len(value) for value in grouped.values())
-for qntype, qns in grouped.items():
-    for i in range(max_len - len(qns)):
-        grouped[qntype].append(NaN)
-df = pd.DataFrame(grouped)
-print(df)
+encoded = {}
+for datatype,qns in grouped.items():
+    temp_enc = utils.Encoder(qns)
+    print(type(temp_enc.embeddings))
+# max_len = max(len(value) for value in grouped.values())
+# for qntype, qns in grouped.items():
+#     for i in range(max_len - len(qns)):
+#         grouped[qntype].append(NaN)
+# df = pd.DataFrame(grouped)
+# print(df)
