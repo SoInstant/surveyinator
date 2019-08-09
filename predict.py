@@ -1,6 +1,8 @@
 import utils
 import pandas as pd
 from numpy import NaN
+
+# Load Data
 file = utils.parse_excel("responses.xlsx")
 types = utils.parse_config("config_file.txt")
 grouped = {}
@@ -9,6 +11,8 @@ for i, qn in enumerate(file.keys()):
         grouped[types[i]] = [qn]
     else:
         grouped[types[i]].append(qn)
+
+# Encode
 encoded = {}
 for datatype,qns in grouped.items():
     temp_enc = utils.Encoder(qns)
@@ -19,3 +23,5 @@ for qntype, qns in encoded.items():
         encoded[qntype].append(NaN)
 df = pd.DataFrame(encoded)
 print(df)
+
+# Spilt data into training and vaildation
