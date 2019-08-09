@@ -65,14 +65,15 @@ def parse_config(config_file):
     """
     with open(config_file, mode="r", encoding="utf-8") as f:
         qn_categories = [line.split(" ") for line in f.read().split("\n")][:-1]
-        qn_categories = [line[1] for line in qn_categories]
+        qn_categories = [line[1].lower() for line in qn_categories]
 
     # Idiot-proofing
     allowed = ("ignore", "numerical", "categorical", "openended")
-    for category in qn_categories:
-        if category.lower() not in allowed:
-            raise ValueError("Data-type not supported")
+    for i, category in enumerate(qn_categories):
+        if category not in allowed:
+            raise ValueError(f"Qn{i}: Data-type not supported")
     return tuple(qn_categories)
+
 
 # Machine Learning Utils
 class Encoder(object):
@@ -96,7 +97,9 @@ class Encoder(object):
             values, indices, dense_shape = self._process_to_IDs_in_sparse_format(
                 sp, sentences
             )
-            session.run([compat.global_variables_initializer(), compat.tables_initializer()])
+            session.run(
+                [compat.global_variables_initializer(), compat.tables_initializer()]
+            )
             message_embeddings = session.run(
                 encodings,
                 feed_dict={
@@ -125,5 +128,3 @@ class Encoder(object):
     @property
     def embeddings(self):
         return np.array(self.tensor_embeddings).tolist()
-
-def train_test_split
