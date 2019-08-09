@@ -89,14 +89,13 @@ class Encoder(object):
                 dense_shape=input_placeholder.dense_shape,
             )
         )
-        with compat.Session() as sess:
-            spm_path = sess.run(module(signature="spm_path"))
-        sp = spm.SentencePieceProcessor()
-        sp.Load(spm_path)
-        values, indices, dense_shape = self.process_to_IDs_in_sparse_format(
-            sp, sentences
-        )
         with compat.Session() as session:
+            spm_path = session.run(module(signature="spm_path"))
+            sp = spm.SentencePieceProcessor()
+            sp.Load(spm_path)
+            values, indices, dense_shape = self._process_to_IDs_in_sparse_format(
+                sp, sentences
+            )
             session.run([compat.global_variables_initializer(), compat.tables_initializer()])
             message_embeddings = session.run(
                 encodings,
@@ -108,7 +107,7 @@ class Encoder(object):
             )
             self.tensor_embeddings = message_embeddings
 
-    def process_to_IDs_in_sparse_format(self, sp, sentences):
+    def _process_to_IDs_in_sparse_format(self, sp, sentences):
         """
         An utility method that processes sentences with the sentence piece processor
         'sp' and returns the results in tf.SparseTensor-similar format:
@@ -126,3 +125,5 @@ class Encoder(object):
     @property
     def embeddings(self):
         return np.array(self.tensor_embeddings).tolist()
+
+def train_test_split
