@@ -7,6 +7,9 @@ import plot
 app = Flask("app")
 app.config["UPLOAD_FOLDER"] = "uploads"
 
+def chunk(input, size): #TODO: move to other file?
+    for i in range(0, len(input), size):
+        yield input[i:i + size]
 
 @app.route("/", methods=["GET", "POST"])
 def main():  # Homepage
@@ -53,7 +56,7 @@ def analysis_page():
                     [x for x, y in analysis["Percentages"].items()],
                     [y for x, y in analysis["Percentages"].items()]
                 ))
-
+    graphs = tuple(chunk(graphs, 3))
 
     return render_template("index.html", graphs=graphs)
 
