@@ -9,6 +9,7 @@ For more information, refer to these websites:
 + [Tensorflow](https://www.tensorflow.org/install)
 + [Tensorflow_hub](https://www.tensorflow.org/hub/)
 + [sentencepiece](https://github.com/google/sentencepiece)
++ [scikit-learn](https://scikit-learn.org/stable/install.html)
 + [openpyxl](https://openpyxl.readthedocs.io/en/stable/#installation)
 + [Numpy](https://numpy.org/)
 + [Scipy](https://scipy.org/install.html)

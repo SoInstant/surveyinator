@@ -65,14 +65,15 @@ def parse_config(config_file):
     """
     with open(config_file, mode="r", encoding="utf-8") as f:
         qn_categories = [line.split(" ") for line in f.read().split("\n")][:-1]
-        qn_categories = [line[1] for line in qn_categories]
+        qn_categories = [line[1].lower() for line in qn_categories]
 
     # Idiot-proofing
     allowed = ("ignore", "numerical", "categorical", "openended")
-    for category in qn_categories:
-        if category.lower() not in allowed:
-            raise ValueError("Data-type not supported")
+    for i, category in enumerate(qn_categories):
+        if category not in allowed:
+            raise ValueError(f"Qn{i}: Data-type not supported")
     return tuple(qn_categories)
+
 
 # Machine Learning Utils
 class Encoder(object):
@@ -89,15 +90,16 @@ class Encoder(object):
                 dense_shape=input_placeholder.dense_shape,
             )
         )
-        with compat.Session() as sess:
-            spm_path = sess.run(module(signature="spm_path"))
-        sp = spm.SentencePieceProcessor()
-        sp.Load(spm_path)
-        values, indices, dense_shape = self.process_to_IDs_in_sparse_format(
-            sp, sentences
-        )
         with compat.Session() as session:
-            session.run([compat.global_variables_initializer(), compat.tables_initializer()])
+            spm_path = session.run(module(signature="spm_path"))
+            sp = spm.SentencePieceProcessor()
+            sp.Load(spm_path)
+            values, indices, dense_shape = self._process_to_IDs_in_sparse_format(
+                sp, sentences
+            )
+            session.run(
+                [compat.global_variables_initializer(), compat.tables_initializer()]
+            )
             message_embeddings = session.run(
                 encodings,
                 feed_dict={
@@ -108,7 +110,7 @@ class Encoder(object):
             )
             self.tensor_embeddings = message_embeddings
 
-    def process_to_IDs_in_sparse_format(self, sp, sentences):
+    def _process_to_IDs_in_sparse_format(self, sp, sentences):
         """
         An utility method that processes sentences with the sentence piece processor
         'sp' and returns the results in tf.SparseTensor-similar format:

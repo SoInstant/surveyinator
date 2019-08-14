@@ -1,6 +1,9 @@
 import utils
 import pandas as pd
 from numpy import NaN
+from sklearn.model_selection import train_test_split
+
+# Load Data
 file = utils.parse_excel("responses.xlsx")
 types = utils.parse_config("config_file.txt")
 grouped = {}
@@ -9,13 +12,18 @@ for i, qn in enumerate(file.keys()):
         grouped[types[i]] = [qn]
     else:
         grouped[types[i]].append(qn)
+
+# Encode
 encoded = {}
-for datatype,qns in grouped.items():
+for datatype, qns in grouped.items():
     temp_enc = utils.Encoder(qns)
-    print(type(temp_enc.embeddings))
-# max_len = max(len(value) for value in grouped.values())
-# for qntype, qns in grouped.items():
-#     for i in range(max_len - len(qns)):
-#         grouped[qntype].append(NaN)
-# df = pd.DataFrame(grouped)
-# print(df)
+    encoded[datatype] = temp_enc.embeddings
+max_len = max(len(value) for value in encoded.values())
+for qntype, qns in encoded.items():
+    for i in range(max_len - len(qns)):
+        encoded[qntype].append(NaN)
+df = pd.DataFrame(encoded)
+print(df)
+
+# Spilt data into training and vaildation
+print(train_test_split(df, test_size=0.2, random_state=42))
