@@ -14,7 +14,10 @@ def pie(title, labels, values, hole=.4):
         sort=False
     )])
 
-    fig.layout.title = title
+    newtitle = ""
+    for i in range(0, len(title), 30):
+        newtitle += title[i:i+30] + "<br>"
+    fig.layout.title = newtitle
     fig.layout.font = dict(family='Nunito', size=18, color='#858796')
 
     return Markup(plotly.offline.plot(fig, include_plotlyjs=False, output_type='div'))
