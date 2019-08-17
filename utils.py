@@ -1,10 +1,5 @@
 from openpyxl import load_workbook
-import tensorflow as tf
-import tensorflow.compat.v1 as compat
-import tensorflow_hub as hub
-import sentencepiece as spm
-import numpy as np
-
+import pickle
 # Parsing Utils
 def parse_excel(excel_file):
     """Parses an Excel file by column
@@ -74,57 +69,11 @@ def parse_config(config_file):
             raise ValueError(f"Qn{i}: Data-type not supported")
     return tuple(qn_categories)
 
+# Prediction
+class Predictor(object):
+    def __init__(self):
+        with open("model.pickle","rb") as f:
+            self.classifier = pickle.load(f)
 
-# Machine Learning Utils
-class Encoder(object):
-    def __init__(self, questions):
-        sentences = questions
-        module = hub.Module(
-            "https://tfhub.dev/google/universal-sentence-encoder-lite/2"
-        )
-        input_placeholder = compat.sparse.placeholder(compat.int64, shape=[None, None])
-        encodings = module(
-            inputs=dict(
-                values=input_placeholder.values,
-                indices=input_placeholder.indices,
-                dense_shape=input_placeholder.dense_shape,
-            )
-        )
-        with compat.Session() as session:
-            spm_path = session.run(module(signature="spm_path"))
-            sp = spm.SentencePieceProcessor()
-            sp.Load(spm_path)
-            values, indices, dense_shape = self._process_to_IDs_in_sparse_format(
-                sp, sentences
-            )
-            session.run(
-                [compat.global_variables_initializer(), compat.tables_initializer()]
-            )
-            message_embeddings = session.run(
-                encodings,
-                feed_dict={
-                    input_placeholder.values: values,
-                    input_placeholder.indices: indices,
-                    input_placeholder.dense_shape: dense_shape,
-                },
-            )
-            self.tensor_embeddings = message_embeddings
-
-    def _process_to_IDs_in_sparse_format(self, sp, sentences):
-        """
-        An utility method that processes sentences with the sentence piece processor
-        'sp' and returns the results in tf.SparseTensor-similar format:
-        (values, indices, dense_shape)
-        """
-        ids = [sp.EncodeAsIds(x) for x in sentences]
-        max_len = max(len(x) for x in ids)
-        dense_shape = (len(ids), max_len)
-        values = [item for sublist in ids for item in sublist]
-        indices = [
-            [row, col] for row in range(len(ids)) for col in range(len(ids[row]))
-        ]
-        return (values, indices, dense_shape)
-
-    @property
-    def embeddings(self):
-        return np.array(self.tensor_embeddings).tolist()
+    def predict(self,qns):
+        return [self.classifier.classify(qn) for qn in qns]
