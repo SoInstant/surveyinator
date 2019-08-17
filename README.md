@@ -11,3 +11,5 @@ For more information, refer to these websites:
 + [Scipy](https://scipy.org/install.html)
 + [Plotly](https://plot.ly/python/getting-started/)
 + [Textblob](https://textblob.readthedocs.io)
++ [word_cloud](https://github.com/amueller/word_cloud#installation)
++ [matplotlib](https://matplotlib.org/)
