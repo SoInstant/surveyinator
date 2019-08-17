@@ -7,9 +7,11 @@ import plot
 app = Flask("app")
 app.config["UPLOAD_FOLDER"] = "uploads"
 
-def chunk(input, size): #TODO: move to other file?
+
+def chunk(input, size):  # TODO: move to other file?
     for i in range(0, len(input), size):
-        yield input[i:i + size]
+        yield input[i : i + size]
+
 
 @app.route("/", methods=["GET", "POST"])
 def main():  # Homepage
@@ -42,20 +44,19 @@ def analysis_page():
     config.save(os.path.join(directory, config_filename))
 
     # Work on file
-    results = analyse.analyse(
-        os.path.join(directory, excel_filename),
-        os.path.join(directory, config_filename)
-    )
+    results = analyse.analyse(directory, excel_filename, config_filename)
 
     graphs = []
     for question, analysis in results.items():
         if analysis:
             if analysis["Percentages"]:
-                graphs.append(plot.pie(
-                    question,
-                    [x for x, y in analysis["Percentages"].items()],
-                    [y for x, y in analysis["Percentages"].items()]
-                ))
+                graphs.append(
+                    plot.pie(
+                        question,
+                        [x for x, y in analysis["Percentages"].items()],
+                        [y for x, y in analysis["Percentages"].items()],
+                    )
+                )
     graphs = tuple(chunk(graphs, 3))
 
     return render_template("index.html", graphs=graphs)
