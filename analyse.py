@@ -1,6 +1,10 @@
 from numpy import mean, median
 from scipy.stats import mode
 from utils import parse_config, parse_excel
+from textblob import TextBlob
+from wordcloud import WordCloud
+import os
+import string
 
 
 def categorise(responses, datatypes):
@@ -82,13 +86,17 @@ def categorical(responses):
     return {"Percentages": output, "Modes": tuple(modes)}
 
 
-def openended(responses):
-    pass
+def openended(qn,responses,directory):
+    text = " ".join(responses)
+    cloud = WordCloud(background_color="white").generate(text)
+    image = cloud.to_image()
+    image.save(os.path.join(directory,f"{qn}.png"))
 
 
-def analyse(excel_file, config_file):
+def analyse(directory, excel_file, config_file):
     categorised_responses = categorise(
-        parse_excel(excel_file), parse_config(config_file)
+        parse_excel(os.path.join(directory, excel_file)),
+        parse_config(os.path.join(directory, config_file)),
     )
     analysis = {}
     for qn, responses in categorised_responses.items():
@@ -101,10 +109,10 @@ def analyse(excel_file, config_file):
         elif category == "categorical":
             analysed = categorical(list_of_responses)
         elif category == "openended":
-            analysed = openended(list_of_responses)
+            analysed = openended(qn.strip(string.punctuation), list_of_responses,directory)
         analysis[qn] = analysed
     return analysis
 
 
 if __name__ == "__main__":
-    print(analyse("responses.xlsx", "config_file.txt"))
+    analyse("./", "responses.xlsx", "config_file.txt")
