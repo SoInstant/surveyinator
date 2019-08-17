@@ -10,3 +10,4 @@ For more information, refer to these websites:
 + [Numpy](https://numpy.org/)
 + [Scipy](https://scipy.org/install.html)
 + [Plotly](https://plot.ly/python/getting-started/)
++ [Textblob](https://textblob.readthedocs.io)

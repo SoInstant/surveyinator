@@ -1,10 +1,6 @@
 Flask
-Tensorflow
-Tensorflow_hub
 openpyxl
 Numpy
 Scipy
 Plotly
-sentencepiece
-Pandas
-scikit-learn
+textblob
