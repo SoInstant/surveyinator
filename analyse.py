@@ -4,7 +4,8 @@ from utils import parse_config, parse_excel
 from textblob import TextBlob
 from wordcloud import WordCloud
 import os
-import string
+from string import ascii_letters,digits
+import random
 
 
 def categorise(responses, datatypes):
@@ -78,6 +79,7 @@ def categorical(responses):
     for category, freq in categories.items():
         if freq == max_freq:
             modes.append(category)
+            print(category)
         categories[category] = freq / len(responses)
     sorting = sorted(categories.items(), key=lambda x: x[1])
     output = {}
@@ -86,11 +88,14 @@ def categorical(responses):
     return {"Percentages": output, "Modes": tuple(modes)}
 
 
-def openended(qn,responses,directory):
+def openended(responses,directory):
     text = " ".join(responses)
     cloud = WordCloud(background_color="white").generate(text)
     image = cloud.to_image()
-    image.save(os.path.join(directory,f"{qn}.png"))
+    filename = "".join([random.choice(ascii_letters + digits) for i in range(64)])
+    path = os.path.join(directory,f"{filename}.png")
+    image.save(path)
+    return path
 
 
 def analyse(directory, excel_file, config_file):
@@ -109,10 +114,10 @@ def analyse(directory, excel_file, config_file):
         elif category == "categorical":
             analysed = categorical(list_of_responses)
         elif category == "openended":
-            analysed = openended(qn.strip(string.punctuation), list_of_responses,directory)
+            analysed = openended(list_of_responses,directory)
         analysis[qn] = analysed
     return analysis
 
 
 if __name__ == "__main__":
-    analyse("./", "responses.xlsx", "config_file.txt")
+    print(analyse("./uploads/responses.xlsx/", "responses.xlsx", "config_file.txt"))
