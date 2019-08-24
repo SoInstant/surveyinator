@@ -1,5 +1,8 @@
 from openpyxl import load_workbook
 import pickle
+import plotly
+from flask import Markup
+
 # Parsing Utils
 def parse_excel(excel_file):
     """Parses an Excel file by column
@@ -69,11 +72,38 @@ def parse_config(config_file):
             raise ValueError(f"Qn{i}: Data-type not supported")
     return tuple(qn_categories)
 
+
 # Prediction
 class Predictor(object):
     def __init__(self):
-        with open("model.pickle","rb") as f:
+        with open("model.pickle", "rb") as f:
             self.classifier = pickle.load(f)
 
-    def predict(self,qns):
+    def predict(self, qns):
         return [self.classifier.classify(qn) for qn in qns]
+
+
+# Ploting
+def pie(title, labels, values, hole=0.4):
+    colors = ["#1cc88a", "#36b9cc", "#4e73df", "#f6c23e", "#e74a3b"]
+    fig = plotly.graph_objs.Figure(
+        data=[
+            plotly.graph_objs.Pie(
+                labels=labels,
+                values=values,
+                hole=hole,
+                hoverinfo="label+percent",
+                text=labels,
+                marker=dict(colors=colors, line=dict(color="#FFFFFF", width=2)),
+                sort=False,
+            )
+        ]
+    )
+
+    newtitle = []
+    for i in range(0, len(title), 30):
+        newtitle.append(title[i : i + 30] + "<br>")
+    fig.layout.title = "".join(newtitle)
+    fig.layout.font = dict(family="Nunito", size=18, color="#858796")
+
+    return Markup(plotly.offline.plot(fig, include_plotlyjs=False, output_type="div"))
