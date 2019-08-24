@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from werkzeug import secure_filename
 import os
 import analyse
-import plot
+import utils
 
 app = Flask("app")
 app.config["UPLOAD_FOLDER"] = "uploads"
@@ -49,9 +49,9 @@ def analysis_page():
     graphs = []
     for question, analysis in results.items():
         if analysis:
-            if analysis["Percentages"]:
+            if analysis[0] == "categorical":
                 graphs.append(
-                    plot.pie(
+                    utils.pie(
                         question,
                         [x for x, y in analysis["Percentages"].items()],
                         [y for x, y in analysis["Percentages"].items()],
