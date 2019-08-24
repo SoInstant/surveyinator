@@ -4,7 +4,7 @@ from utils import parse_config, parse_excel
 from textblob import TextBlob
 from wordcloud import WordCloud
 import os
-from string import ascii_letters,digits
+from string import ascii_letters, digits
 import random
 
 
@@ -79,7 +79,6 @@ def categorical(responses):
     for category, freq in categories.items():
         if freq == max_freq:
             modes.append(category)
-            print(category)
         categories[category] = freq / len(responses)
     sorting = sorted(categories.items(), key=lambda x: x[1])
     output = {}
@@ -88,14 +87,14 @@ def categorical(responses):
     return {"Percentages": output, "Modes": tuple(modes)}
 
 
-def openended(responses,directory):
+def openended(responses, directory):
     text = " ".join(responses)
     cloud = WordCloud(background_color="white").generate(text)
     image = cloud.to_image()
     filename = "".join([random.choice(ascii_letters + digits) for i in range(64)])
-    path = os.path.join(directory,f"{filename}.png")
+    path = os.path.join(directory, f"{filename}.png")
     image.save(path)
-    return path
+    return {"path": path}
 
 
 def analyse(directory, excel_file, config_file):
@@ -107,17 +106,16 @@ def analyse(directory, excel_file, config_file):
     for qn, responses in categorised_responses.items():
         category = responses[0]
         list_of_responses = responses[1]
-        if category == "ignore":
-            continue
-        elif category == "numerical":
-            analysed = numerical(list_of_responses)
+        if category == "numerical":
+            analysed = ("numerical", numerical(list_of_responses))
         elif category == "categorical":
-            analysed = categorical(list_of_responses)
+            analysed = ("categorical", categorical(list_of_responses))
         elif category == "openended":
-            analysed = openended(list_of_responses,directory)
+            analysed = ("openended", openended(list_of_responses, directory))
         analysis[qn] = analysed
     return analysis
 
 
 if __name__ == "__main__":
-    print(analyse("./uploads/responses.xlsx/", "responses.xlsx", "config_file.txt"))
+    bruh = analyse("./uploads/responses.xlsx/", "responses.xlsx", "config_file.txt")
+    print(bruh)
