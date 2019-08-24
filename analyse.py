@@ -88,13 +88,26 @@ def categorical(responses):
 
 
 def openended(responses, directory):
+    """Analyses openended responses
+
+    Args:
+        responses(list/tuple): List/tuple of responses
+            For example: ["Nil","The duration","Microbit"] or
+            ("Nil","The duration","Microbit")
+        directory(str): path to the folder containing the excel file and config file
+            For example: "./uploads/responses.xlsx"
+
+    Returns:
+        A string that is the path to the wordcloud generated from the responses
+            For example: "./uploads/responses.xlsx/qJLTOIDesAlqxRakLkFt7Qoz0xGDdXpl2HcPxcKMwNn9KShKYVuOXku0yqT0didc"
+    """
     text = " ".join(responses)
     cloud = WordCloud(background_color="white").generate(text)
     image = cloud.to_image()
     filename = "".join([random.choice(ascii_letters + digits) for i in range(64)])
     path = os.path.join(directory, f"{filename}.png")
     image.save(path)
-    return {"path": path}
+    return path
 
 
 def analyse(directory, excel_file, config_file):
