@@ -59,5 +59,8 @@ def analysis_page():
 
     return render_template("index.html", graphs=graphs, clouds=clouds,filename = excel_filename)
 
+@app.route("/download/<path>")
+def download(path):
+    return path
 
 app.run(port=80)
