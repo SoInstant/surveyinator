@@ -116,6 +116,7 @@ def analyse(directory, excel_file, config_file):
         parse_config(os.path.join(directory, config_file)),
     )
     analysis = {}
+    analysed = None
     for qn, responses in categorised_responses.items():
         category = responses[0]
         list_of_responses = responses[1]
