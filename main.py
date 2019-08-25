@@ -5,7 +5,7 @@ import analyse
 import utils
 
 app = Flask("app")
-app.config["UPLOAD_FOLDER"] = "static/uploads"
+app.config["UPLOAD_FOLDER"] = "./static/uploads/"
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -30,7 +30,7 @@ def analysis_page():
     excel_filename = secure_filename(excel.filename)
     config = request.files["config"]
     config_filename = secure_filename(config.filename)
-    directory = os.path.join(app.config["UPLOAD_FOLDER"], excel_filename)
+    directory = os.path.join(app.config["UPLOAD_FOLDER"], utils.secure(16))
 
     if not os.path.exists(directory):
         os.mkdir(directory)
