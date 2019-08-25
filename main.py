@@ -2,14 +2,11 @@ from flask import Flask, render_template, request, redirect, url_for
 from werkzeug import secure_filename
 import os
 import analyse
-import plot
+import utils
 
 app = Flask("app")
 app.config["UPLOAD_FOLDER"] = "uploads"
 
-def chunk(input, size): #TODO: move to other file?
-    for i in range(0, len(input), size):
-        yield input[i:i + size]
 
 @app.route("/", methods=["GET", "POST"])
 def main():  # Homepage
@@ -36,29 +33,29 @@ def analysis_page():
     directory = os.path.join(app.config["UPLOAD_FOLDER"], excel_filename)
 
     if not os.path.exists(directory):
-        # TODO What if it exists
         os.mkdir(directory)
     excel.save(os.path.join(directory, excel_filename))
     config.save(os.path.join(directory, config_filename))
 
     # Work on file
-    results = analyse.analyse(
-        os.path.join(directory, excel_filename),
-        os.path.join(directory, config_filename)
-    )
+    results = analyse.analyse(directory, excel_filename, config_filename)
 
     graphs = []
     for question, analysis in results.items():
         if analysis:
-            if analysis["Percentages"]:
-                graphs.append(plot.pie(
-                    question,
-                    [x for x, y in analysis["Percentages"].items()],
-                    [y for x, y in analysis["Percentages"].items()]
-                ))
-    graphs = tuple(chunk(graphs, 3))
+            if analysis[0] == "categorical":
+                graphs.append(
+                    utils.pie(
+                        question,
+                        [x for x, y in analysis[1]["Percentages"].items()],
+                        [y for x, y in analysis[1]["Percentages"].items()],
+                    )
+                )
+            elif analysis[0] == "openended":
+                clouds.append(analysis[1])
+    graphs = tuple(utils.chunk(graphs, 3))
 
-    return render_template("index.html", graphs=graphs)
+    return render_template("index.html", graphs=graphs, clouds=clouds)
 
 
 app.run(port=80)

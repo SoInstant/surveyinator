@@ -1,6 +1,11 @@
 from numpy import mean, median
 from scipy.stats import mode
 from utils import parse_config, parse_excel
+from textblob import TextBlob
+from wordcloud import WordCloud
+import os
+from string import ascii_letters, digits
+import random
 
 
 def categorise(responses, datatypes):
@@ -82,29 +87,52 @@ def categorical(responses):
     return {"Percentages": output, "Modes": tuple(modes)}
 
 
-def openended(responses):
-    pass
+def openended(responses, directory):
+    """Analyses openended responses
+
+    Args:
+        responses(list/tuple): List/tuple of responses
+            For example: ["Nil","The duration","Microbit"] or
+            ("Nil","The duration","Microbit")
+        directory(str): path to the folder containing the excel file and config file
+            For example: "./uploads/responses.xlsx"
+
+    Returns:
+        A string that is the path to the wordcloud generated from the responses
+            For example: "./uploads/responses.xlsx/qJLTOIDesAlqxRakLkFt7Qoz0xGDdXpl2HcPxcKMwNn9KShKYVuOXku0yqT0didc"
+    """
+    text = " ".join(responses)
+    cloud = WordCloud(background_color="white").generate(text)
+    image = cloud.to_image()
+    filename = "".join([random.choice(ascii_letters + digits) for i in range(64)])
+    path = os.path.join(directory, f"{filename}.png")
+    image.save(path)
+    return path
 
 
-def analyse(excel_file, config_file):
+def analyse(directory, excel_file, config_file):
     categorised_responses = categorise(
-        parse_excel(excel_file), parse_config(config_file)
+        parse_excel(os.path.join(directory, excel_file)),
+        parse_config(os.path.join(directory, config_file)),
     )
     analysis = {}
+    analysed = None
     for qn, responses in categorised_responses.items():
         category = responses[0]
         list_of_responses = responses[1]
-        if category == "ignore":
-            continue
-        elif category == "numerical":
-            analysed = numerical(list_of_responses)
+        if category == "numerical":
+            analysed = ("numerical", numerical(list_of_responses))
         elif category == "categorical":
-            analysed = categorical(list_of_responses)
+            analysed = ("categorical", categorical(list_of_responses))
         elif category == "openended":
-            analysed = openended(list_of_responses)
+            analysed = ("openended", openended(list_of_responses, directory))
         analysis[qn] = analysed
     return analysis
 
 
 if __name__ == "__main__":
-    print(analyse("responses.xlsx", "config_file.txt"))
+    bruh = analyse("./uploads/responses.xlsx/", "responses.xlsx", "config_file.txt")
+    for key, value in bruh.items():
+        if value:
+            if value[0] == "openended":
+                print(value[1])

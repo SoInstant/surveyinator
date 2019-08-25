@@ -1,9 +1,7 @@
 from openpyxl import load_workbook
-import tensorflow as tf
-import tensorflow.compat.v1 as compat
-import tensorflow_hub as hub
-import sentencepiece as spm
-import numpy as np
+import pickle
+import plotly
+from flask import Markup
 
 # Parsing Utils
 def parse_excel(excel_file):
@@ -75,56 +73,42 @@ def parse_config(config_file):
     return tuple(qn_categories)
 
 
-# Machine Learning Utils
-class Encoder(object):
-    def __init__(self, questions):
-        sentences = questions
-        module = hub.Module(
-            "https://tfhub.dev/google/universal-sentence-encoder-lite/2"
-        )
-        input_placeholder = compat.sparse.placeholder(compat.int64, shape=[None, None])
-        encodings = module(
-            inputs=dict(
-                values=input_placeholder.values,
-                indices=input_placeholder.indices,
-                dense_shape=input_placeholder.dense_shape,
-            )
-        )
-        with compat.Session() as session:
-            spm_path = session.run(module(signature="spm_path"))
-            sp = spm.SentencePieceProcessor()
-            sp.Load(spm_path)
-            values, indices, dense_shape = self._process_to_IDs_in_sparse_format(
-                sp, sentences
-            )
-            session.run(
-                [compat.global_variables_initializer(), compat.tables_initializer()]
-            )
-            message_embeddings = session.run(
-                encodings,
-                feed_dict={
-                    input_placeholder.values: values,
-                    input_placeholder.indices: indices,
-                    input_placeholder.dense_shape: dense_shape,
-                },
-            )
-            self.tensor_embeddings = message_embeddings
+# Prediction
+class Predictor(object):
+    def __init__(self):
+        with open("model.pickle", "rb") as f:
+            self.classifier = pickle.load(f)
 
-    def _process_to_IDs_in_sparse_format(self, sp, sentences):
-        """
-        An utility method that processes sentences with the sentence piece processor
-        'sp' and returns the results in tf.SparseTensor-similar format:
-        (values, indices, dense_shape)
-        """
-        ids = [sp.EncodeAsIds(x) for x in sentences]
-        max_len = max(len(x) for x in ids)
-        dense_shape = (len(ids), max_len)
-        values = [item for sublist in ids for item in sublist]
-        indices = [
-            [row, col] for row in range(len(ids)) for col in range(len(ids[row]))
+    def predict(self, qns):
+        return [self.classifier.classify(qn) for qn in qns]
+
+
+# Ploting
+def pie(title, labels, values, hole=0.4):
+    colors = ["#1cc88a", "#36b9cc", "#4e73df", "#f6c23e", "#e74a3b"]
+    fig = plotly.graph_objs.Figure(
+        data=[
+            plotly.graph_objs.Pie(
+                labels=labels,
+                values=values,
+                hole=hole,
+                hoverinfo="label+percent",
+                text=labels,
+                marker=dict(colors=colors, line=dict(color="#FFFFFF", width=2)),
+                sort=False,
+            )
         ]
-        return (values, indices, dense_shape)
+    )
 
-    @property
-    def embeddings(self):
-        return np.array(self.tensor_embeddings).tolist()
+    newtitle = []
+    for i in range(0, len(title), 30):
+        newtitle.append(title[i : i + 30] + "<br>")
+    fig.layout.title = "".join(newtitle)
+    fig.layout.font = dict(family="Nunito", size=18, color="#858796")
+
+    return Markup(plotly.offline.plot(fig, include_plotlyjs=False, output_type="div"))
+
+
+def chunk(input, size):
+    for i in range(0, len(input), size):
+        yield input[i : i + size]
