@@ -59,4 +59,3 @@ target/
 # Uploads folder
 static/uploads/*
 results/*
-uploads/*
