@@ -125,11 +125,14 @@ def analyse(directory, excel_file, config_file):
         elif category == "categorical":
             analysed = ("categorical", categorical(list_of_responses))
         elif category == "openended":
-            analysed = ("openended", openended(list_of_responses,))
+            analysed = ("openended", openended(list_of_responses, directory))
         analysis[qn] = analysed
     return analysis
 
 
 if __name__ == "__main__":
-    bruh = analyse("./uploads/responses.xlsx/files", "responses.xlsx", "config_file.txt")
-    print(bruh)
+    bruh = analyse("./uploads/responses.xlsx/", "responses.xlsx", "config_file.txt")
+    for key, value in bruh.items():
+        if value:
+            if value[0] == "openended":
+                print(value[1])
