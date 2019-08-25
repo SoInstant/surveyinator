@@ -85,6 +85,19 @@ class Predictor(object):
 
 # Ploting
 def pie(title, labels, values, hole=0.4):
+    """Creates a pie chart
+
+    Parses data passed in and creates a pie chart.
+
+    Args:
+        title(str): The title of the pie chart
+        labels(list): Labels of each slice in the pie chart
+        values(list): Value of each slice
+        hole(float): Size of the hole in the pie chart
+
+    Returns:
+        HTML div of the pie chart
+    """
     colors = ["#1cc88a", "#36b9cc", "#4e73df", "#f6c23e", "#e74a3b"]
     fig = plotly.graph_objs.Figure(
         data=[
@@ -100,14 +113,34 @@ def pie(title, labels, values, hole=0.4):
         ]
     )
 
-    newtitle = []
-    for i in range(0, len(title), 30):
-        newtitle.append(title[i : i + 30] + "<br>")
-    fig.layout.title = "".join(newtitle)
+    fig.layout.title = split_lines(title)
     fig.layout.font = dict(family="Nunito", size=18, color="#858796")
 
     return Markup(plotly.offline.plot(fig, include_plotlyjs=False, output_type="div"))
 
+def split_lines(text, length=50):
+    """Splits text
+
+    Splits text into multiple lines without breaking words
+
+    Args:
+        text(str): Text to be split
+        length(int): Size of each line
+
+    Returns:
+        Text split into lines
+    """
+    output = [""]
+    for word in text.split(" "):
+        if len(word) > length:
+            output.append(word + "<br>")
+        else:
+            if len(output[-1]) + len(word) <= length:
+                output[-1] += word + " "
+            else:
+                output[-1] += "<br>"
+                output.append(word + " ")
+    return "".join(output)
 
 def chunk(input, size):
     for i in range(0, len(input), size):

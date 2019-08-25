@@ -5,7 +5,7 @@ import analyse
 import utils
 
 app = Flask("app")
-app.config["UPLOAD_FOLDER"] = "uploads"
+app.config["UPLOAD_FOLDER"] = "static/uploads"
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -41,6 +41,7 @@ def analysis_page():
     results = analyse.analyse(directory, excel_filename, config_filename)
 
     graphs = []
+    clouds = []
     for question, analysis in results.items():
         if analysis:
             if analysis[0] == "categorical":
@@ -53,7 +54,8 @@ def analysis_page():
                 )
             elif analysis[0] == "openended":
                 clouds.append(analysis[1])
-    graphs = tuple(utils.chunk(graphs, 3))
+    graphs = tuple(utils.chunk(graphs, 2))
+    clouds = tuple(utils.chunk(clouds, 2))
 
     return render_template("index.html", graphs=graphs, clouds=clouds)
 

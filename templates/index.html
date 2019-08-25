@@ -56,7 +56,7 @@
                       {% for group in graphs %}
                       <div class="row">
                         {% for graph in group %}
-                        <div class="col-md-4 col-xl-4">
+                        <div class="col-md-6 col-xl-6">
                             <div class="card shadow border-left-primary py-2">
                                 <div class="card-body">
                                     <div class="row align-items-center no-gutters">
@@ -70,6 +70,24 @@
                         {% endfor %}
                     </div>
                     {% endfor %}
+                    {% for group in clouds %}
+                    <div class="row">
+                      {% for cloud in group %}
+                      <div class="col-md-6 col-xl-6">
+                          <div class="card shadow border-left-primary py-2">
+                              <div class="card-body">
+                                  <div class="row align-items-center no-gutters">
+                                      <div class="col mr-2">
+                                          <p> title </p>
+                                          <img src="{{cloud}}" width="100%">
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      {% endfor %}
+                  </div>
+                  {% endfor %}
                     <!--
                     <div class="row">
                         <div class="col-lg-7 col-xl-8">
