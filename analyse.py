@@ -1,11 +1,9 @@
 from numpy import mean, median
 from scipy.stats import mode
-from utils import parse_config, parse_excel
+from utils import parse_config, parse_excel,secure
 from textblob import TextBlob
 from wordcloud import WordCloud
 import os
-from string import ascii_letters, digits
-import random
 
 
 def categorise(responses, datatypes):
@@ -95,17 +93,16 @@ def openended(responses, directory):
             For example: ["Nil","The duration","Microbit"] or
             ("Nil","The duration","Microbit")
         directory(str): path to the folder containing the excel file and config file
-            For example: "./uploads/responses.xlsx"
+            For example: "./static/uploads/responses.xlsx"
 
     Returns:
         A string that is the path to the wordcloud generated from the responses
-            For example: "./uploads/responses.xlsx/qJLTOIDesAlqxRakLkFt7Qoz0xGDdXpl2HcPxcKMwNn9KShKYVuOXku0yqT0didc"
+            For example: "./static/uploads/responses.xlsx/qJLTOIDesAlqxRakLkFt7Qoz0xGDdXpl2HcPxcKMwNn9KShKYVuOXku0yqT0didc"
     """
     text = " ".join(responses)
     cloud = WordCloud(background_color="white").generate(text)
     image = cloud.to_image()
-    filename = "".join([random.choice(ascii_letters + digits) for i in range(64)])
-    path = os.path.join(directory, f"{filename}.png")
+    path = os.path.join(directory, f"{secure(16)}.png")
     image.save(path)
     return path
 
