@@ -56,8 +56,8 @@ def analysis_page():
                 clouds.append([question, analysis[1]])
     graphs = tuple(utils.chunk(graphs, 2))
     clouds = tuple(utils.chunk(clouds, 2))
-
-    return render_template("index.html", graphs=graphs, clouds=clouds,filename = excel_filename)
+    #test
+    return render_template("index.html", graphs=graphs, clouds=clouds, filename=excel_filename)
 
 
 app.run(port=80)
