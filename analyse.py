@@ -110,10 +110,10 @@ def openended(responses, directory):
     return path
 
 
-def analyse(directory, excel_file, config_file):
+def analyse(file_directory, excel_file, config_file,save_directory):
     categorised_responses = categorise(
-        parse_excel(os.path.join(directory, excel_file)),
-        parse_config(os.path.join(directory, config_file)),
+        parse_excel(os.path.join(file_directory, excel_file)),
+        parse_config(os.path.join(file_directory, config_file)),
     )
     analysis = {}
     analysed = None
@@ -125,11 +125,11 @@ def analyse(directory, excel_file, config_file):
         elif category == "categorical":
             analysed = ("categorical", categorical(list_of_responses))
         elif category == "openended":
-            analysed = ("openended", openended(list_of_responses, directory))
+            analysed = ("openended", openended(list_of_responses, save_directory))
         analysis[qn] = analysed
     return analysis
 
 
 if __name__ == "__main__":
-    bruh = analyse("./uploads/responses.xlsx/", "responses.xlsx", "config_file.txt")
+    bruh = analyse("./uploads/responses.xlsx/files", "responses.xlsx", "config_file.txt")
     print(bruh)

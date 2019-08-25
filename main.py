@@ -35,16 +35,17 @@ def analysis_page():
     excel_filename = secure_filename(excel.filename)
     config = request.files["config"]
     config_filename = secure_filename(config.filename)
-    directory = os.path.join(app.config["UPLOAD_FOLDER"], excel_filename)
+    directory = os.path.join(app.config["UPLOAD_FOLDER"], excel_filename,"/files")
+    cloud_dir = os.path.join(app.config["UPLOAD_FOLDER"], excel_filename,"/cloud")
 
     if not os.path.exists(directory):
-        # TODO What if it exists
         os.mkdir(directory)
+        os.mkdir(cloud_dir)
     excel.save(os.path.join(directory, excel_filename))
     config.save(os.path.join(directory, config_filename))
 
     # Work on file
-    results = analyse.analyse(directory, excel_filename, config_filename)
+    results = analyse.analyse(directory, excel_filename, config_filename,cloud_dir)
 
     graphs = []
     for question, analysis in results.items():
@@ -53,8 +54,8 @@ def analysis_page():
                 graphs.append(
                     utils.pie(
                         question,
-                        [x for x, y in analysis["Percentages"].items()],
-                        [y for x, y in analysis["Percentages"].items()],
+                        [x for x, y in analysis[1]["Percentages"].items()],
+                        [y for x, y in analysis[1]["Percentages"].items()],
                     )
                 )
     graphs = tuple(chunk(graphs, 3))
