@@ -1,8 +1,8 @@
-Flask
-openpyxl
 Numpy
 Scipy
-Plotly
-textblob
+Textblob
 wordcloud
+Flask
+openpyxl
+plotly
 matplotlib
