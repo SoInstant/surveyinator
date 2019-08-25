@@ -109,6 +109,7 @@ def pie(title, labels, values, hole=0.4):
                 text=labels,
                 marker=dict(colors=colors, line=dict(color="#FFFFFF", width=2)),
                 sort=False,
+                showlegend=False
             )
         ]
     )
@@ -143,5 +144,7 @@ def split_lines(text, length=50):
     return "".join(output)
 
 def chunk(input, size):
+    """
+    """
     for i in range(0, len(input), size):
         yield input[i : i + size]

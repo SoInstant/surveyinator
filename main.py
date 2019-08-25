@@ -53,7 +53,7 @@ def analysis_page():
                     )
                 )
             elif analysis[0] == "openended":
-                clouds.append(analysis[1])
+                clouds.append([question, analysis[1]])
     graphs = tuple(utils.chunk(graphs, 2))
     clouds = tuple(utils.chunk(clouds, 2))
 
