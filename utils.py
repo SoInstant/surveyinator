@@ -2,6 +2,11 @@ from openpyxl import load_workbook
 import pickle
 import plotly
 from flask import Markup
+import random
+from string import ascii_letters,digits
+
+def secure(length):
+    return "".join([random.choice(ascii_letters + digits) for i in range(length)])
 
 # Parsing Utils
 def parse_excel(excel_file):
