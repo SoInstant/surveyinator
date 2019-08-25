@@ -8,11 +8,6 @@ app = Flask("app")
 app.config["UPLOAD_FOLDER"] = "uploads"
 
 
-def chunk(input, size):  # TODO: move to other file?
-    for i in range(0, len(input), size):
-        yield input[i : i + size]
-
-
 @app.route("/", methods=["GET", "POST"])
 def main():  # Homepage
     return render_template("upload.html", error="")
@@ -56,9 +51,11 @@ def analysis_page():
                         [y for x, y in analysis[1]["Percentages"].items()],
                     )
                 )
-    graphs = tuple(chunk(graphs, 3))
+            elif analysis[0] == "openended":
+                clouds.append(analysis[1])
+    graphs = tuple(utils.chunk(graphs, 3))
 
-    return render_template("index.html", graphs=graphs)
+    return render_template("index.html", graphs=graphs, clouds=clouds)
 
 
 app.run(port=80)
