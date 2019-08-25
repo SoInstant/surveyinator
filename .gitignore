@@ -57,5 +57,5 @@ docs/_build/
 target/
 
 # Uploads folder
-uploads/*
+static/uploads/*
 results/*
