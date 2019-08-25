@@ -1,12 +1,21 @@
+"""Provides utility functions
+
+This module contains utility functions for main.py and analyse.py.
+Those functions are placed into this module to prevent spagetti code in
+both of those scripts.
+"""
 from openpyxl import load_workbook
 import pickle
 import plotly
 from flask import Markup
 import random
-from string import ascii_letters,digits
+from string import ascii_letters, digits
+
 
 def secure(length):
+    """Returns a random string of len(length)"""
     return "".join([random.choice(ascii_letters + digits) for i in range(length)])
+
 
 # Parsing Utils
 def parse_excel(excel_file):
@@ -80,11 +89,17 @@ def parse_config(config_file):
 
 # Prediction
 class Predictor(object):
+    """TextBlob classifier that predicts if qn is either
+    categorical, numerical, or openended.
+    """
+
     def __init__(self):
+        """Loads pre-trained TextBlob classifier."""
         with open("model.pickle", "rb") as f:
             self.classifier = pickle.load(f)
 
     def predict(self, qns):
+        """Predicts if qns in qns are either categorical, numerical, or openended."""
         return [self.classifier.classify(qn) for qn in qns]
 
 
@@ -114,7 +129,7 @@ def pie(title, labels, values, hole=0.4):
                 text=labels,
                 marker=dict(colors=colors, line=dict(color="#FFFFFF", width=2)),
                 sort=False,
-                showlegend=False
+                showlegend=False,
             )
         ]
     )
@@ -123,6 +138,7 @@ def pie(title, labels, values, hole=0.4):
     fig.layout.font = dict(family="Nunito", size=18, color="#858796")
 
     return Markup(plotly.offline.plot(fig, include_plotlyjs=False, output_type="div"))
+
 
 def split_lines(text, length=50):
     """Splits text
@@ -148,8 +164,8 @@ def split_lines(text, length=50):
                 output.append(word + " ")
     return "".join(output)
 
+
 def chunk(input, size):
-    """
-    """
+    """Yields"""
     for i in range(0, len(input), size):
         yield input[i : i + size]

@@ -1,6 +1,11 @@
+"""Analyses survey responses
+
+This module analyses survey responses in an excel .xlsx file through various
+data analysis methods.
+"""
 from numpy import mean, median
 from scipy.stats import mode
-from utils import parse_config, parse_excel,secure
+from utils import parse_config, parse_excel, secure
 from textblob import TextBlob
 from wordcloud import WordCloud
 import os
@@ -38,14 +43,14 @@ def numerical(responses):
 
     Returns:
         A dict of the Mean, Median and Mode of the data.
-        Mode(s) is/are returned in an numpy array.
+        If there are multiple modes, the smallest mode is given.
         For example:
-        {'Mean': 8.0, 'Median': 3.0, 'Mode': array([1])}
+        {'Mean': 8.0, 'Median': 3.0, 'Mode': [1]}
     """
     central_tendencies = {
         "Mean": mean(responses),
         "Median": median(responses),
-        "Mode": mode(responses)[0],
+        "Mode": mode(responses)[0].tolist(),
     }
     return central_tendencies
 
@@ -93,11 +98,11 @@ def openended(responses, directory):
             For example: ["Nil","The duration","Microbit"] or
             ("Nil","The duration","Microbit")
         directory(str): path to the folder containing the excel file and config file
-            For example: "./static/uploads/responses.xlsx"
+            For example: "./static/uploads/4SikvVjjqlWV44AW/"
 
     Returns:
         A string that is the path to the wordcloud generated from the responses
-            For example: "./static/uploads/responses.xlsx/qJLTOIDesAlqxRakLkFt7Qoz0xGDdXpl2HcPxcKMwNn9KShKYVuOXku0yqT0didc"
+            For example: "./static/uploads/4SikvVjjqlWV44AW/zxmVHMV1QlAvYFq3.png"
     """
     text = " ".join(responses)
     cloud = WordCloud(background_color="white").generate(text)
@@ -108,6 +113,20 @@ def openended(responses, directory):
 
 
 def analyse(directory, excel_file, config_file):
+    """Analyses survey responses
+
+    Args:
+        directory(str): path to the folder containing the excel file and config file
+            For example: "./static/uploads/4SikvVjjqlWV44AW/"
+        excel_file(str): name of excel file
+            For example: "responses.xlsx"
+        config_file(str): name of config file
+            For example: "config_file.txt"
+
+    Returns:
+        A dictionary mapping each survey question to the analysis of its
+        responses.
+    """
     categorised_responses = categorise(
         parse_excel(os.path.join(directory, excel_file)),
         parse_config(os.path.join(directory, config_file)),
