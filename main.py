@@ -10,8 +10,7 @@ app.config["UPLOAD_FOLDER"] = "./static/uploads/"
 
 @app.route("/", methods=["GET", "POST"])
 def main():  # Homepage
-    return render_template("upload.html", error="")
-
+    return render_template("index.html", type="upload", error="")
 
 @app.route("/results", methods=["GET", "POST"])
 def analysis_page():
@@ -60,11 +59,5 @@ def analysis_page():
     return render_template(
         "index.html", graphs=graphs, clouds=clouds, filename=excel_filename
     )
-
-
-@app.route("/download/<path>")
-def download(path):
-    return path
-
 
 app.run(port=80)
