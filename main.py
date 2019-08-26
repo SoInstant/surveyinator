@@ -64,10 +64,10 @@ def analysis_page():
 
 @app.route("/download/<path>")
 def download(path):
-    download_path = analyse.generate_report(app.config["ANALYSIS"])
-    return send_file('outputs/Adjacency.csv',
-                     mimetype='text/csv',
-                     attachment_filename='Adjacency.csv',
+    download_path = analyse.generate_report(os.path.join("./static/uploads/",path),app.config["ANALYSIS"])
+    return send_file(download_path,
+                     mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                     attachment_filename='report.docx',
                      as_attachment=True)
 
 

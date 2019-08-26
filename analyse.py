@@ -146,7 +146,7 @@ def analyse(directory, excel_file, config_file):
     return analysis
 
 
-def generate_report(analysis):
+def generate_report(directory,analysis):
     for qn ,j in analysis:
         pass
 if __name__ == "__main__":
