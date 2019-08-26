@@ -150,7 +150,8 @@ def generate_report(analysis):
     for qn ,j in analysis:
         pass
 if __name__ == "__main__":
-    bruh = analyse("./uploads/responses.xlsx/", "responses.xlsx", "config_file.txt")
+    bruh = analyse("./static/uploads/responses.xlsx/", "responses.xlsx", "config_file.txt")
+    print(bruh)
     for key, value in bruh.items():
         if value:
             if value[0] == "openended":
