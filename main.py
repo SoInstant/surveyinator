@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for ,send_file
 from werkzeug import secure_filename
 import os
 import analyse
@@ -39,7 +39,7 @@ def analysis_page():
 
     # Work on file
     results = analyse.analyse(directory, excel_filename, config_filename)
-
+    app.config["ANALYSIS"] = results
     graphs = []
     clouds = []
     for question, analysis in results.items():
@@ -58,13 +58,17 @@ def analysis_page():
     clouds = tuple(utils.chunk(clouds, 2))
 
     return render_template(
-        "index.html", graphs=graphs, clouds=clouds, filename=excel_filename
+        "index.html", graphs=graphs, clouds=clouds, filename=excel_filename, path=os.path.split(directory)[1]
     )
 
 
 @app.route("/download/<path>")
 def download(path):
-    return path
+    download_path = analyse.generate_report(app.config["ANALYSIS"])
+    return send_file('outputs/Adjacency.csv',
+                     mimetype='text/csv',
+                     attachment_filename='Adjacency.csv',
+                     as_attachment=True)
 
 
 app.run(port=80)
