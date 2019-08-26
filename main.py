@@ -12,6 +12,11 @@ app.config["UPLOAD_FOLDER"] = "./static/uploads/"
 def main():  # Homepage
     return render_template("upload.html", error="")
 
+@app.route("/config",methods=["GET"])
+def config():
+    if request.method == "GET":
+        
+
 
 @app.route("/results", methods=["GET", "POST"])
 def analysis_page():
