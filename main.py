@@ -10,12 +10,12 @@ app.config["UPLOAD_FOLDER"] = "./static/uploads/"
 
 @app.route("/", methods=["GET", "POST"])
 def main():  # Homepage
-    return render_template("upload.html", error="")
+    return render_template("upload.html", error=None)
 
 @app.route("/config",methods=["GET"])
 def config():
     if request.method == "GET":
-        
+        pass
 
 
 @app.route("/results", methods=["GET", "POST"])
@@ -27,8 +27,8 @@ def analysis_page():
     # Checking for files
     if not request.files["file"]:
         return render_template("upload.html", error="Missing excel file!")
-    if not request.files["config"]:  # Remove when config setup website done
-        return render_template("upload.html", error="Missing config file!")
+    elif request.files["file"] and not request.files["config"]:
+        return render_template("config.html")
 
     # Saving files
     excel = request.files["file"]
