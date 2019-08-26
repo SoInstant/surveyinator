@@ -25,10 +25,9 @@
                                 <h4>Excel file: </h4><input class="d-lg-flex" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
                                 <h4>Config file: </h4><input class="d-lg-flex" type="file" name="config" accept="text/plain">
                                 <input type="submit" value='upload'>
-                            </form></div>
-                            <div class="text-center">
-                              <h5 class="text-dark mb-4">{{ error }}</h5>
-                            </div>
+                            </form>
+                        </div>
+                        {% if error %}<div class="alert alert-danger" role="alert">{{ error }}</div>{% endif %}
                     </div>
                 </div>
             </div>
