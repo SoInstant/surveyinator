@@ -54,8 +54,20 @@ def analysis_page():
                 )
             elif analysis[0] == "openended":
                 clouds.append([question, analysis[1]])
-    graphs = tuple(utils.chunk(graphs, 2))
-    clouds = tuple(utils.chunk(clouds, 2))
+    graphs = utils.chunk(graphs, 2)
+    clouds = list(utils.chunk(clouds, 2))
+    for group in clouds:
+        if len(group) == 2:
+            breaks = []
+            for cloud in group:
+                breaks.append(int(len(cloud[0]) / 40))
+            if breaks[0] == breaks[1]:
+                pass
+            elif breaks[0] > breaks[1]:
+                group[1][0] += (breaks[0] - breaks[1]) * "\n"
+            else:
+                group[0][0] += (breaks[1] - breaks[0]) * "\n"
+    print(clouds)
     #test
     return render_template("index.html", graphs=graphs, clouds=clouds, filename=excel_filename)
 
