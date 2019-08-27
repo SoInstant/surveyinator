@@ -134,7 +134,6 @@ def pie(title, labels, values, hole=0.4):
         ]
     )
 
-    fig.layout.title = split_lines(title)
     fig.layout.font = dict(family="Nunito", size=18, color="#858796")
 
     return Markup(plotly.offline.plot(fig, include_plotlyjs=False, output_type="div"))

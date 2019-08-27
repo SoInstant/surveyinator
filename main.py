@@ -44,16 +44,16 @@ def analysis_page():
     for question, analysis in results.items():
         if analysis:
             if analysis[0] == "categorical":
-                graphs.append(
+                graphs.append([question,
                     utils.pie(
                         question,
                         [x for x, y in analysis[1]["Percentages"].items()],
                         [y for x, y in analysis[1]["Percentages"].items()],
-                    )
+                    )]
                 )
             elif analysis[0] == "openended":
                 clouds.append([question, analysis[1]])
-    graphs = tuple(utils.chunk(graphs, 2))
+    graphs = tuple(utils.chunk(graphs, 3))
     clouds = tuple(utils.chunk(clouds, 2))
 
     return render_template(

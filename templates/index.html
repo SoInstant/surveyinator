@@ -14,78 +14,35 @@
   <link rel="icon" href="static/favicon.ico">
   <link rel="stylesheet" href="static/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+  <link rel="stylesheet" href="static/css/style.css">
   <link rel="stylesheet" href="static/fonts/fontawesome-all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-  <script src="static/js/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
   <script src="static/bootstrap/js/bootstrap.min.js"></script>
+  <script src="static/js/jquery.min.js"></script>
   <script src="static/js/chart.min.js"></script>
   <script src="static/js/bs-charts.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
   <script src="static/js/theme.js"></script>
 </head>
 
-<<<<<<< HEAD
-<body id="page-top">
-    <div id="wrapper">
-        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
-            <div class="container-fluid d-flex flex-column p-0">
-                <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
-                    <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-bar-chart"></i></div>
-                    <div class="sidebar-brand-text mx-3"><span>Surveyinator</span></div>
-                </a>
-                <hr class="sidebar-divider my-0">
-            </div>
-        </nav>
-        <div class="d-flex flex-column" id="content-wrapper">
-            <div id="content">
-                <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
-                    <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
-                        <form class="form-inline d-none d-sm-inline-block mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                            <div class="input-group"><input class="bg-light form-control border-0 small" type="text" placeholder="Search for ...">
-                                <div class="input-group-append"><button class="btn btn-primary py-0" type="button"><i class="fas fa-search"></i></button></div>
-                            </div>
-                        </form>
-                        <ul class="nav navbar-nav flex-nowrap ml-auto">
-                            <li class="nav-item dropdown d-sm-none no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#"><i class="fas fa-search"></i></a>
-                                <div class="dropdown-menu dropdown-menu-right p-3 animated--grow-in" role="menu" aria-labelledby="searchDropdown">
-                                    <form class="form-inline mr-auto navbar-search w-100">
-                                        <div class="input-group"><input class="bg-light form-control border-0 small" type="text" placeholder="Search for ...">
-                                            <div class="input-group-append"><button class="btn btn-primary py-0" type="button"><i class="fas fa-search"></i></button></div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-                <div class="container-fluid">
-                    <div class="d-sm-flex justify-content-between align-items-center mb-4">
-                        <h3 class="text-dark mb-0">Results</h3><a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="download/{{path}}"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Generate Report</a>
-                    </div>
-=======
 {% if type == "analyse": %}
->>>>>>> 086f561e8d068ae1100a119e6d03bad30686b6b8
-
 <body id="page-top">
   <div id="wrapper">
-    <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
-      <div class="container-fluid d-flex flex-column p-0">
-        <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
-          <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-bar-chart"></i></div>
-          <div class="sidebar-brand-text mx-3"><span>Surveyinator</span></div>
-        </a>
-        <hr class="sidebar-divider my-0">
-        <ul class="nav navbar-nav text-light" id="accordionSidebar">
-          <li class="nav-item" role="presentation"><a class="nav-link active" href="index.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
-        </ul>
-        <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
-      </div>
-    </nav>
     <div class="d-flex flex-column" id="content-wrapper">
       <div id="content">
         <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
           <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
+            <div class="card text-white bg-primary shadow">
+              <div class="card-body">
+                <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+                  <div class="sidebar-brand-icon rotate-n-15" style="color: rgba(255,255,255,0.9);"><i class="fas fa-bar-chart"></i></div>
+                  <div class="sidebar-brand-text mx-3"><span style="color: rgba(255,255,255,0.9);">Surveyinator</span></div>
+                </a>
+              </div>
+              </div>
             <form class="form-inline d-none d-sm-inline-block mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
               <div class="input-group"><input class="bg-light form-control border-0 small" type="text" placeholder="Search for ...">
                 <div class="input-group-append"><button class="btn btn-primary py-0" type="button"><i class="fas fa-search"></i></button></div>
@@ -98,10 +55,7 @@
                     <div class="input-group"><input class="bg-light form-control border-0 small" type="text" placeholder="Search for ...">
                       <div class="input-group-append"><button class="btn btn-primary py-0" type="button"><i class="fas fa-search"></i></button></div>
                     </div>
-<<<<<<< HEAD
                     <br>
-                    {% endfor %}
-=======
                   </form>
                 </div>
               </li>
@@ -110,25 +64,23 @@
         </nav>
         <div class="container-fluid">
           <div class="d-sm-flex justify-content-between align-items-center mb-4">
-            <h3 class="text-dark mb-0">Dashboard</h3><a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="#"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Generate Report</a>
+            <h3 class="text-dark mb-0">Analysis Report</h3><a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="#"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Generate Report</a>
           </div>
           {% for group in graphs %}
           <div class="row">
             {% for graph in group %}
-            <div class="col-md-6 col-xl-6">
-              <div class="card shadow border-left-primary py-2">
-                <div class="card-body">
-                  <div class="row align-items-center no-gutters">
-                    <div class="col mr-2">
-                      {{ graph }}
-                    </div>
-                  </div>
+            <div class="col-lg-4 col-xl-4">
+            <div class="card shadow mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="text-primary font-weight-bold m-0">{{ graph[0] }}</h6>
                 </div>
-              </div>
+                <div class="card-body">
+                    {{ graph[1] }}
+                </div>
             </div>
+        </div>
             {% endfor %}
           </div>
-          <br>
           {% endfor %}
           {% for group in clouds %}
           <div class="row">
@@ -142,7 +94,6 @@
                       <img src="{{cloud[1]}}" width="100%">
                     </div>
                   </div>
->>>>>>> 086f561e8d068ae1100a119e6d03bad30686b6b8
                 </div>
               </div>
             </div>
@@ -156,11 +107,14 @@
     </div>
   </div>
   </div>
-  {% elif type == "upload": %}
-
+{% elif type == "upload": %}
   <body class="bg-gradient-primary">
     <div id="loading" style="display:none;">
-      Loading
+      <div class="spinner">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+      </div>
     </div>
     <div id="content" class="container">
       <div class="row justify-content-center">
@@ -187,7 +141,7 @@
         </div>
       </div>
     </div>
-    {% endif %}
+{% endif %}
     <footer class="bg-white sticky-footer" style="{% if type == "upload": %}position: absolute;{% endif %}bottom:0px; width:100%;">
       <div class="container my-auto">
         <div class="text-center my-auto copyright"><span>Made with ♥ by Loh Yu Chen & Chi Junxiang 2019</span></div>
