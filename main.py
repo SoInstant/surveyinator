@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for ,send_file
 from werkzeug import secure_filename
 import os
 import analyse
@@ -21,8 +21,8 @@ def analysis_page():
     # Checking for files
     if not request.files["file"]:
         return render_template("upload.html", error="Missing excel file!")
-    if not request.files["config"]:  # Remove when config setup website done
-        return render_template("upload.html", error="Missing config file!")
+    elif request.files["file"] and not request.files["config"]:
+        return render_template("config.html")
 
     # Saving files
     excel = request.files["file"]
@@ -38,7 +38,7 @@ def analysis_page():
 
     # Work on file
     results = analyse.analyse(directory, excel_filename, config_filename)
-
+    app.config["ANALYSIS"] = results
     graphs = []
     clouds = []
     for question, analysis in results.items():
@@ -57,7 +57,15 @@ def analysis_page():
     clouds = tuple(utils.chunk(clouds, 2))
 
     return render_template(
-        "index.html", graphs=graphs, clouds=clouds, filename=excel_filename
+        "index.html", graphs=graphs, clouds=clouds, filename=excel_filename, path=os.path.split(directory)[1]
     )
+
+@app.route("/download/<path>")
+def download(path):
+    download_path = analyse.generate_report(os.path.join("./static/uploads/",path),app.config["ANALYSIS"])
+    return send_file(download_path,
+                     mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                     attachment_filename='report.docx',
+                     as_attachment=True)
 
 app.run(port=80)
