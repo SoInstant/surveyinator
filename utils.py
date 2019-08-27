@@ -178,3 +178,6 @@ def chunk(input, size):
     """
     for i in range(0, len(input), size):
         yield input[i : i + size]
+
+if __name__ == "__main__":
+    print()

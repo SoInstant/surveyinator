@@ -12,17 +12,32 @@ app.config["UPLOAD_FOLDER"] = "./static/uploads/"
 def main():  # Homepage
     return render_template("index.html", type="upload", error="")
 
+@app.route("/config", methods=["GET", "POST"])
+def config_page():
+    return
+
 @app.route("/results", methods=["GET", "POST"])
 def analysis_page():
     # Methods
     if not request.method == "POST":
         return redirect(url_for("main"))
-
     # Checking for files
-    if not request.files["file"]:
-        return render_template("index.html", type="upload", error="Missing excel file!")
-    elif request.files["file"] and not request.files["config"]:
-        return render_template("index.html", type="config")
+    if not "file" in request.files:
+        return render_template("index.html", type="upload", error="Missing Excel file!")
+
+    elif request.files["file"] and not "config" in request.files:
+        excel = request.files["file"]
+        excel_filename = secure_filename(excel.filename)
+        directory = os.path.join(app.config["UPLOAD_FOLDER"], utils.secure(16))
+        if not os.path.exists(directory):
+            os.mkdir(directory)
+        excel.save(os.path.join(directory, excel_filename))
+
+        questions = list(utils.parse_excel(os.path.join(directory, excel_filename)).keys())
+        questions_index = []
+        for index, question in enumerate(questions):
+            questions_index.append([index+1, question])
+        return render_template("index.html", type="config", questions=questions_index, error="")
 
     # Saving files
     excel = request.files["file"]
