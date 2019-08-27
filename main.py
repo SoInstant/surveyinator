@@ -20,9 +20,9 @@ def analysis_page():
 
     # Checking for files
     if not request.files["file"]:
-        return render_template("upload.html", error="Missing excel file!")
+        return render_template("index.html", type="upload", error="Missing excel file!")
     elif request.files["file"] and not request.files["config"]:
-        return render_template("config.html")
+        return render_template("index.html", type="config")
 
     # Saving files
     excel = request.files["file"]
