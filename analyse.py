@@ -166,7 +166,3 @@ def generate_report(directory,analysis):
 if __name__ == "__main__":
     bruh = analyse("./static/uploads/responses.xlsx/", "responses.xlsx", "config_file.txt")
     print(bruh)
-    for key, value in bruh.items():
-        if value:
-            if value[0] == "openended":
-                print(value[1])
