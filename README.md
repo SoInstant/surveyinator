@@ -13,3 +13,4 @@ For more information on installation, refer to these websites:
 + [openpyxl](https://openpyxl.readthedocs.io/en/stable/#installation)
 + [Plotly](https://plot.ly/python/getting-started/#installation)
 + [matplotlib](https://matplotlib.org/users/installing.html)
++ [python-docx](https://python-docx.readthedocs.io/en/latest/user/install.html)
