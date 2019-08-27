@@ -166,6 +166,16 @@ def split_lines(text, length=50):
 
 
 def chunk(input, size):
-    """Yields"""
+    """Splits iterable into chunks
+
+    Splits iterable into multiple chunks
+
+    Args:
+        input(iterable): Iterable to be split
+        size(int): Size of each chunk
+
+    Yields:
+        One chunk
+    """
     for i in range(0, len(input), size):
         yield input[i : i + size]
