@@ -10,13 +10,7 @@ app.config["UPLOAD_FOLDER"] = "./static/uploads/"
 
 @app.route("/", methods=["GET", "POST"])
 def main():  # Homepage
-    return render_template("upload.html", error=None)
-
-@app.route("/config",methods=["GET"])
-def config():
-    if request.method == "GET":
-        pass
-
+    return render_template("index.html", type="upload", error="")
 
 @app.route("/results", methods=["GET", "POST"])
 def analysis_page():
@@ -66,7 +60,6 @@ def analysis_page():
         "index.html", graphs=graphs, clouds=clouds, filename=excel_filename, path=os.path.split(directory)[1]
     )
 
-
 @app.route("/download/<path>")
 def download(path):
     download_path = analyse.generate_report(os.path.join("./static/uploads/",path),app.config["ANALYSIS"])
@@ -74,6 +67,5 @@ def download(path):
                      mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document',
                      attachment_filename='report.docx',
                      as_attachment=True)
-
 
 app.run(port=80)
