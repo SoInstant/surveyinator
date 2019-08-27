@@ -147,12 +147,22 @@ def analyse(directory, excel_file, config_file):
 
 
 def generate_report(directory,analysis):
+    """Generates a report based on analysis
+
+    Generates a .docx report based on the analysis from analysis().
+
+    Args:
+        directory(str): path to the folder containing the original excel
+            file and config file.
+            For example: "./static/uploads/4SikvVjjqlWV44AW/"
+        analysis(dict): analysis of the original excel file and config file
+            from analysis()
+
+    Returns:
+        A string that is the path to the report file
+    """
     for qn ,j in analysis:
         pass
 if __name__ == "__main__":
     bruh = analyse("./static/uploads/responses.xlsx/", "responses.xlsx", "config_file.txt")
     print(bruh)
-    for key, value in bruh.items():
-        if value:
-            if value[0] == "openended":
-                print(value[1])
