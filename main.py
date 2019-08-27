@@ -57,7 +57,12 @@ def analysis_page():
     clouds = tuple(utils.chunk(clouds, 2))
 
     return render_template(
-        "index.html", graphs=graphs, clouds=clouds, filename=excel_filename, path=os.path.split(directory)[1]
+        "index.html",
+        type="analyse",
+        graphs=graphs,
+        clouds=clouds,
+        filename=excel_filename,
+        path=os.path.split(directory)[1]
     )
 
 @app.route("/download/<path>")
