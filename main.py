@@ -6,11 +6,12 @@ import utils
 
 app = Flask("app")
 app.config["UPLOAD_FOLDER"] = "./static/uploads/"
-
+if not os.path.exists(app.config["UPLOAD_FOLDER"]):
+    os.mkdir(app.config["UPLOAD_FOLDER"])
 
 @app.route("/", methods=["GET", "POST"])
 def main():  # Homepage
-    return render_template("index.html", type="upload", error="")
+    return render_template("index.html", type="upload", error=None)
 
 @app.route("/config", methods=["GET", "POST"])
 def config_page():
@@ -22,10 +23,10 @@ def analysis_page():
     if not request.method == "POST":
         return redirect(url_for("main"))
     # Checking for files
-    if not "file" in request.files:
+    if not request.files["file"]:
         return render_template("index.html", type="upload", error="Missing Excel file!")
 
-    elif request.files["file"] and not "config" in request.files:
+    elif request.files["file"] and not "config" in request.files: # Build config
         excel = request.files["file"]
         excel_filename = secure_filename(excel.filename)
         directory = os.path.join(app.config["UPLOAD_FOLDER"], utils.secure(16))
@@ -37,7 +38,7 @@ def analysis_page():
         questions_index = []
         for index, question in enumerate(questions):
             questions_index.append([index+1, question])
-        return render_template("index.html", type="config", questions=questions_index, error="")
+        return render_template("index.html", type="config", questions=questions_index, error=None)
 
     # Saving files
     excel = request.files["file"]
@@ -82,10 +83,11 @@ def analysis_page():
 
 @app.route("/download/<path>")
 def download(path):
-    download_path = analyse.generate_report(os.path.join("./static/uploads/",path),app.config["ANALYSIS"])
-    return send_file(download_path,
-                     mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                     attachment_filename='report.docx',
-                     as_attachment=True)
+    return "Guess it works LOL"
+    # download_path = analyse.generate_report(os.path.join("./static/uploads/",path),app.config["ANALYSIS"])
+    # return send_file(download_path,
+    #                  mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    #                  attachment_filename='report.docx',
+    #                  as_attachment=True)
 
 app.run(port=80)
