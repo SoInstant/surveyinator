@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for ,send_file
+from flask import Flask, render_template, request, redirect, url_for, send_file
 from werkzeug import secure_filename
 import os
 import analyse
@@ -9,16 +9,20 @@ app.config["UPLOAD_FOLDER"] = "./static/uploads/"
 if not os.path.exists(app.config["UPLOAD_FOLDER"]):
     os.mkdir(app.config["UPLOAD_FOLDER"])
 
+
 @app.route("/", methods=["GET", "POST"])
 def main():  # Homepage
     return render_template("index.html", type="upload", error=None)
+
 
 @app.route("/config", methods=["GET", "POST"])
 def config_page():
     if not request.method == "POST":
         return redirect(url_for("main"))
+    else:
+        print(request.form)
+        return render_template("index.html", type="upload", error=None)
 
-    print(request.form)
 
 @app.route("/results", methods=["GET", "POST"])
 def analysis_page():
@@ -29,7 +33,7 @@ def analysis_page():
     if not request.files["file"]:
         return render_template("index.html", type="upload", error="Missing Excel file!")
 
-    elif request.files["file"] and not request.files["config"]: # Build config
+    elif request.files["file"] and not request.files["config"]:  # Build config
         excel = request.files["file"]
         excel_filename = secure_filename(excel.filename)
         directory = os.path.join(app.config["UPLOAD_FOLDER"], utils.secure(16))
@@ -37,12 +41,16 @@ def analysis_page():
             os.mkdir(directory)
         excel.save(os.path.join(directory, excel_filename))
 
-        questions = list(utils.parse_excel(os.path.join(directory, excel_filename)).keys())
+        questions = list(
+            utils.parse_excel(os.path.join(directory, excel_filename)).keys()
+        )
         questions_index = []
         prediction = utils.Predictor().predict(questions)
         for index, question in enumerate(questions):
-            questions_index.append([index+1, question, prediction[index]])
-        return render_template("index.html", type="config", questions=questions_index, error=None)
+            questions_index.append([index + 1, question, prediction[index]])
+        return render_template(
+            "index.html", type="config", questions=questions_index, error=None
+        )
     else:
         # Saving files
         excel = request.files["file"]
@@ -64,12 +72,15 @@ def analysis_page():
         for question, analysis in results.items():
             if analysis:
                 if analysis[0] == "categorical":
-                    graphs.append([question,
-                        utils.pie(
+                    graphs.append(
+                        [
                             question,
-                            [x for x, y in analysis[1]["Percentages"].items()],
-                            [y for x, y in analysis[1]["Percentages"].items()],
-                        )]
+                            utils.pie(
+                                question,
+                                [x for x, y in analysis[1]["Percentages"].items()],
+                                [y for x, y in analysis[1]["Percentages"].items()],
+                            ),
+                        ]
                     )
                 elif analysis[0] == "openended":
                     clouds.append([question, analysis[1]])
@@ -82,15 +93,21 @@ def analysis_page():
             graphs=graphs,
             clouds=clouds,
             filename=excel_filename,
-            path=os.path.split(directory)[1]
+            path=os.path.split(directory)[1],
         )
+
 
 @app.route("/download/<path>")
 def download(path):
-    download_path = analyse.generate_report(os.path.join("./static/uploads/",path),app.config["ANALYSIS"])
-    return send_file(download_path,
-                     mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                     attachment_filename='report.docx',
-                     as_attachment=True)
+    download_path = analyse.generate_report(
+        os.path.join("./static/uploads/", path), app.config["ANALYSIS"]
+    )
+    return send_file(
+        download_path,
+        mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        attachment_filename="report.docx",
+        as_attachment=True,
+    )
+
 
 app.run(port=80)
