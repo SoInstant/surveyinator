@@ -15,7 +15,10 @@ def main():  # Homepage
 
 @app.route("/config", methods=["GET", "POST"])
 def config_page():
-    return
+    if not request.method == "POST":
+        return redirect(url_for("main"))
+
+    print(request.form)
 
 @app.route("/results", methods=["GET", "POST"])
 def analysis_page():

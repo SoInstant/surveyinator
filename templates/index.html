@@ -175,12 +175,13 @@
                       </tr>
                     </thead>
                     <tbody>
+                      <form name="form" action="/config" method="post">
                       {% for question in questions: %}
                       <tr>
                         <td>{{question[1]}}</td>
                         <td>
                           <div class="form-group">
-                            <select name="{{question[0]}}" form="form" class="form-control">
+                            <select id="{{question[0]}}" form="form" class="form-control">
                               <option value="ignore"{% if question[2] == "ignore": %}selected{% endif %}>Ignore</option>
                               <option value="numerical"{% if question[2] == "numerical": %}selected{% endif %}>Numerical</option>
                               <option value="openended"{% if question[2] == "openended": %}selected{% endif %}>Open-ended</option>
@@ -192,10 +193,11 @@
                       {% endfor %}
                     </tbody>
                   </table>
-                </div>
-                <form name="form" action="/config" method="post">
                   <input class="btn btn-primary" type="submit"/>
                 </form>
+                </div>
+
+
               </div>
             </div>
           </div>
