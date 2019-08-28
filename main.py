@@ -36,8 +36,9 @@ def analysis_page():
 
         questions = list(utils.parse_excel(os.path.join(directory, excel_filename)).keys())
         questions_index = []
+        prediction = utils.Predictor().predict(questions)
         for index, question in enumerate(questions):
-            questions_index.append([index+1, question])
+            questions_index.append([index+1, question, prediction[index]])
         return render_template("index.html", type="config", questions=questions_index, error=None)
 
     # Saving files
