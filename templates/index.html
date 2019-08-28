@@ -28,7 +28,6 @@
 </head>
 
 {% if type == "analyse": %}
-
 <body id="page-top">
   <div id="wrapper">
     <div class="d-flex flex-column" id="content-wrapper">
@@ -106,9 +105,9 @@
   </div>
   </div>
   </div>
-  {% elif type == "upload": %}
 
-  <body class="bg-gradient-primary">
+{% elif type == "upload": %}
+<body class="bg-gradient-primary">
     <div id="loading" style="display:none;">
       <div class="spinner">
         <div class="bounce1"></div>
@@ -141,76 +140,77 @@
         </div>
       </div>
     </div>
-    {% elif type == "config" %}
 
-    <body id="page-top">
-      <div id="wrapper">
-        <div class="d-flex flex-column" id="content-wrapper">
-          <div id="content">
-            <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
-              <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
-                <div class="card text-white bg-primary shadow">
-                  <div class="card-body">
-                    <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
-                      <div class="sidebar-brand-icon rotate-n-15" style="color: rgba(255,255,255,0.9);"><i class="fas fa-bar-chart"></i></div>
-                      <div class="sidebar-brand-text mx-3"><span style="color: rgba(255,255,255,0.9);">Surveyinator</span></div>
-                    </a>
-                  </div>
-                </div>
+{% elif type == "config" %}
+<body id="page-top">
+  <div id="wrapper">
+    <div class="d-flex flex-column" id="content-wrapper">
+      <div id="content">
+        <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
+          <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
+            <div class="card text-white bg-primary shadow">
+              <div class="card-body">
+                <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+                  <div class="sidebar-brand-icon rotate-n-15" style="color: rgba(255,255,255,0.9);"><i class="fas fa-bar-chart"></i></div>
+                  <div class="sidebar-brand-text mx-3"><span style="color: rgba(255,255,255,0.9);">Surveyinator</span></div>
+                </a>
               </div>
-            </nav>
-            <div class="container-fluid">
-              <div class="container-fluid">
-                <h3 class="text-dark mb-4">Config</h3>
-                <div class="card shadow">
-                  <div class="card-header py-3">
-                    <p class="text-primary m-0 font-weight-bold">Question type</p>
-                  </div>
-                  <div class="card-body">
-                    <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
-                      <table class="table dataTable my-0" id="dataTable">
-                        <thead>
-                          <tr>
-                            <th>Question</th>
-                            <th>Type</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {% for question in questions: %}
-                          <tr>
-                            <td>{{question[1]}}</td>
-                            <td>
-                              <div class="form-group">
-                                <select name="{{question[0]}}" form="form" class="form-control">
-                                  <option value="ignore">Ignore</option>
-                                  <option value="numerical">Numerical</option>
-                                  <option value="openended">Open-ended</option>
-                                  <option value="categorical">Categorical</option>
-                                </select>
-                              </div>
-                            </td>
-                          </tr>
-                          {% endfor %}
-                        </tbody>
-                      </table>
-                    </div>
-                    <form name="form" action="/config" method="post">
-                      <input class="btn btn-primary" type="submit"/>
-                    </form>
-                  </div>
+            </div>
+          </div>
+        </nav>
+        <div class="container-fluid">
+          <div class="container-fluid">
+            <h3 class="text-dark mb-4">Config</h3>
+            <div class="card shadow">
+              <div class="card-header py-3">
+                <p class="text-primary m-0 font-weight-bold">Question type</p>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+                  <table class="table dataTable my-0" id="dataTable">
+                    <thead>
+                      <tr>
+                        <th>Question</th>
+                        <th>Type</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for question in questions: %}
+                      <tr>
+                        <td>{{question[1]}}</td>
+                        <td>
+                          <div class="form-group">
+                            <select name="{{question[0]}}" form="form" class="form-control">
+                              <option value="ignore">Ignore</option>
+                              <option value="numerical">Numerical</option>
+                              <option value="openended">Open-ended</option>
+                              <option value="categorical">Categorical</option>
+                            </select>
+                          </div>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
                 </div>
+                <form name="form" action="/config" method="post">
+                  <input class="btn btn-primary" type="submit"/>
+                </form>
               </div>
             </div>
           </div>
         </div>
       </div>
-        {% endif %}
-        <footer class="bg-white sticky-footer" style="{% if type == "upload": %}position: absolute;{% endif %}bottom:0px; width:100%;">
-          <div class="container my-auto">
-            <div class="text-center my-auto copyright"><span>Made with ♥ by Loh Yu Chen & Chi Junxiang 2019</span></div>
-          </div>
-        </footer>
-      </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a></div>
-    </body>
+    </div>
+  </div>
+
+{% endif %}
+    <footer class="bg-white sticky-footer" style="{% if type == "upload": %}position: absolute;{% endif %}bottom:0px; width:100%;">
+      <div class="container my-auto">
+        <div class="text-center my-auto copyright"><span>Made with ♥ by Loh Yu Chen & Chi Junxiang 2019</span></div>
+      </div>
+    </footer>
+  </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a></div>
+</body>
 
 </html>
