@@ -76,9 +76,7 @@ def parse_config(config_file):
         ValueError: Data-type not supported
     """
     with open(config_file, mode="r", encoding="utf-8") as f:
-        qn_categories = [line.split(" ") for line in f.read().split("\n")]
-        if qn_categories[-1] == "":
-            qn_categories = qn_categories[:-1]
+        qn_categories = [line.split(" ") for line in f.read().split("\n") if line != ""]
         qn_categories = [line[1].lower() for line in qn_categories]
 
     # Idiot-proofing
@@ -180,6 +178,3 @@ def chunk(input, size):
     """
     for i in range(0, len(input), size):
         yield input[i : i + size]
-
-if __name__ == "__main__":
-    print()
