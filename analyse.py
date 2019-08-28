@@ -8,6 +8,7 @@ from scipy.stats import mode
 from utils import parse_config, parse_excel, secure
 from textblob import TextBlob
 from wordcloud import WordCloud
+from docx import Document
 import os
 
 
@@ -25,7 +26,6 @@ def categorise(responses, datatypes):
         {"Do you like python?": ("categorical", ("yes", "no", "yes"))}
     """
     output = {}
-    print([i for i,j in responses.items()])
     for i, items in enumerate(responses.items()):
         output[items[0]] = tuple([datatypes[i], items[1]])
     return output
@@ -42,7 +42,7 @@ def numerical(responses):
         A dict of the Mean, Median and Mode of the data.
         If there are multiple modes, the smallest mode is given.
         For example:
-        {'Mean': 8.0, 'Median': 3.0, 'Mode': [1]}
+        {"Mean": 8.0, "Median": 3.0, "Mode": [1]}
     """
     central_tendencies = {
         "Mean": mean(responses),
@@ -60,10 +60,9 @@ def categorical(responses):
             For example: ["Yes","No","Yes"] or ("Yes","No","Yes")
 
     Returns:
-        A dictionary containing the sorted percentages of each response
-        and the mode(s). For example:
-        {'Percentages': {'Yes': 0.6666666666666666, 'No': 0.3333333333333333},
-         'Modes': ('Yes')}
+        A dictionary containing the sorted percentages of each response.
+        For example:
+        {"Percentages": {"Yes": 0.6666666666666666, "No": 0.3333333333333333}}
     """
     categories = {}
     # Count responses per category
@@ -73,18 +72,13 @@ def categorical(responses):
         else:
             categories[i] += 1
 
-    # Find mode and percentage
-    max_freq = max(categories.values())
-    modes = []
     for category, freq in categories.items():
-        if freq == max_freq:
-            modes.append(category)
         categories[category] = freq / len(responses)
     sorting = sorted(categories.items(), key=lambda x: x[1])
     output = {}
     for category, freq in sorting:
         output[category] = freq
-    return {"Percentages": output, "Modes": tuple(modes)}
+    return {"Percentages": output}
 
 
 def openended(responses, directory):
@@ -134,7 +128,7 @@ def analyse(directory, excel_file, config_file):
         category = responses[0]
         list_of_responses = responses[1]
         if category == "numerical":
-            analysed = ("numerical", numerical(list(map(int,list_of_responses))))
+            analysed = ("numerical", numerical(list(map(int, list_of_responses))))
         elif category == "categorical":
             analysed = ("categorical", categorical(list_of_responses))
         elif category == "openended":
@@ -143,7 +137,7 @@ def analyse(directory, excel_file, config_file):
     return analysis
 
 
-def generate_report(directory,analysis):
+def generate_report(directory, analysis):
     """Generates a report based on analysis
 
     Generates a .docx report based on the analysis from analysis().
@@ -158,8 +152,49 @@ def generate_report(directory,analysis):
     Returns:
         A string that is the path to the report file
     """
-    for qn ,j in analysis:
-        pass
+    document = Document()
+
+    # Metadata
+    core_properties = document.core_properties
+    core_properties.author = "Surveyinator"
+    core_properties.category = "Report"
+    core_properties.language = "English"
+
+    document.add_heading("Report of responses.xlsx", 0)
+    for qn, j in analysis.items():
+        if j == None:
+            continue
+        elif j[0] == "numerical":
+            document.add_heading(qn, level=1)
+            # Content
+            document.add_paragraph(f"Mean: {j[1]['Mean']}", style="List Bullet")
+            document.add_paragraph(f"Median: {j[1]['Median']}", style="List Bullet")
+            document.add_paragraph(f"Mode: {j[1]['Mode']}", style="List Bullet")
+        elif j[0] == "categorical":
+            document.add_heading(qn, level=1)
+            #Content
+            records = j[1]["Percentages"]
+            table = document.add_table(rows=1, cols=2)
+            hdr_cells = table.rows[0].cells
+            hdr_cells[0].text, hdr_cells[1].text = (
+                "Answer",
+                "Percentage (smallest to largest)",
+            )
+            for row in records.items():
+                row_cells = table.add_row().cells
+                row_cells[0].text, row_cells[1].text = list(map(str, row))
+                row_cells[1].text = f"{float(row_cells[1].text) * 100}%"
+        elif j[0] == "openended":
+            document.add_heading(qn, level=1)
+            # Content
+            document.add_picture(os.path.join(j[1]))
+
+    path = os.path.join(directory, f"{secure(8)}.docx")
+    document.save(path)
+
+    return path
+
+
 if __name__ == "__main__":
-    bruh = analyse(r"C:\Users\chi_j\Desktop", "responses.xlsx", "config_file.txt")
-    print(bruh)
+    bruh = analyse(r"C:\Users\chi_j\Desktop\Scam", "responses.xlsx", "config_file.txt")
+    print(generate_report(r"C:\Users\chi_j\Desktop\Scam", bruh))
