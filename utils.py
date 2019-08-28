@@ -177,7 +177,12 @@ def chunk(input, size):
         One chunk
     """
     for i in range(0, len(input), size):
-        yield input[i : i + size]
+        yield input[i : (i + size)]
+
 
 if __name__ == "__main__":
-    print(Predictor().predict(parse_excel("static/uploads/responses.xlsx/responses.xlsx").keys()))
+    print(
+        Predictor().predict(
+            parse_excel("static/uploads/responses.xlsx/responses.xlsx").keys()
+        )
+    )
