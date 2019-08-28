@@ -44,7 +44,7 @@ def parse_excel(excel_file):
     ws = wb.active
     cell_values = []
     for col in ws.columns:
-        col_values = [cell.value for cell in col]
+        col_values = [str(cell.value) for cell in col]
         cell_values.append(col_values)
     qn_response = {}
     for col in cell_values:
@@ -76,7 +76,9 @@ def parse_config(config_file):
         ValueError: Data-type not supported
     """
     with open(config_file, mode="r", encoding="utf-8") as f:
-        qn_categories = [line.split(" ") for line in f.read().split("\n")][:-1]
+        qn_categories = [line.split(" ") for line in f.read().split("\n")]
+        if qn_categories[-1] == "":
+            qn_categories = qn_categories[:-1]
         qn_categories = [line[1].lower() for line in qn_categories]
 
     # Idiot-proofing

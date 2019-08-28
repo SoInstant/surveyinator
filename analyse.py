@@ -23,12 +23,9 @@ def categorise(responses, datatypes):
         A dictionary which maps a tuple of the datatype of the response
         and the responses to their question. For example:
         {"Do you like python?": ("categorical", ("yes", "no", "yes"))}
-
-    Raises:
-        IndexError: "Config file does not have same number of questions
-            as excel file"
     """
     output = {}
+    print([i for i,j in responses.items()])
     for i, items in enumerate(responses.items()):
         output[items[0]] = tuple([datatypes[i], items[1]])
     return output
@@ -137,7 +134,7 @@ def analyse(directory, excel_file, config_file):
         category = responses[0]
         list_of_responses = responses[1]
         if category == "numerical":
-            analysed = ("numerical", numerical(list_of_responses))
+            analysed = ("numerical", numerical(list(map(int,list_of_responses))))
         elif category == "categorical":
             analysed = ("categorical", categorical(list_of_responses))
         elif category == "openended":
@@ -164,5 +161,5 @@ def generate_report(directory,analysis):
     for qn ,j in analysis:
         pass
 if __name__ == "__main__":
-    bruh = analyse("./static/uploads/responses.xlsx/", "responses.xlsx", "config_file.txt")
+    bruh = analyse(r"C:\Users\chi_j\Desktop", "responses.xlsx", "config_file.txt")
     print(bruh)
