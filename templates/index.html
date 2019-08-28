@@ -64,7 +64,8 @@
         </nav>
         <div class="container-fluid">
           <div class="d-sm-flex justify-content-between align-items-center mb-4">
-            <h3 class="text-dark mb-0">Analysis Report</h3><a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="#"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Generate Report</a>
+            <h3 class="text-dark mb-0">Analysis Report</h3>
+            <a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="/download/{{path}}"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Generate Report</a>
           </div>
           {% for group in graphs %}
           <div class="row">
@@ -130,9 +131,9 @@
                   <input type="submit" value='upload' onclick="$('#loading').show();$('#content').hide();">
                 </form>
               </div>
-              {% if error != "": %}
+              {% if error %}
               <div class="text-center">
-                <h5 class="text-dark mb-4">{{ error }}</h5>
+                <div class="alert alert-danger">{{ error }}</div>
               </div>
               {% endif %}
             </div>
