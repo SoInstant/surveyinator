@@ -180,4 +180,4 @@ def chunk(input, size):
         yield input[i : i + size]
 
 if __name__ == "__main__":
-    print()
+    print(Predictor().predict(parse_excel("static/uploads/responses.xlsx/responses.xlsx").keys()))
