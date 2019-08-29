@@ -44,8 +44,7 @@ def parse_excel(excel_file):
     ws = wb.active
     cell_values = []
     for col in ws.columns:
-        col_values = [str(cell.value) for cell in col]
-        cell_values.append(col_values)
+        cell_values.append([str(cell.value) for cell in col])
     qn_response = {}
     for col in cell_values:
         qn_response[col[0]] = tuple(col[1:])
@@ -80,10 +79,9 @@ def parse_config(config_file):
         qn_categories = [line[1].lower() for line in qn_categories]
 
     # Idiot-proofing
-    allowed = ("ignore", "numerical", "categorical", "openended")
     for i, category in enumerate(qn_categories):
-        if category not in allowed:
-            raise ValueError(f"Qn{i}: Data-type not supported")
+        if category not in ("ignore", "numerical", "categorical", "openended"):
+            raise ValueError(f"Qn{i+1}: Data-type not supported")
     return tuple(qn_categories)
 
 
@@ -110,7 +108,7 @@ def pie(title, labels, values, hole=0.4):
     Parses data passed in and creates a pie chart.
 
     Args:
-        title(str): The title of the pie chart
+        title(str): Title of the pie chart
         labels(list): Labels of each slice in the pie chart
         values(list): Value of each slice
         hole(float): Size of the hole in the pie chart
