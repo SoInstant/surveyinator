@@ -6,7 +6,6 @@ data analysis methods.
 from numpy import mean, median
 from scipy.stats import mode
 from utils import parse_config, parse_excel, secure
-from textblob import TextBlob
 from wordcloud import WordCloud
 from docx import Document
 import os
@@ -162,7 +161,7 @@ def generate_report(directory, analysis):
 
     document.add_heading("Report of responses.xlsx", 0)
     for qn, j in analysis.items():
-        if j == None:
+        if j is None:
             continue
         elif j[0] == "numerical":
             document.add_heading(qn, level=1)
@@ -172,7 +171,7 @@ def generate_report(directory, analysis):
             document.add_paragraph(f"Mode: {j[1]['Mode']}", style="List Bullet")
         elif j[0] == "categorical":
             document.add_heading(qn, level=1)
-            #Content
+            # Content
             records = j[1]["Percentages"]
             table = document.add_table(rows=1, cols=2)
             hdr_cells = table.rows[0].cells
