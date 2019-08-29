@@ -39,15 +39,12 @@ def parse_excel(excel_file):
         For example:
         {"Do you like Python?": ("Yes","No","Yes")}
     """
-
     wb = load_workbook(excel_file)
     ws = wb.active
     cell_values = []
     for col in ws.columns:
-        cell_values.append([str(cell.value) for cell in col])
-    qn_response = {}
-    for col in cell_values:
-        qn_response[col[0]] = tuple(col[1:])
+        cell_values.append([str(cell.value) for cell in col if cell.value is not None])
+    qn_response = dict([[col[0],col[1:]] for col in cell_values])
     return qn_response
 
 
@@ -75,10 +72,9 @@ def parse_config(config_file):
         ValueError: Data-type not supported
     """
     with open(config_file, mode="r", encoding="utf-8") as f:
-        qn_categories = [line.split(" ") for line in f.read().split("\n") if line != ""]
-        qn_categories = [line[1].lower() for line in qn_categories]
+        qn_categories = [line for line in f.read().split("\n") if line != ""]
+        qn_categories = [line.split(" ")[1].lower() for line in qn_categories]
 
-    # Idiot-proofing
     for i, category in enumerate(qn_categories):
         if category not in ("ignore", "numerical", "categorical", "openended"):
             raise ValueError(f"Qn{i+1}: Data-type not supported")
