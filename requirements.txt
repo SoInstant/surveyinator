@@ -7,4 +7,3 @@ openpyxl
 plotly
 matplotlib
 python-docx
-setuptools

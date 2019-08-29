@@ -14,4 +14,3 @@ For more information on installation, refer to these websites:
 + [Plotly](https://plot.ly/python/getting-started/#installation)
 + [matplotlib](https://matplotlib.org/users/installing.html)
 + [python-docx](https://python-docx.readthedocs.io/en/latest/user/install.html)
-+ [setuptools](https://setuptools.readthedocs.io/en/latest/setuptools.html#installing-setuptools)
