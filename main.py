@@ -3,6 +3,7 @@ from werkzeug import secure_filename
 import os
 import analyse
 import utils
+import zipfile
 
 app = Flask("app")
 app.config["UPLOAD_FOLDER"] = "./static/uploads/"
@@ -46,24 +47,29 @@ def analysis_page():
         )
         questions_index = []
         prediction = utils.Predictor().predict(questions)
-        for index, question in enumerate(questions):
-            questions_index.append([index + 1, question, prediction[index]])
+        for i, question in enumerate(questions):
+            questions_index.append([i + 1, question, prediction[i]])
         return render_template(
             "index.html", type="config", questions=questions_index, error=None
         )
     else:
         # Saving files
-        excel = request.files["file"]
-        excel_filename = secure_filename(excel.filename)
-        config = request.files["config"]
-        config_filename = secure_filename(config.filename)
+        excel, config = request.files["file"], request.files["config"]
+        excel_filename, config_filename = (
+            secure_filename(excel.filename),
+            secure_filename(config.filename),
+        )
         directory = os.path.join(app.config["UPLOAD_FOLDER"], utils.secure(16))
 
         if not os.path.exists(directory):
             os.mkdir(directory)
         excel.save(os.path.join(directory, excel_filename))
         config.save(os.path.join(directory, config_filename))
-
+        # TODO: Implement redirect to config_page with pre_filled in values
+        if len(
+            utils.parse_excel(os.path.join(directory, excel_filename)).keys()
+        ) != len(utils.parse_config(os.path.join(directory, config_filename))):
+            return "oh noes"
         # Work on file
         results = analyse.analyse(directory, excel_filename, config_filename)
         app.config["ANALYSIS"] = results
@@ -99,13 +105,23 @@ def analysis_page():
 
 @app.route("/download/<path>")
 def download(path):
-    download_path = analyse.generate_report(
+    doc = analyse.generate_report(
         os.path.join("./static/uploads/", path), app.config["ANALYSIS"]
     )
+    file_names = [
+        i[1] for i in app.config["ANALYSIS"].values() if i if i[0] == "openended"
+    ]
+    download_path = os.path.join("./static/uploads/", path, utils.secure(4))
+    with zipfile.ZipFile(
+        download_path, "w", zipfile.ZIP_DEFLATED
+    ) as zipf:
+        for i in file_names:
+            zipf.write(i,os.path.basename(i))
+        zipf.write(doc,os.path.basename(doc))
     return send_file(
         download_path,
-        mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        attachment_filename="report.docx",
+        mimetype="application/zip",
+        attachment_filename="report.zip",
         as_attachment=True,
     )
 
