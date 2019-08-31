@@ -1,4 +1,4 @@
-"""Analyses survey responses
+"""Analyses survey responses.
 
 This module analyses survey responses in an excel .xlsx file through various
 data analysis methods.
@@ -119,7 +119,7 @@ def analyse(directory, excel_file, config_file):
     """
     categorised_responses = categorise(
         parse_excel(os.path.join(directory, excel_file)),
-        parse_config(os.path.join(directory, config_file)),
+        [i[1] for i in parse_config(os.path.join(directory, config_file))],
     )
     analysis = {}
     analysed = None
