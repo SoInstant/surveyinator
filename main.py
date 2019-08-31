@@ -71,11 +71,9 @@ def analysis_page():
         ) != len(utils.parse_config(os.path.join(directory, config_filename))):
             return "oh noes"
         # Work on file
-        results = analyse.analyse(directory, excel_filename, config_filename)
-        app.config["ANALYSIS"] = results
-        graphs = []
-        clouds = []
-        for question, analysis in results.items():
+        app.config["ANALYSIS"] = analyse.analyse(directory, excel_filename, config_filename)
+        graphs, clouds = []
+        for question, analysis in app.config["ANALYSIS"].items():
             if analysis:
                 if analysis[0] == "categorical":
                     graphs.append(
@@ -111,13 +109,13 @@ def download(path):
     file_names = [
         i[1] for i in app.config["ANALYSIS"].values() if i if i[0] == "openended"
     ]
-    download_path = os.path.join("./static/uploads/", path, utils.secure(4))
-    with zipfile.ZipFile(
-        download_path, "w", zipfile.ZIP_DEFLATED
-    ) as zipf:
+    download_path = os.path.join("./static/uploads/", path, f"{utils.secure(4)}.zip")
+
+    with zipfile.ZipFile(download_path, "w", zipfile.ZIP_DEFLATED) as zipf:
         for i in file_names:
-            zipf.write(i,os.path.basename(i))
-        zipf.write(doc,os.path.basename(doc))
+            zipf.write(i, os.path.basename(i))
+        zipf.write(doc, os.path.basename(doc))
+
     return send_file(
         download_path,
         mimetype="application/zip",
