@@ -72,7 +72,8 @@ def parse_config(config_file):
         ValueError: Data-type not supported
     """
     with open(config_file, mode="r", encoding="utf-8") as f:
-        qn_categories = [line.lower() for line in f.read().split("\n") if line != ""]
+        lines = [line.lower() for line in f.read().split("\n") if line != ""]
+        print(lines)
         qn_categories = [line.split(" ") for line in qn_categories]
 
     for i, category in enumerate(qn_categories):
@@ -175,8 +176,4 @@ def chunk(input, size):
 
 
 if __name__ == "__main__":
-    print(
-        Predictor().predict(
-            parse_excel("static/uploads/responses.xlsx/responses.xlsx").keys()
-        )
-    )
+    print(parse_config(r"C:\\users\chi_j\Desktop\Scam\config_file2.txt"))
