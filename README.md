@@ -2,7 +2,7 @@
 Survey response analyser
 
 ### Packages required
-+ Refer to [requirements.txt](requirements.txt)
+Refer to [requirements.txt](requirements.txt)
 
 For more information on installation, refer to these websites:
 + [Numpy](https://www.numpy.org/#getting-started)
