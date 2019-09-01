@@ -38,6 +38,7 @@ def analysis_page():
         excel = request.files["file"]
         excel_filename = secure_filename(excel.filename)
         directory = os.path.join(app.config["UPLOAD_FOLDER"], utils.secure(16))
+
         if not os.path.exists(directory):
             os.mkdir(directory)
         excel.save(os.path.join(directory, excel_filename))
@@ -45,7 +46,6 @@ def analysis_page():
         questions = list(
             utils.parse_excel(os.path.join(directory, excel_filename)).keys()
         )
-
         prediction = utils.Predictor().predict(questions)
         questions_index = [
             [i + 1, question, prediction[i]] for i, question in enumerate(questions)
@@ -67,16 +67,18 @@ def analysis_page():
             os.mkdir(directory)
         excel.save(os.path.join(directory, excel_filename))
         config.save(os.path.join(directory, config_filename))
+
         # TODO: Implement redirect to config_page with pre_filled in values
         if len(
             utils.parse_excel(os.path.join(directory, excel_filename)).keys()
         ) != len(utils.parse_config(os.path.join(directory, config_filename))):
             return "oh noes"
+
         # Work on file
         app.config["ANALYSIS"] = analyse.analyse(
             directory, excel_filename, config_filename
         )
-        graphs, clouds = []
+        graphs, clouds = [],[]
         for question, analysis in app.config["ANALYSIS"].items():
             if analysis:
                 if analysis[0] == "categorical":
@@ -85,13 +87,15 @@ def analysis_page():
                             question,
                             utils.pie(
                                 question,
-                                [x for x, y in analysis[1]["Percentages"].items()],
-                                [y for x, y in analysis[1]["Percentages"].items()],
+                                [x for x in analysis[1]["Percentages"].keys()],
+                                [y for y in analysis[1]["Percentages"].values()],
                             ),
                         ]
                     )
                 elif analysis[0] == "openended":
                     clouds.append([question, analysis[1]])
+                else:
+                    pass
         graphs = tuple(utils.chunk(graphs, 3))
         clouds = tuple(utils.chunk(clouds, 2))
 
