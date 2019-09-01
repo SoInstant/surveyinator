@@ -45,10 +45,12 @@ def analysis_page():
         questions = list(
             utils.parse_excel(os.path.join(directory, excel_filename)).keys()
         )
-        questions_index = []
+
         prediction = utils.Predictor().predict(questions)
-        for i, question in enumerate(questions):
-            questions_index.append([i + 1, question, prediction[i]])
+        questions_index = [
+            [i + 1, question, prediction[i]] for i, question in enumerate(questions)
+        ]
+
         return render_template(
             "index.html", type="config", questions=questions_index, error=None
         )
@@ -71,7 +73,9 @@ def analysis_page():
         ) != len(utils.parse_config(os.path.join(directory, config_filename))):
             return "oh noes"
         # Work on file
-        app.config["ANALYSIS"] = analyse.analyse(directory, excel_filename, config_filename)
+        app.config["ANALYSIS"] = analyse.analyse(
+            directory, excel_filename, config_filename
+        )
         graphs, clouds = []
         for question, analysis in app.config["ANALYSIS"].items():
             if analysis:
