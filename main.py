@@ -69,10 +69,10 @@ def analysis_page():
         config.save(os.path.join(directory, config_filename))
 
         # TODO: Implement redirect to config_page with pre_filled in values
-        if len(
-            utils.parse_excel(os.path.join(directory, excel_filename)).keys()
-        ) != len(utils.parse_config(os.path.join(directory, config_filename))):
-            return "oh noes"
+        # if len(
+        #     utils.parse_excel(os.path.join(directory, excel_filename)).keys()
+        # ) != len(utils.parse_config(os.path.join(directory, config_filename))):
+        #     return "oh noes"
 
         # Work on file
         app.config["ANALYSIS"] = analyse.analyse(
