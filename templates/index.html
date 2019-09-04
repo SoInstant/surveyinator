@@ -167,6 +167,7 @@
               </div>
               <div class="card-body">
                 <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+                  <form name="form" action="/config" method="post">
                   <table class="table dataTable my-0" id="dataTable">
                     <thead>
                       <tr>
@@ -175,7 +176,6 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <form name="form" action="/config" method="post" enctype="multipart/form-data">
                       {% for question in questions: %}
                       <tr>
                         <td>{{question[1]}}</td>
@@ -193,7 +193,7 @@
                       {% endfor %}
                     </tbody>
                   </table>
-                  <input class="btn btn-primary" type="submit"/>
+                  <button class="btn btn-primary" type="submit">
                 </form>
                 </div>
 
