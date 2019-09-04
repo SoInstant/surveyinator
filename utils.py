@@ -8,13 +8,13 @@ from openpyxl import load_workbook
 import pickle
 import plotly
 from flask import Markup
-import random
+from random import choices
 from string import ascii_letters, digits
 
 
 def secure(length):
     """Returns a random string of len(length)"""
-    return "".join([random.choice(ascii_letters + digits) for i in range(length)])
+    return "".join(choices(ascii_letters + digits, k=length))
 
 
 # Parsing Utils
