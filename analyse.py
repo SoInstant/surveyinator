@@ -119,7 +119,7 @@ def analyse(directory, excel_file, config_file):
     """
     categorised_responses = categorise(
         parse_excel(os.path.join(directory, excel_file)),
-        [i[1] for i in parse_config(os.path.join(directory, config_file))],
+        [i for i in parse_config(os.path.join(directory, config_file)).values()],
     )
     analysis = {}
     analysed = None

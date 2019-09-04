@@ -8,13 +8,13 @@ from openpyxl import load_workbook
 import pickle
 import plotly
 from flask import Markup
-import random
+from random import choices
 from string import ascii_letters, digits
 
 
 def secure(length):
     """Returns a random string of len(length)"""
-    return "".join([random.choice(ascii_letters + digits) for i in range(length)])
+    return "".join(choices(ascii_letters + digits, k=length))
 
 
 # Parsing Utils
@@ -38,14 +38,21 @@ def parse_excel(excel_file):
         A dictionary mapping the question to a tuple of responses
         For example:
         {"Do you like Python?": ("Yes","No","Yes")}
+
+    Raises:
+        KeyError: Question not present in column {i+1}
     """
     wb = load_workbook(excel_file)
     ws = wb.active
     cell_values = []
-    for col in ws.columns:
-        cell_values.append([str(cell.value) for cell in col if cell.value is not None])
-    qn_response = dict([[col[0],col[1:]] for col in cell_values])
-    return qn_response
+    for i, col in enumerate(ws.columns):
+        if col[0].value:
+            cell_values.append(
+                [str(cell.value) for cell in col if cell.value is not None]
+            )
+        else:
+            raise KeyError(f"Question not present in column {i+1}")
+    return dict([[col[0], col[1:]] for col in cell_values])
 
 
 def parse_config(config_file):
@@ -72,13 +79,17 @@ def parse_config(config_file):
         ValueError: Data-type not supported
     """
     with open(config_file, mode="r", encoding="utf-8") as f:
-        qn_categories = [line.lower() for line in f.read().split("\n") if line != ""]
-        qn_categories = [line.split(" ") for line in qn_categories]
-
-    for i, category in enumerate(qn_categories):
-        if category[1] not in ("ignore", "numerical", "categorical", "openended"):
-            raise ValueError(f"Qn{i+1}: Data-type not supported")
-    return tuple(qn_categories)
+        lines = [line.lower() for line in f.read().split("\n") if line != ""]
+        lines = [line.split(" ") for line in lines]
+        for i in lines:
+            if not i[0].isdigit() or i[1] not in (
+                "ignore",
+                "numerical",
+                "categorical",
+                "openended",
+            ):
+                raise TypeError
+        return dict(lines)
 
 
 # Prediction
@@ -175,8 +186,4 @@ def chunk(input, size):
 
 
 if __name__ == "__main__":
-    print(
-        Predictor().predict(
-            parse_excel("static/uploads/responses.xlsx/responses.xlsx").keys()
-        )
-    )
+    print(parse_config(r"C:\\users\chi_j\Desktop\Scam\config_file2.txt"))
