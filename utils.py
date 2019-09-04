@@ -44,7 +44,7 @@ def parse_excel(excel_file):
     cell_values = []
     for col in ws.columns:
         cell_values.append([str(cell.value) for cell in col if cell.value is not None])
-    qn_response = dict([[col[0],col[1:]] for col in cell_values])
+    qn_response = dict([[col[0], col[1:]] for col in cell_values])
     return qn_response
 
 
@@ -73,13 +73,16 @@ def parse_config(config_file):
     """
     with open(config_file, mode="r", encoding="utf-8") as f:
         lines = [line.lower() for line in f.read().split("\n") if line != ""]
-        print(lines)
-        qn_categories = [line.split(" ") for line in qn_categories]
-
-    for i, category in enumerate(qn_categories):
-        if category[1] not in ("ignore", "numerical", "categorical", "openended"):
-            raise ValueError(f"Qn{i+1}: Data-type not supported")
-    return tuple(qn_categories)
+        lines = [line.split(" ") for line in lines]
+        for i in lines:
+            if not i[0].isdigit() or i[1] not in (
+                "ignore",
+                "numerical",
+                "categorical",
+                "openended",
+            ):
+                raise TypeError
+        return dict(lines)
 
 
 # Prediction
