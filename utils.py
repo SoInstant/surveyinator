@@ -38,14 +38,21 @@ def parse_excel(excel_file):
         A dictionary mapping the question to a tuple of responses
         For example:
         {"Do you like Python?": ("Yes","No","Yes")}
+
+    Raises:
+        KeyError: Question not present in column {i+1}
     """
     wb = load_workbook(excel_file)
     ws = wb.active
     cell_values = []
-    for col in ws.columns:
-        cell_values.append([str(cell.value) for cell in col if cell.value is not None])
-    qn_response = dict([[col[0], col[1:]] for col in cell_values])
-    return qn_response
+    for i, col in enumerate(ws.columns):
+        if col[0].value:
+            cell_values.append(
+                [str(cell.value) for cell in col if cell.value is not None]
+            )
+        else:
+            raise KeyError(f"Question not present in column {i+1}")
+    return dict([[col[0], col[1:]] for col in cell_values])
 
 
 def parse_config(config_file):
