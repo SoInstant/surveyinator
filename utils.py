@@ -1,4 +1,4 @@
-"""Provides utility functions
+"""Provides utility functions.
 
 This module contains utility functions for main.py and analyse.py.
 Those functions are placed into this module to prevent spagetti code in
@@ -72,11 +72,11 @@ def parse_config(config_file):
         ValueError: Data-type not supported
     """
     with open(config_file, mode="r", encoding="utf-8") as f:
-        qn_categories = [line for line in f.read().split("\n") if line != ""]
-        qn_categories = [line.split(" ")[1].lower() for line in qn_categories]
+        qn_categories = [line.lower() for line in f.read().split("\n") if line != ""]
+        qn_categories = [line.split(" ") for line in qn_categories]
 
     for i, category in enumerate(qn_categories):
-        if category not in ("ignore", "numerical", "categorical", "openended"):
+        if category[1] not in ("ignore", "numerical", "categorical", "openended"):
             raise ValueError(f"Qn{i+1}: Data-type not supported")
     return tuple(qn_categories)
 
