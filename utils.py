@@ -88,7 +88,9 @@ def parse_config(config_file):
                 "categorical",
                 "openended",
             ):
-                raise TypeError
+                raise TypeError(
+                    f"Line'{i}': parse_config only accepts lines with format <qn_no> <qn_type>"
+                )
         return dict(lines)
 
 
