@@ -22,7 +22,7 @@ def config_page():
         return redirect(url_for("main"))
     else:
         print(request.form)
-        return render_template("index.html", type="upload", error=None)
+        return render_template("index.html", type="upload", error="empty")
 
 
 @app.route("/results", methods=["GET", "POST"])

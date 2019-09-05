@@ -188,7 +188,7 @@
               </div>
               <div class="card-body">
                 <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
-                    <form name="form" action="/config" method="post">
+                    <form id="configform" action="/config" method="post">
                         <table class="table dataTable my-0" id="dataTable">
                             <thead>
                                 <tr>
@@ -202,11 +202,11 @@
                                 <td>{{question[1]}}</td>
                                 <td>
                                     <div class="form-group">
-                                        <select id="{{question[0]}}" form="form" class="form-control" name="choice">
-                                            <option value="ignore"{% if question[2] == "ignore": %}selected{% endif %}>Ignore</option>
-                                            <option value="numerical"{% if question[2] == "numerical": %}selected{% endif %}>Numerical</option>
-                                            <option value="openended"{% if question[2] == "openended": %}selected{% endif %}>Open-ended</option>
-                                            <option value="categorical"{% if question[2] == "categorical": %}selected{% endif %}>Categorical</option>
+                                        <select form="configform" class="form-control" name="{{question[0]}}">
+                                            <option value="ignore" {% if question[2] == "ignore": %}selected{% endif %}>Ignore</option>
+                                            <option value="numerical" {% if question[2] == "numerical": %}selected{% endif %}>Numerical</option>
+                                            <option value="openended" {% if question[2] == "openended": %}selected{% endif %}>Open-ended</option>
+                                            <option value="categorical" {% if question[2] == "categorical": %}selected{% endif %}>Categorical</option>
                                         </select>
                                     </div>
                                 </td>
@@ -214,7 +214,7 @@
                             {% endfor %}
                             </tbody>
                         </table>
-                        <button class="btn btn-primary" type="submit">
+                        <input class="btn btn-primary" type="submit">
                     </form>
                 </div>
 
