@@ -79,7 +79,7 @@ def analysis_page():
         app.config["ANALYSIS"] = analyse.analyse(
             directory, excel_filename, config_filename
         )
-        graphs, clouds = [],[]
+        graphs, clouds, numerical = [], [], []
         for question, analysis in app.config["ANALYSIS"].items():
             if analysis:
                 if analysis[0] == "categorical":
@@ -95,16 +95,20 @@ def analysis_page():
                     )
                 elif analysis[0] == "openended":
                     clouds.append([question, analysis[1]])
+                elif analysis[0] == "numerical":
+                    numerical.append([question, analysis[1]])
                 else:
                     pass
         graphs = tuple(utils.chunk(graphs, 3))
         clouds = tuple(utils.chunk(clouds, 2))
-
+        numerical = tuple(utils.chunk(numerical, 4))
+        
         return render_template(
             "index.html",
             type="analyse",
             graphs=graphs,
             clouds=clouds,
+            numerical=numerical,
             filename=excel_filename,
             path=os.path.split(directory)[1],
         )
