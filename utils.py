@@ -186,4 +186,4 @@ def chunk(input, size):
 
 
 if __name__ == "__main__":
-    print(parse_config(r"C:\\users\chi_j\Desktop\Scam\config_file2.txt"))
+    print(parse_excel(r"C:\\users\chi_j\Desktop\DOcx\bruh.xlsx"))
