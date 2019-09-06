@@ -21,7 +21,7 @@ def config_page():
     if not request.method == "POST":
         return redirect(url_for("main"))
     else:
-        print(request.form)
+        print(request.form.to_dict())
         return render_template("index.html", type="upload", error="empty")
 
 
@@ -31,16 +31,16 @@ def analysis_page():
     if not request.method == "POST":
         return redirect(url_for("main"))
     # Checking for files
-    if not "file" in request.files:
+    if not request.files["file"]:
         return render_template("index.html", type="upload", error="Missing Excel file!")
 
-    elif "file" in request.files and not "config" in request.files:  # Build config
+    elif request.files["file"] and not request.files["config"]:  # Build config
         excel = request.files["file"]
         excel_filename = secure_filename(excel.filename)
         directory = os.path.join(app.config["UPLOAD_FOLDER"], utils.secure(16))
-
         if not os.path.exists(directory):
             os.mkdir(directory)
+            app.config["TEMP_FOLDER"] = directory
         excel.save(os.path.join(directory, excel_filename))
 
         questions = list(
@@ -52,7 +52,10 @@ def analysis_page():
         ]
 
         return render_template(
-            "index.html", type="config", questions=questions_index, error=None
+            "index.html",
+            type="config",
+            questions=questions_index,
+            error=None
         )
 
     else:
@@ -102,7 +105,7 @@ def analysis_page():
         graphs = tuple(utils.chunk(graphs, 3))
         clouds = tuple(utils.chunk(clouds, 2))
         numerical = tuple(utils.chunk(numerical, 4))
-        
+
         return render_template(
             "index.html",
             type="analyse",

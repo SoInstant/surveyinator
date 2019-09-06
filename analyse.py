@@ -17,7 +17,8 @@ def categorise(responses, datatypes):
 
     Args:
         responses(dict): The responses(tuple/list) mapped to their question
-        datatypes(tuple/list): The datatypes of the list_of_responses
+        datatypes(dict): The datatypes of the responses
+            mapped to question number
 
     Returns:
         A dictionary which maps a tuple of the datatype of the response
@@ -102,7 +103,7 @@ def openended(responses, directory):
     return path
 
 
-def analyse(directory, excel_file, config_file):
+def analyse(directory, excel_file, config_file=None, config = None):
     """Analyses survey responses
 
     Args:
@@ -195,5 +196,5 @@ def generate_report(directory, analysis):
 
 
 if __name__ == "__main__":
-    bruh = analyse(r"C:\Users\chi_j\Desktop\Scam", "responses.xlsx", "config_file.txt")
+    bruh = analyse(r"C:\Users\chi_j\Desktop\Scam", "responses.xlsx", config_file="config_file.txt")
     print(generate_report(r"C:\Users\chi_j\Desktop\Scam", bruh))
