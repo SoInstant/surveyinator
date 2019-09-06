@@ -11,20 +11,43 @@ if not os.path.exists(app.config["UPLOAD_FOLDER"]):
     os.mkdir(app.config["UPLOAD_FOLDER"])
 
 
-def save_file(directory=None,excel_file=None, config_file=None):
-    if directory:
-        pass
-    else:
+def save_file(directory=None, excel_file=None, config_file=None):
+    """Saves file(s) to directory
+
+    Args:
+        directory(str): Directory in which to save the files
+        excel_file(class): An instance of the werkzeug.datastructures.FileStorage
+            class containing the excel_file
+        config_file(class): An instance of the werkzeug.datastructures.FileStorage
+            class containing the config_file
+
+    Returns:
+        A dictionary containing the path to the directory the file(s) are saved in and
+        the filename(s). For example:
+        {
+            "Directory": "./static/uploads/4SikvVjjqlWV44AW/",
+            "Excel": "responses.xlsx",
+            "Config": "config_file.txt"
+        }
+    """
+    if not directory:
         directory = os.path.join(app.config["UPLOAD_FOLDER"], utils.secure(16))
-        if excel_file and config_file:
-            excel_filename, config_filename = (
-                secure_filename(excel_file.filename),
-                secure_filename(config_file.filename),
-            )
-        elif excel_file:
-            excel_filename = secure_filename(excel_file.filename)
-        elif config_file:
-            config_filename = secure_filename(config_file.filename)
+    if not os.path.exists(directory):
+        os.mkdir(directory)
+    if excel_file and config_file:
+        excel_name = secure_filename(excel_file.filename)
+        config_name = secure_filename(config_file.filename)
+        excel_file.save(os.path.join(directory, excel_name))
+        config_file.save(os.path.join(directory, config_filename))
+        output = {"Directory": directory, "Excel": excel_name, "Config": config_name}
+    elif excel_file:
+        excel_name = secure_filename(excel_file.filename)
+        excel_file.save(os.path.join(directory, excel_name))
+        output = {"Directory": directory, "Excel": excel_name, "Config": None}
+    elif config_file:
+        config_name = secure_filename(config_file.filename)
+        config_file.save(os.path.join(directory, config_name))
+        output = {"Directory": directory, "Excel": None, "Config": config_name}
     return output
 
 
@@ -52,17 +75,8 @@ def analysis_page():
         return render_template("index.html", type="upload", error="Missing Excel file!")
 
     elif request.files["file"] and not request.files["config"]:  # Build config
-        excel = request.files["file"]
-        excel_filename = secure_filename(excel.filename)
-        directory = os.path.join(app.config["UPLOAD_FOLDER"], utils.secure(16))
-        if not os.path.exists(directory):
-            os.mkdir(directory)
-            app.config["TEMP_FOLDER"] = directory
-        excel.save(os.path.join(directory, excel_filename))
-
-        questions = list(
-            utils.parse_excel(os.path.join(directory, excel_filename)).keys()
-        )
+        excel_path = save_file(excel_file=request.files["file"])[0]
+        questions = list(utils.parse_excel(excel_path).keys())
         prediction = utils.Predictor().predict(questions)
         questions_index = [
             [i + 1, question, prediction[i]] for i, question in enumerate(questions)
@@ -74,18 +88,12 @@ def analysis_page():
 
     else:
         # Saving files
-        excel, config = request.files["file"], request.files["config"]
-        excel_filename, config_filename = (
-            secure_filename(excel.filename),
-            secure_filename(config.filename),
-        )
-        directory = os.path.join(app.config["UPLOAD_FOLDER"], utils.secure(16))
-
-        if not os.path.exists(directory):
-            os.mkdir(directory)
-        excel.save(os.path.join(directory, excel_filename))
-        config.save(os.path.join(directory, config_filename))
-
+        directory, excel_filename, config_filename = [
+            path
+            for path in save_file(
+                excel_file=request.files["file"], config_file=request.files["config"]
+            )
+        ]
         # TODO: Implement redirect to config_page with pre_filled in values
         # if len(
         #     utils.parse_excel(os.path.join(directory, excel_filename)).keys()
