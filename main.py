@@ -31,10 +31,10 @@ def analysis_page():
     if not request.method == "POST":
         return redirect(url_for("main"))
     # Checking for files
-    if not request.files["file"]:
+    if request.files["file"].filename == "":
         return render_template("index.html", type="upload", error="Missing Excel file!")
 
-    elif request.files["file"] and not request.files["config"]:  # Build config
+    elif not request.files["file"].filename == "" and request.files["config"].filename == "":  # Build config
         excel = request.files["file"]
         excel_filename = secure_filename(excel.filename)
         directory = os.path.join(app.config["UPLOAD_FOLDER"], utils.secure(16))
