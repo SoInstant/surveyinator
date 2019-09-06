@@ -11,6 +11,23 @@ if not os.path.exists(app.config["UPLOAD_FOLDER"]):
     os.mkdir(app.config["UPLOAD_FOLDER"])
 
 
+def save_file(directory=None,excel_file=None, config_file=None):
+    if directory:
+        pass
+    else:
+        directory = os.path.join(app.config["UPLOAD_FOLDER"], utils.secure(16))
+        if excel_file and config_file:
+            excel_filename, config_filename = (
+                secure_filename(excel_file.filename),
+                secure_filename(config_file.filename),
+            )
+        elif excel_file:
+            excel_filename = secure_filename(excel_file.filename)
+        elif config_file:
+            config_filename = secure_filename(config_file.filename)
+    return output
+
+
 @app.route("/", methods=["GET", "POST"])
 def main():  # Homepage
     return render_template("index.html", type="upload", error=None)
@@ -52,10 +69,7 @@ def analysis_page():
         ]
 
         return render_template(
-            "index.html",
-            type="config",
-            questions=questions_index,
-            error=None
+            "index.html", type="config", questions=questions_index, error=None
         )
 
     else:
