@@ -27,7 +27,7 @@ def categorise(responses, datatypes):
     """
     output = {}
     for i, items in enumerate(responses.items()):
-        output[items[0]] = tuple([datatypes[i], items[1]])
+        output[items[0]] = tuple([datatypes[i+1], items[1]])
     return output
 
 
@@ -75,9 +75,7 @@ def categorical(responses):
     for category, freq in categories.items():
         categories[category] = freq / len(responses)
     sorting = sorted(categories.items(), key=lambda x: x[1])
-    output = {}
-    for category, freq in sorting:
-        output[category] = freq
+    output = dict(sorting)
     return {"Percentages": output}
 
 
@@ -103,7 +101,7 @@ def openended(responses, directory):
     return path
 
 
-def analyse(directory, excel_file, config_file=None, config = None):
+def analyse(directory, excel_file, config_file):
     """Analyses survey responses
 
     Args:
@@ -120,7 +118,7 @@ def analyse(directory, excel_file, config_file=None, config = None):
     """
     categorised_responses = categorise(
         parse_excel(os.path.join(directory, excel_file)),
-        [i for i in parse_config(os.path.join(directory, config_file)).values()],
+        parse_config(os.path.join(directory, config_file)),
     )
     analysis = {}
     analysed = None
@@ -196,5 +194,7 @@ def generate_report(directory, analysis):
 
 
 if __name__ == "__main__":
-    bruh = analyse(r"C:\Users\chi_j\Desktop\Scam", "responses.xlsx", config_file="config_file.txt")
+    bruh = analyse(
+        r"C:\Users\chi_j\Desktop\Scam", "responses.xlsx", config_file="config_file.txt"
+    )
     print(generate_report(r"C:\Users\chi_j\Desktop\Scam", bruh))

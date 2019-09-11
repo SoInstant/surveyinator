@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, send_file
-from werkzeug import secure_filename
+from werkzeug.utils import secure_filename
 import os
 import analyse
 import utils
@@ -34,11 +34,12 @@ def save_file(directory=None, excel_file=None, config_file=None):
         directory = os.path.join(app.config["UPLOAD_FOLDER"], utils.secure(16))
     if not os.path.exists(directory):
         os.mkdir(directory)
+    output = None
     if excel_file and config_file:
         excel_name = secure_filename(excel_file.filename)
         config_name = secure_filename(config_file.filename)
         excel_file.save(os.path.join(directory, excel_name))
-        config_file.save(os.path.join(directory, config_filename))
+        config_file.save(os.path.join(directory, config_name))
         output = {"Directory": directory, "Excel": excel_name, "Config": config_name}
     elif excel_file:
         excel_name = secure_filename(excel_file.filename)
@@ -87,13 +88,9 @@ def analysis_page():
         )
 
     else:
+        save = save_file(excel_file=request.files["file"], config_file=request.files["config"])
         # Saving files
-        directory, excel_filename, config_filename = [
-            path
-            for path in save_file(
-                excel_file=request.files["file"], config_file=request.files["config"]
-            )
-        ]
+        directory, excel_filename, config_filename = save["Directory"], save["Excel"], save["Config"]
         # TODO: Implement redirect to config_page with pre_filled in values
         # if len(
         #     utils.parse_excel(os.path.join(directory, excel_filename)).keys()
