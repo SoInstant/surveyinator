@@ -5,9 +5,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
   <title>Surveyinator -
-    {% if type == "upload": %}
+    {% if type == "upload" %}
     Upload
-    {% elif type == "analysis": %}
+    {% elif type == "analysis" %}
     Analysis of {{filename}}
     {% endif %}
   </title>
@@ -27,7 +27,7 @@
   <script src="static/js/theme.js"></script>
 </head>
 
-{% if type == "analyse": %}
+{% if type == "analyse" %}
 <body id="page-top">
   <div id="wrapper">
     <div class="d-flex flex-column" id="content-wrapper">
@@ -42,23 +42,6 @@
                 </a>
               </div>
             </div>
-            <form class="form-inline d-none d-sm-inline-block mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-              <div class="input-group"><input class="bg-light form-control border-0 small" type="text" placeholder="Search for ...">
-                <div class="input-group-append"><button class="btn btn-primary py-0" type="button"><i class="fas fa-search"></i></button></div>
-              </div>
-            </form>
-            <ul class="nav navbar-nav flex-nowrap ml-auto">
-              <li class="nav-item dropdown d-sm-none no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#"><i class="fas fa-search"></i></a>
-                <div class="dropdown-menu dropdown-menu-right p-3 animated--grow-in" role="menu" aria-labelledby="searchDropdown">
-                  <form class="form-inline mr-auto navbar-search w-100">
-                    <div class="input-group"><input class="bg-light form-control border-0 small" type="text" placeholder="Search for ...">
-                      <div class="input-group-append"><button class="btn btn-primary py-0" type="button"><i class="fas fa-search"></i></button></div>
-                    </div>
-                    <br>
-                  </form>
-                </div>
-              </li>
-            </ul>
           </div>
         </nav>
         <div class="container-fluid">
@@ -127,7 +110,7 @@
   </div>
 </div>
 
-{% elif type == "upload": %}
+{% elif type == "upload" %}
 <body class="bg-gradient-primary">
     <div id="loading" style="display:none;">
       <div class="spinner">
