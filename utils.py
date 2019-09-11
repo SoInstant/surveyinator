@@ -1,7 +1,7 @@
 """Provides utility functions.
 
 This module contains utility functions for main.py and analyse.py.
-Those functions are placed into this module to prevent spagetti code in
+Those functions are placed into this module to prevent spaghetti code in
 both of those scripts.
 """
 # Imports
