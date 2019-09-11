@@ -58,3 +58,6 @@ target/
 
 # Uploads folder
 static/uploads/*
+
+# PyCharm
+.idea/
