@@ -45,10 +45,10 @@ def save_file(directory=None, excel_file=None, config_file=None):
         excel_name = secure_filename(excel_file.filename)
         excel_file.save(os.path.join(directory, excel_name))
         output = {"Directory": directory, "Excel": excel_name, "Config": None}
-    elif config_file:
-        config_name = secure_filename(config_file.filename)
-        config_file.save(os.path.join(directory, config_name))
-        output = {"Directory": directory, "Excel": None, "Config": config_name}
+    # elif config_file:
+    #     config_name = secure_filename(config_file.filename)
+    #     config_file.save(os.path.join(directory, config_name))
+    #     output = {"Directory": directory, "Excel": None, "Config": config_name}
     return output
 
 

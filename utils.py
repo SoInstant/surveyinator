@@ -8,6 +8,7 @@ both of those scripts.
 from openpyxl import load_workbook
 import pickle
 import plotly
+import os
 from flask import Markup
 from random import choices
 from string import ascii_letters, digits
@@ -98,7 +99,27 @@ def parse_config(config_file):
         return dict(lines)
 
 
+def to_config(directory, config, config_file=None):
+    """"Creates/modifies a config file
 
+    Creates/modifies a config file based on config given
+    If config_file is given, it will modify the given config_file;
+    else, it will create a new config file
+
+    Args:
+        directory(str) : Directory to save config file in
+        config(dict) : Dictionary mapping datatype to question number
+        config_file(str) : Name of config file (optional)
+    Returns:
+        String containing the path to the config file
+    """
+    if not config_file:
+        config_file = "config_file.txt"
+    to_write = [f"{i[0]} {i[1]}\n" for i in config.items()]
+    path = os.path.join(directory, config_file)
+    with open(path, "w") as config_f:
+        config_f.writelines(to_write)
+    return path
 
 
 # Prediction

@@ -5,18 +5,19 @@ It analyses survey responses through a variety of analysis methods,
 such as mean, median and mode. It allows surveyors to get an general idea of what
 the survey responses are like.
 
-Surveyinator was originally developed to help our (Computing teacher)[]
+Surveyinator was originally developed to help our [Computing teacher](https://www.ri.edu.sg)
 to find out about the demand of Y2 CEP (i.e how many of them are 
 interested to choose CEP in Year 2), and get a consolidated 
 picture of how they perceive the 9 weeks CS course based on student 
 feedback on their Year 1 CS experience.
 
-Surveyinator is written fully in [Python](https://python.org).
+Surveyinator is written fully in [Python 3.7](https://python.org).
 
 ### Installation
 
 Installation is quick and simple!  
-Simply click on this [link](https://google.com) to download the latest version
+Simply click on this [link](https://google.com) to download the latest version. 
+Make sure you have python>=3.7
  
 #### Dependencies
 Refer to [requirements.txt](requirements.txt)
