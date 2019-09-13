@@ -75,9 +75,9 @@ def parse_config(config_file):
         config_file(str): The filename of the config file to be parsed
 
     Returns:
-        A tuple of the data-types
+        A dictionary mapping the datatype to the question number
         For example:
-        ("categorical","numerical","ignore","openended")
+        {1: 'categorical', 2: 'numerical', 3: 'ignore', 4: 'openended'}
 
     Raises:
         ValueError: Data-type not supported
