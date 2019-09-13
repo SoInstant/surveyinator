@@ -62,7 +62,7 @@ def config_page():
     if not request.method == "POST":
         return redirect(url_for("main"))
     else:
-        print(request.form.to_dict())
+        utils.to_config(request.form.to_dict())
         return render_template("index.html", type="upload", error="empty")
 
 
@@ -72,10 +72,10 @@ def analysis_page():
     if not request.method == "POST":
         return redirect(url_for("main"))
     # Checking for files
-    if not request.files["file"]:
+    if not request.files["file"]:  # No excel
         return render_template("index.html", type="upload", error="Missing Excel file!")
 
-    elif request.files["file"] and not request.files["config"]:  # Build config
+    elif request.files["file"] and not request.files["config"]:  # Excel but no config
         excel_path = save_file(excel_file=request.files["file"])[0]
         questions = list(utils.parse_excel(excel_path).keys())
         prediction = utils.Predictor().predict(questions)
@@ -91,13 +91,12 @@ def analysis_page():
         save = save_file(excel_file=request.files["file"], config_file=request.files["config"])
         # Saving files
         directory, excel_filename, config_filename = save["Directory"], save["Excel"], save["Config"]
-        # TODO: Implement redirect to config_page with pre_filled in values
-        # if len(
-        #     utils.parse_excel(os.path.join(directory, excel_filename)).keys()
-        # ) != len(utils.parse_config(os.path.join(directory, config_filename))):
-        #     return "oh noes"
+        questions = utils.parse_excel(os.path.join(directory, excel_filename)).keys()
+        types = utils.parse_config(os.path.join(directory, config_filename))
+        if len(questions) != len(types):  # Excel but incomplete config
+            return "oh noes"
 
-        # Work on file
+        # Start analysis
         app.config["ANALYSIS"] = analyse.analyse(
             directory, excel_filename, config_filename
         )
@@ -127,7 +126,7 @@ def analysis_page():
 
         return render_template(
             "index.html",
-            type="analyse",
+            type="analysis",
             graphs=graphs,
             clouds=clouds,
             numerical=numerical,

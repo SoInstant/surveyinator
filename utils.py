@@ -56,7 +56,7 @@ def parse_excel(excel_file):
             )
         else:
             raise KeyError(f"Question not present in column {i + 1}")
-    return dict([[col[0], col[1:]] for col in cell_values])
+    return dict([(col[0], col[1:]) for col in cell_values])
 
 
 def parse_config(config_file):

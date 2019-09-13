@@ -1,3 +1,4 @@
+werkzeug
 Numpy
 Scipy
 Textblob
