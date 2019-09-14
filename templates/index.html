@@ -1,231 +1,234 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-  <title>Surveyinator -
-    {% if type == "upload" %}
-    Upload
-    {% elif type == "analysis" %}
-    Analysis of {{filename}}
-    {% endif %}
-  </title>
-  <link rel="icon" href="static/favicon.ico">
-  <link rel="stylesheet" href="static/bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" href="static/css/style.css">
-  <link rel="stylesheet" href="static/fonts/fontawesome-all.min.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+        <title>Surveyinator -
+            {% if type == "upload" %}
+            Upload
+            {% elif type == "analysis" %}
+            Analysis of {{filename}}
+            {% endif %}
+        </title>
+        <link rel="icon" href="/static/favicon.ico">
+        <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/static/css/style.css">
+        <link rel="stylesheet" href="/static/fonts/fontawesome-all.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
-  <script src="static/bootstrap/js/bootstrap.min.js"></script>
-  <script src="static/js/jquery.min.js"></script>
-  <script src="static/js/chart.min.js"></script>
-  <script src="static/js/bs-charts.js"></script>
-  <script src="static/js/theme.js"></script>
-</head>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+        <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+        <script src="/static/js/jquery.min.js"></script>
+        <script src="/static/js/chart.min.js"></script>
+        <script src="/static/js/bs-charts.js"></script>
+        <script src="/static/js/theme.js"></script>
+    </head>
 
-{% if type == "analysis": %}
-<body id="page-top">
-  <div id="wrapper">
-    <div class="d-flex flex-column" id="content-wrapper">
-      <div id="content">
-        <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
-          <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
-            <div class="card text-white bg-primary shadow">
-              <div class="card-body">
-                <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
-                  <div class="sidebar-brand-icon rotate-n-15" style="color: rgba(255,255,255,0.9);"><i class="fas fa-bar-chart"></i></div>
-                  <div class="sidebar-brand-text mx-3"><span style="color: rgba(255,255,255,0.9);">Surveyinator</span></div>
-                </a>
-              </div>
-            </div>
-          </div>
-        </nav>
-        <div class="container-fluid">
-          <div class="d-sm-flex justify-content-between align-items-center mb-4">
-            <h3 class="text-dark mb-0">Analysis Report</h3>
-            <a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="/download/{{path}}"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Generate Report</a>
-          </div>
-          {% for group in numerical %}
-          <div class="row">
-            {% for nums in group %}
-            <div class="col-md-6 col-xl-3 mb-4">
-                <div class="card shadow border-left-primary py-2">
-                    <div class="card-body">
-                        <div class="row align-items-center no-gutters">
-                            <div class="col mr-2">
-                                <div class="text-uppercase text-primary font-weight-bold text-xs mb-1"><span>{{nums[0]}}</span></div>
-                                <div class="text-dark font-weight-bold h5 mb-0">
-                                  {% for type, value in nums[1].items() %}
-                                  <span>{{type}}: {{value}}</span><br>
-                                  {% endfor %}
+    {% if type == "analysis": %}
+
+    <body id="page-top">
+        <div id="wrapper">
+            <div class="d-flex flex-column" id="content-wrapper">
+                <div id="content">
+                    <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
+                        <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
+                            <div class="card text-white bg-primary shadow">
+                                <div class="card-body">
+                                    <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+                                        <div class="sidebar-brand-icon rotate-n-15" style="color: rgba(255,255,255,0.9);"><i class="fas fa-bar-chart"></i></div>
+                                        <div class="sidebar-brand-text mx-3"><span style="color: rgba(255,255,255,0.9);">Surveyinator</span></div>
+                                    </a>
                                 </div>
+                            </div>
+                        </div>
+                    </nav>
+                    <div class="container-fluid">
+                        <div class="d-sm-flex justify-content-between align-items-center mb-4">
+                            <h3 class="text-dark mb-0">Analysis Report</h3>
+                            <a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="/download/{{path}}"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Generate Report</a>
+                        </div>
+                        {% for group in numerical %}
+                        <div class="row">
+                            {% for nums in group %}
+                            <div class="col-md-6 col-xl-3 mb-4">
+                                <div class="card shadow border-left-primary py-2">
+                                    <div class="card-body">
+                                        <div class="row align-items-center no-gutters">
+                                            <div class="col mr-2">
+                                                <div class="text-uppercase text-primary font-weight-bold text-xs mb-1"><span>{{nums[0]}}</span></div>
+                                                <div class="text-dark font-weight-bold h5 mb-0">
+                                                    {% for type, value in nums[1].items() %}
+                                                    <span>{{type}}: {{value}}</span><br>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+
+                        {% for group in graphs %}
+                        <div class="row">
+                            {% for graph in group %}
+                            <div class="col-lg-4 col-xl-4">
+                                <div class="card shadow mb-4">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h6 class="text-primary font-weight-bold m-0">{{ graph[0] }}</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        {{ graph[1] }}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+
+                        {% for group in clouds %}
+                        <div class="row">
+                            {% for cloud in group %}
+                            <div class="col-md-6 col-xl-6" height="100%">
+                                <div class="card shadow mb-4">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h6 class="text-primary font-weight-bold m-0">{{ cloud[0] }}</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <img src="{{cloud[1]}}" width="100%">
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% elif type == "upload" %}
+
+        <body class="bg-gradient-primary">
+            <div id="loading" style="display:none;">
+                <div class="spinner">
+                    <div class="bounce1"></div>
+                    <div class="bounce2"></div>
+                    <div class="bounce3"></div>
+                </div>
+            </div>
+            <div id="content" class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-9 col-lg-12 col-xl-10">
+                        <div class="card shadow-lg o-hidden border-0 my-5">
+                            <div class="card-body p-0">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="text-dark mb-4">Surveyinator</h1>
+                                    </div>
+                                    <form name="form" action="/results" method="post" enctype="multipart/form-data">
+                                        <h4>Excel file: </h4><input class="d-lg-flex" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                                        <h4>Config file: </h4><input class="d-lg-flex" type="file" name="config" accept="text/plain">
+                                        <input type="submit" value='upload' onclick="$('#loading').show();$('#content').hide();">
+                                    </form>
+                                </div>
+                                {% if error %}
+                                <div class="text-center">
+                                    <div class="alert alert-danger">{{ error }}</div>
+                                </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            {% endfor %}
-        </div>
-        {% endfor %}
-        
-        {% for group in graphs %}
-        <div class="row">
-          {% for graph in group %}
-          <div class="col-lg-4 col-xl-4">
-            <div class="card shadow mb-4">
-              <div class="card-header d-flex justify-content-between align-items-center">
-                <h6 class="text-primary font-weight-bold m-0">{{ graph[0] }}</h6>
-              </div>
-              <div class="card-body">
-                {{ graph[1] }}
-              </div>
-            </div>
-          </div>
-          {% endfor %}
-        </div>
-        {% endfor %}
 
-        {% for group in clouds %}
-        <div class="row">
-          {% for cloud in group %}
-          <div class="col-md-6 col-xl-6" height="100%">
-            <div class="card shadow mb-4">
-              <div class="card-header d-flex justify-content-between align-items-center">
-                <h6 class="text-primary font-weight-bold m-0">{{ cloud[0] }}</h6>
-              </div>
-              <div class="card-body">
-                <img src="{{cloud[1]}}" width="100%">
-              </div>
-            </div>
-          </div>
-        {% endfor %}
-      </div>
-      {% endfor %}
-      </div>
-    </div>
-  </div>
-</div>
+            {% elif type == "config" %}
 
-{% elif type == "upload" %}
-<body class="bg-gradient-primary">
-    <div id="loading" style="display:none;">
-      <div class="spinner">
-        <div class="bounce1"></div>
-        <div class="bounce2"></div>
-        <div class="bounce3"></div>
-      </div>
-    </div>
-    <div id="content" class="container">
-      <div class="row justify-content-center">
-        <div class="col-md-9 col-lg-12 col-xl-10">
-          <div class="card shadow-lg o-hidden border-0 my-5">
-            <div class="card-body p-0">
-              <div class="p-5">
-                <div class="text-center">
-                  <h1 class="text-dark mb-4">Surveyinator</h1>
-                </div>
-                <form name="form" action="/results" method="post" enctype="multipart/form-data">
-                  <h4>Excel file: </h4><input class="d-lg-flex" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
-                  <h4>Config file: </h4><input class="d-lg-flex" type="file" name="config" accept="text/plain">
-                  <input type="submit" value='upload' onclick="$('#loading').show();$('#content').hide();">
-                </form>
-              </div>
-              {% if error %}
-              <div class="text-center">
-                <div class="alert alert-danger">{{ error }}</div>
-              </div>
-              {% endif %}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+            <body id="page-top">
+                <div id="wrapper">
+                    <div class="d-flex flex-column" id="content-wrapper">
 
-{% elif type == "config" %}
-<body id="page-top">
-  <div id="wrapper">
-    <div class="d-flex flex-column" id="content-wrapper">
-
-      <div id="content">
-        <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
-          <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
-            <div class="card text-white bg-primary shadow">
-              <div class="card-body">
-                <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
-                  <div class="sidebar-brand-icon rotate-n-15" style="color: rgba(255,255,255,0.9);"><i class="fas fa-bar-chart"></i></div>
-                  <div class="sidebar-brand-text mx-3"><span style="color: rgba(255,255,255,0.9);">Surveyinator</span></div>
-                </a>
-              </div>
-            </div>
-          </div>
-        </nav>
-          <div id="loading" style="display:none;">
-          <div class="spinner">
-            <div class="bounce1" style="background-color: #4e73df"></div>
-            <div class="bounce2" style="background-color: #4e73df"></div>
-            <div class="bounce3" style="background-color: #4e73df"></div>
-          </div>
-        </div>
-        <div id="container-fluid" class="container-fluid">
-          <div class="container-fluid">
-            <h3 class="text-dark mb-4">Config</h3>
-            <div class="card shadow">
-              <div class="card-header py-3">
-                <p class="text-primary m-0 font-weight-bold">Question type</p>
-              </div>
-              <div class="card-body">
-                <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
-                    <form id="configform" action="/config" method="post">
-                        <table class="table dataTable my-0" id="dataTable">
-                            <thead>
-                                <tr>
-                                    <th>Question</th>
-                                    <th>Type</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {% for question in questions: %}
-                            <tr>
-                                <td>{{question[1]}}</td>
-                                <td>
-                                    <div class="form-group">
-                                        <select form="configform" class="form-control" name="{{question[0]}}">
-                                            <option value="ignore" {% if question[2] == "ignore": %}selected{% endif %}>Ignore</option>
-                                            <option value="numerical" {% if question[2] == "numerical": %}selected{% endif %}>Numerical</option>
-                                            <option value="openended" {% if question[2] == "openended": %}selected{% endif %}>Open-ended</option>
-                                            <option value="categorical" {% if question[2] == "categorical": %}selected{% endif %}>Categorical</option>
-                                        </select>
+                        <div id="content">
+                            <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
+                                <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
+                                    <div class="card text-white bg-primary shadow">
+                                        <div class="card-body">
+                                            <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+                                                <div class="sidebar-brand-icon rotate-n-15" style="color: rgba(255,255,255,0.9);"><i class="fas fa-bar-chart"></i></div>
+                                                <div class="sidebar-brand-text mx-3"><span style="color: rgba(255,255,255,0.9);">Surveyinator</span></div>
+                                            </a>
+                                        </div>
                                     </div>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                        <input class="btn btn-primary" type="submit" onclick="$('#loading').show();$('#container-fluid').hide();">
-                    </form>
+                                </div>
+                            </nav>
+                            <div id="loading" style="display:none;">
+                                <div class="spinner">
+                                    <div class="bounce1" style="background-color: #4e73df"></div>
+                                    <div class="bounce2" style="background-color: #4e73df"></div>
+                                    <div class="bounce3" style="background-color: #4e73df"></div>
+                                </div>
+                            </div>
+                            <div id="container-fluid" class="container-fluid">
+                                <div class="container-fluid">
+                                    <h3 class="text-dark mb-4">Config</h3>
+                                    <div class="card shadow">
+                                        <div class="card-header py-3">
+                                            <p class="text-primary m-0 font-weight-bold">Question type</p>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+                                                <form id="configform" action="/config" method="post">
+                                                    <table class="table dataTable my-0" id="dataTable">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Question</th>
+                                                                <th>Type</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for question in questions: %}
+                                                            <tr>
+                                                                <td>{{question[1]}}</td>
+                                                                <td>
+                                                                    <div class="form-group">
+                                                                        <select form="configform" class="form-control" name="{{question[0]}}">
+                                                                            <option value="ignore" {% if question[2] == "ignore": %}selected{% endif %}>Ignore</option>
+                                                                            <option value="numerical" {% if question[2] == "numerical": %}selected{% endif %}>Numerical</option>
+                                                                            <option value="openended" {% if question[2] == "openended": %}selected{% endif %}>Open-ended</option>
+                                                                            <option value="categorical" {% if question[2] == "categorical": %}selected{% endif %}>Categorical</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                    <input class="btn btn-primary" type="submit" onclick="$('#loading').show();$('#container-fluid').hide();">
+                                                </form>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-{% endif %}
-    <footer class="bg-white sticky-footer" style="{% if type == "upload": %}position: absolute;{% endif %}bottom:0px; width:100%;">
-      <div class="container my-auto">
-        <div class="text-center my-auto"><span>Made with ♥ by Loh Yu Chen & Chi Junxiang 2019</span></div>
-          <div class="text-center my-auto"><span>View <a href="https://github.com/Ycmelon/cssurvey/" target="_blank">source</a></span></div>
-      </div>
-    </footer>
-  </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a></div>
-</body>
+                {% endif %}
+                <footer class="bg-white sticky-footer" style="{% if type == "upload" or type == "config": %}position: absolute;{% endif %}bottom:0px; width:100%;">
+                    <div class="container my-auto">
+                        <div class="text-center my-auto"><span>Made with ♥ by Loh Yu Chen & Chi Junxiang 2019</span></div>
+                        <div class="text-center my-auto"><span>View <a href="https://github.com/Ycmelon/cssurvey/" target="_blank">source</a></span></div>
+                    </div>
+                </footer>
+                </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a></div>
+            </body>
 
 </html>
