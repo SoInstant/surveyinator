@@ -74,6 +74,7 @@ def analysis_page():
     if (not request.method == "POST") and (not excel and not config):
         return redirect(url_for("main"))
     # Checking for files
+
     do_analysis = False
     if request.method == "GET":
         if excel and config:

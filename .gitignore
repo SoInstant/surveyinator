@@ -211,3 +211,8 @@ dmypy.json
 .pyre/
 
 # End of https://www.gitignore.io/api/python,pycharm
+# Uploads folder
+static/uploads/*
+
+# PyCharm
+.idea/
