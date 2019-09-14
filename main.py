@@ -70,11 +70,9 @@ def config_page():
 def analysis_page():
     # Methods
     excel, config = request.args.get('excel'), request.args.get('config')
-    print(excel, config)
     if (not request.method == "POST") and (not excel and not config):
         return redirect(url_for("main"))
     # Checking for files
-
     do_analysis = False
     if request.method == "GET":
         if excel and config:
