@@ -11,7 +11,6 @@ app.config["TEMP_FOLDER"] = None
 if not os.path.exists(app.config["UPLOAD_FOLDER"]):
     os.mkdir(app.config["UPLOAD_FOLDER"])
 
-
 def save_file(directory=None, excel_file=None, config_file=None):
     """Saves file(s) to directory
 
@@ -187,6 +186,22 @@ def download(path):
         attachment_filename="report.zip",
         as_attachment=True,
     )
+
+
+# Error handling
+error_messages = {404: "Page not Found", 403: "Forbidden", 410: "Gone", 500: "Internal Server Error"}
+
+
+@app.errorhandler(404)
+@app.errorhandler(403)
+@app.errorhandler(410)
+@app.errorhandler(500)
+def page_error(error):
+    print(str(error))
+    error_no = int(str(error)[:3])
+    error_message = error_messages[error_no]
+    print(error_no, error_message)
+    return render_template("index.html", type="error", error_no=error_no, error_message=error_message)
 
 
 app.run(port=80)

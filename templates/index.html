@@ -149,7 +149,6 @@
 <body id="page-top">
   <div id="wrapper">
     <div class="d-flex flex-column" id="content-wrapper">
-
       <div id="content">
         <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
           <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
@@ -217,6 +216,26 @@
       </div>
     </div>
   </div>
+{% elif type == "error" %}
+<body id="page-top">
+    <div id="wrapper">
+
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+
+            <div class="container-fluid">
+                <div class="text-center mt-5">
+                    <div class="error mx-auto" data-text="{{error_no}}">
+                        <p class="m-0"> {{error_no}} </p>
+                    </div>
+                    <p class="text-dark mb-5 lead">{{error_message}}</p>
+                    <p class="text-black-50 mb-0">It looks like you found a glitch in the matrix...</p><a href="/">← Back to upload page</a></div>
+            </div>
+        </div>
+
+    </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a></div>
+
+</body>
 
 {% endif %}
     <footer class="bg-white sticky-footer" style="{% if type == "upload": %}position: absolute;{% endif %}bottom:0px; width:100%;">
