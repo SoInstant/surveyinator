@@ -59,31 +59,46 @@ def config_page():
     if not request.method == "POST":
         return redirect(url_for("main"))
     else:
-        config=utils.to_config(directory=app.config["TEMP_FOLDER"], config=request.form.to_dict())
+        config = utils.to_config(directory=app.config["TEMP_FOLDER"], config=request.form.to_dict())
         for file in os.listdir(app.config["TEMP_FOLDER"]):
             if file.endswith(".xlsx"):
-                excel = os.path.join(app.config["TEMP_FOLDER"],file)
-        return redirect(url_for("analysis_page",excel=excel,config=config))
+                excel = os.path.join(app.config["TEMP_FOLDER"], file)
+        return redirect(url_for("analysis_page", excel=excel, config=config))
 
 
 @app.route("/results", methods=["GET", "POST"])
-def analysis_page(excel=None, config=None):
+def analysis_page():
     # Methods
+    excel, config = request.args.get('excel'), request.args.get('config')
+    print(excel, config)
     if (not request.method == "POST") and (not excel and not config):
         return redirect(url_for("main"))
     # Checking for files
-    if (request.files["file"] and request.files["config"]) or (excel and config):
+    do_analysis = False
+    if request.method == "GET":
+        if excel and config:
+            do_analysis = True
+    elif request.method == "POST" and (request.files["file"] and request.files["config"]):
+        do_analysis = True
+
+    # Do analysis
+    if do_analysis:
         # Saving files
-        save = save_file(excel_file=request.files["file"], config_file=request.files["config"])
-        directory, excel_filename, config_filename = save["Directory"], save["Excel"], save["Config"]
+        if request.method == "POST":
+            save = save_file(excel_file=request.files["file"], config_file=request.files["config"])
+            directory, excel_filename, config_filename = save["Directory"], save["Excel"], save["Config"]
+        else:
+            directory, excel_filename = os.path.split(excel)
+            config_filename = os.path.basename(config)
 
         questions = list(utils.parse_excel(os.path.join(directory, excel_filename)).keys())
         types = utils.parse_config(os.path.join(directory, config_filename))
 
-        if len(questions) != len(types):  # Excel but incomplete config
+        # Excel but incomplete config
+        if len(questions) != len(types):
             app.config["TEMP_FOLDER"] = directory
             predictor = utils.Predictor()
-            qn_dict = {}  # Form of qn_dict[i] = (qn,type)
+            qn_dict = {}
             for i, qn in enumerate(questions):
                 if i + 1 not in types.keys():
                     datatype = predictor.predict([qn])
