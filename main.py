@@ -7,6 +7,7 @@ import zipfile
 
 app = Flask("app")
 app.config["UPLOAD_FOLDER"] = "./static/uploads/"
+app.config["TEMP_FOLDER"] = None
 if not os.path.exists(app.config["UPLOAD_FOLDER"]):
     os.mkdir(app.config["UPLOAD_FOLDER"])
 
@@ -45,10 +46,6 @@ def save_file(directory=None, excel_file=None, config_file=None):
         excel_name = secure_filename(excel_file.filename)
         excel_file.save(os.path.join(directory, excel_name))
         output = {"Directory": directory, "Excel": excel_name, "Config": None}
-    # elif config_file:
-    #     config_name = secure_filename(config_file.filename)
-    #     config_file.save(os.path.join(directory, config_name))
-    #     output = {"Directory": directory, "Excel": None, "Config": config_name}
     return output
 
 
@@ -62,39 +59,42 @@ def config_page():
     if not request.method == "POST":
         return redirect(url_for("main"))
     else:
-        utils.to_config(request.form.to_dict())
-        return render_template("index.html", type="upload", error="empty")
+        config=utils.to_config(directory=app.config["TEMP_FOLDER"], config=request.form.to_dict())
+        for file in os.listdir(app.config["TEMP_FOLDER"]):
+            if file.endswith(".xlsx"):
+                excel = os.path.join(app.config["TEMP_FOLDER"],file)
+        return redirect(url_for("analysis_page",excel=excel,config=config))
 
 
 @app.route("/results", methods=["GET", "POST"])
-def analysis_page():
+def analysis_page(excel=None, config=None):
     # Methods
-    if not request.method == "POST":
+    if (not request.method == "POST") and (not excel and not config):
         return redirect(url_for("main"))
     # Checking for files
-    if not request.files["file"]:  # No excel
-        return render_template("index.html", type="upload", error="Missing Excel file!")
-
-    elif request.files["file"] and not request.files["config"]:  # Excel but no config
-        excel_path = save_file(excel_file=request.files["file"])[0]
-        questions = list(utils.parse_excel(excel_path).keys())
-        prediction = utils.Predictor().predict(questions)
-        questions_index = [
-            [i + 1, question, prediction[i]] for i, question in enumerate(questions)
-        ]
-
-        return render_template(
-            "index.html", type="config", questions=questions_index, error=None
-        )
-
-    else:
-        save = save_file(excel_file=request.files["file"], config_file=request.files["config"])
+    if (request.files["file"] and request.files["config"]) or (excel and config):
         # Saving files
+        save = save_file(excel_file=request.files["file"], config_file=request.files["config"])
         directory, excel_filename, config_filename = save["Directory"], save["Excel"], save["Config"]
-        questions = utils.parse_excel(os.path.join(directory, excel_filename)).keys()
+
+        questions = list(utils.parse_excel(os.path.join(directory, excel_filename)).keys())
         types = utils.parse_config(os.path.join(directory, config_filename))
+
         if len(questions) != len(types):  # Excel but incomplete config
-            return "oh noes"
+            app.config["TEMP_FOLDER"] = directory
+            predictor = utils.Predictor()
+            qn_dict = {}  # Form of qn_dict[i] = (qn,type)
+            for i, qn in enumerate(questions):
+                if i + 1 not in types.keys():
+                    datatype = predictor.predict([qn])
+                    qn_dict[i + 1] = (qn, datatype[0])
+                else:
+                    qn_dict[i + 1] = (qn, types[i + 1])
+            questions_index = [(i[0], i[1][0], i[1][1]) for i in qn_dict.items()]
+
+            return render_template(
+                "index.html", type="config", questions=questions_index, error=None
+            )
 
         # Start analysis
         app.config["ANALYSIS"] = analyse.analyse(
@@ -118,8 +118,7 @@ def analysis_page():
                     clouds.append([question, analysis[1]])
                 elif analysis[0] == "numerical":
                     numerical.append([question, analysis[1]])
-                else:
-                    pass
+
         graphs = tuple(utils.chunk(graphs, 3))
         clouds = tuple(utils.chunk(clouds, 2))
         numerical = tuple(utils.chunk(numerical, 4))
@@ -132,6 +131,22 @@ def analysis_page():
             numerical=numerical,
             filename=excel_filename,
             path=os.path.split(directory)[1],
+        )
+    elif not request.files["file"]:  # No excel
+        return render_template("index.html", type="upload", error="Missing Excel file!")
+
+    elif request.files["file"] and not request.files["config"]:  # Excel but no config
+        save = save_file(excel_file=request.files["file"])
+        directory, excel_filename = save["Directory"], save["Excel"]
+        app.config["TEMP_FOLDER"] = directory
+        questions = list(utils.parse_excel(os.path.join(directory, excel_filename)).keys())
+        predictions = utils.Predictor().predict(questions)
+        questions_index = [
+            (i + 1, question, predictions[i]) for i, question in enumerate(questions)
+        ]
+
+        return render_template(
+            "index.html", type="config", questions=questions_index, error=None
         )
 
 
