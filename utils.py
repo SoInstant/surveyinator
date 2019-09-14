@@ -1,23 +1,27 @@
 """Provides utility functions.
 
 This module contains utility functions for main.py and analyse.py.
-Those functions are placed into this module to prevent spagetti code in
+Those functions are placed into this module to prevent spaghetti code in
 both of those scripts.
 """
+# Imports
 from openpyxl import load_workbook
 import pickle
 import plotly
+import os
 from flask import Markup
 from random import choices
 from string import ascii_letters, digits
 
+
+# Misc
 
 def secure(length):
     """Returns a random string of len(length)"""
     return "".join(choices(ascii_letters + digits, k=length))
 
 
-# Parsing Utils
+# File Utils
 def parse_excel(excel_file):
     """Parses an Excel file by column
 
@@ -51,8 +55,8 @@ def parse_excel(excel_file):
                 [str(cell.value) for cell in col if cell.value is not None]
             )
         else:
-            raise KeyError(f"Question not present in column {i+1}")
-    return dict([[col[0], col[1:]] for col in cell_values])
+            raise KeyError(f"Question not present in column {i + 1}")
+    return dict([(col[0], col[1:]) for col in cell_values])
 
 
 def parse_config(config_file):
@@ -71,9 +75,9 @@ def parse_config(config_file):
         config_file(str): The filename of the config file to be parsed
 
     Returns:
-        A tuple of the data-types
+        A dictionary mapping the datatype to the question number
         For example:
-        ("categorical","numerical","ignore","openended")
+        {1: 'categorical', 2: 'numerical', 3: 'ignore', 4: 'openended'}
 
     Raises:
         ValueError: Data-type not supported
@@ -83,15 +87,36 @@ def parse_config(config_file):
         lines = [line.split(" ") for line in lines]
         for i in lines:
             if not i[0].isdigit() or i[1] not in (
-                "ignore",
-                "numerical",
-                "categorical",
-                "openended",
+                    "ignore",
+                    "numerical",
+                    "categorical",
+                    "openended",
             ):
                 raise TypeError(
                     f"Line'{i}': parse_config only accepts lines with format <qn_no> <qn_type>"
                 )
+        lines = [(int(line[0]), line[1]) for line in lines]
         return dict(lines)
+
+
+def to_config(directory, config):
+    """"Creates/modifies a config file
+
+    Creates/modifies a config file based on config given
+    If config_file exists, it will modify the given config_file;
+    else, it will create a new config file
+
+    Args:
+        directory(str) : Directory to save config file in
+        config(dict) : Dictionary mapping datatype to question number
+    Returns:
+        String containing the path to the config file
+    """
+    to_write = [f"{i[0]} {i[1]}\n" for i in config.items()]
+    path = os.path.join(directory, "config_file.txt")
+    with open(path, "w") as config_f:
+        config_f.writelines(to_write)
+    return path
 
 
 # Prediction
@@ -184,7 +209,7 @@ def chunk(input, size):
         One chunk
     """
     for i in range(0, len(input), size):
-        yield input[i : (i + size)]
+        yield input[i: (i + size)]
 
 
 if __name__ == "__main__":
