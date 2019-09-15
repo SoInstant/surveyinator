@@ -69,7 +69,7 @@ def config_page():
 @app.route("/results", methods=["GET", "POST"])
 def analysis_page():
     # Methods
-    excel, config = request.args.get('excel'), request.args.get('config')
+    excel, config = request.args.get("excel"), request.args.get("config")
     if (not request.method == "POST") and (not excel and not config):
         return redirect(url_for("main"))
     # Checking for files
