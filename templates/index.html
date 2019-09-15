@@ -4,11 +4,13 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-        <title>Surveyinator -
+        <title>
             {% if type == "upload" %}
-            Upload
+            Surveyinator - Upload
             {% elif type == "analysis" %}
-            Analysis of {{filename}}
+           Surveyinator - Analysis of {{filename}}
+            {% elif type == "error" %}
+                {{error_no}} - {{error_message}}
             {% endif %}
         </title>
         <link rel="icon" href="/static/favicon.ico">

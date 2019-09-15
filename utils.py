@@ -17,7 +17,7 @@ from string import ascii_letters, digits
 # Misc
 
 def secure(length):
-    """Returns a random string of len(length)"""
+    """Returns a random string of length"""
     return "".join(choices(ascii_letters + digits, k=length))
 
 
@@ -85,13 +85,9 @@ def parse_config(config_file):
     with open(config_file, mode="r", encoding="utf-8") as f:
         lines = [line.lower() for line in f.read().split("\n") if line != ""]
         lines = [line.split(" ") for line in lines]
+        accepted = ("ignore", "numerical", "categorical", "openended",)
         for i in lines:
-            if not i[0].isdigit() or i[1] not in (
-                    "ignore",
-                    "numerical",
-                    "categorical",
-                    "openended",
-            ):
+            if not i[0].isdigit() or i[1] not in accepted:
                 raise TypeError(
                     f"Line'{i}': parse_config only accepts lines with format <qn_no> <qn_type>"
                 )
@@ -113,10 +109,10 @@ def to_config(directory, config):
         String containing the path to the config file
     """
     to_write = [f"{i[0]} {i[1]}\n" for i in config.items()]
-    path = os.path.join(directory, "config_file.txt")
-    with open(path, "w") as config_f:
+    file_path = os.path.join(directory, "config_file.txt")
+    with open(file_path, "w") as config_f:
         config_f.writelines(to_write)
-    return path
+    return file_path
 
 
 # Prediction
@@ -135,7 +131,7 @@ class Predictor(object):
         return [self.classifier.classify(qn) for qn in qns]
 
 
-# Ploting
+# Plotting
 def pie(title, labels, values, hole=0.4):
     """Creates a pie chart
 
@@ -181,7 +177,7 @@ def split_lines(text, length=50):
         length(int): Size of each line
 
     Returns:
-        Text split into lines
+        String containing text split into lines
     """
     output = [""]
     for word in text.split(" "):
@@ -213,4 +209,4 @@ def chunk(input, size):
 
 
 if __name__ == "__main__":
-    print(parse_excel(r"C:\\users\chi_j\Desktop\DOcx\bruh.xlsx"))
+    pass  # Testing is over :D
