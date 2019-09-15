@@ -5,13 +5,16 @@ Those functions are placed into this module to prevent spaghetti code in
 both of those scripts.
 """
 # Imports
-from openpyxl import load_workbook
-import pickle
-import plotly
 import os
-from flask import Markup
+import pickle
 from random import choices
 from string import ascii_letters, digits
+
+import plotly
+from flask import Markup
+
+from openpyxl import load_workbook
+from openpyxl.utils.cell import get_column_letter
 
 
 # Misc
@@ -55,7 +58,7 @@ def parse_excel(excel_file):
                 [str(cell.value) for cell in col if cell.value is not None]
             )
         else:
-            raise KeyError(f"Question not present in column {i + 1}")
+            raise KeyError(f"Question not present in column {get_column_letter(i + 1)}")
     return dict([(col[0], col[1:]) for col in cell_values])
 
 
@@ -77,7 +80,7 @@ def parse_config(config_file):
     Returns:
         A dictionary mapping the datatype to the question number
         For example:
-        {1: 'categorical', 2: 'numerical', 3: 'ignore', 4: 'openended'}
+        {1: "categorical", 2: "numerical", 3: "ignore", 4: "openended"}
 
     Raises:
         ValueError: Data-type not supported

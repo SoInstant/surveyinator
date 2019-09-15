@@ -4,12 +4,14 @@ This module analyses survey responses in an excel .xlsx file through various
 data analysis methods.
 """
 # Imports
+import os
+
+from docx import Document
 from numpy import mean, median
 from scipy.stats import mode
-from utils import parse_config, parse_excel, secure
 from wordcloud import WordCloud
-from docx import Document
-import os
+
+from utils import parse_config, parse_excel, secure
 
 
 def categorise(responses, datatypes):

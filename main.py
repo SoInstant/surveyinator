@@ -1,9 +1,11 @@
+import os
+import zipfile
+
 from flask import Flask, render_template, request, redirect, url_for, send_file
 from werkzeug.utils import secure_filename
-import os
+
 import analyse
 import utils
-import zipfile
 
 app = Flask("app")
 app.config["UPLOAD_FOLDER"] = "./static/uploads/"
