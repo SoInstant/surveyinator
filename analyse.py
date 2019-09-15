@@ -3,12 +3,15 @@
 This module analyses survey responses in an excel .xlsx file through various
 data analysis methods.
 """
+# Imports
+import os
+
+from docx import Document
 from numpy import mean, median
 from scipy.stats import mode
-from utils import parse_config, parse_excel, secure
 from wordcloud import WordCloud
-from docx import Document
-import os
+
+from utils import parse_config, parse_excel, secure
 
 
 def categorise(responses, datatypes):
@@ -27,7 +30,7 @@ def categorise(responses, datatypes):
     """
     output = {}
     for i, items in enumerate(responses.items()):
-        output[items[0]] = tuple([datatypes[i+1], items[1]])
+        output[items[0]] = tuple([datatypes[i + 1], items[1]])
     return output
 
 
@@ -36,7 +39,8 @@ def numerical(responses):
 
     Args:
         responses(list/tuple): List/tuple of the responses
-            For example: [1,2,3,1,2,3,4,58,1,5,8]
+            For example: [1,2,3,1,2,3,4,58,1,5,8] or
+            (1,2,3,1,2,3,4,58,1,5,8)
 
     Returns:
         A dict of the Mean, Median and Mode of the data.
@@ -194,7 +198,4 @@ def generate_report(directory, analysis):
 
 
 if __name__ == "__main__":
-    bruh = analyse(
-        r"C:\Users\chi_j\Desktop\Scam", "responses.xlsx", config_file="config_file.txt"
-    )
-    print(generate_report(r"C:\Users\chi_j\Desktop\Scam", bruh))
+    pass  # Testing is over :D

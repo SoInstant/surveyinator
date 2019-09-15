@@ -4,11 +4,13 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-        <title>Surveyinator -
+        <title>
             {% if type == "upload" %}
-            Upload
+            Surveyinator - Upload
             {% elif type == "analysis" %}
-            Analysis of {{filename}}
+           Surveyinator - Analysis of {{filename}}
+            {% elif type == "error" %}
+                {{error_no}} - {{error_message}}
             {% endif %}
         </title>
         <link rel="icon" href="/static/favicon.ico">
@@ -315,12 +317,10 @@
             </div>
         </div>
 
-    </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a></div>
-
 </body>
 
                 {% endif %}
-                <footer class="bg-white sticky-footer" style="{% if type == "upload" or type == "config": %}position: absolute;{% endif %}bottom:0px; width:100%;">
+                <footer class="bg-white sticky-footer" style="{% if type == "upload" or type == "error": %}position: absolute;{% endif %}bottom:0px; width:100%;">
                     <div class="container my-auto">
                         <div class="text-center my-auto"><span>Made with ♥ by Loh Yu Chen & Chi Junxiang 2019</span></div>
                         <div class="text-center my-auto"><span>View <a href="https://github.com/Ycmelon/cssurvey/" target="_blank">source</a></span></div>

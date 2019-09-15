@@ -1,15 +1,18 @@
+import os
+import zipfile
+
 from flask import Flask, render_template, request, redirect, url_for, send_file
 from werkzeug.utils import secure_filename
-import os
+
 import analyse
 import utils
-import zipfile
 
 app = Flask("app")
 app.config["UPLOAD_FOLDER"] = "./static/uploads/"
 app.config["TEMP_FOLDER"] = None
 if not os.path.exists(app.config["UPLOAD_FOLDER"]):
     os.mkdir(app.config["UPLOAD_FOLDER"])
+
 
 def save_file(directory=None, excel_file=None, config_file=None):
     """Saves file(s) to directory
@@ -68,7 +71,7 @@ def config_page():
 @app.route("/results", methods=["GET", "POST"])
 def analysis_page():
     # Methods
-    excel, config = request.args.get('excel'), request.args.get('config')
+    excel, config = request.args.get("excel"), request.args.get("config")
     if (not request.method == "POST") and (not excel and not config):
         return redirect(url_for("main"))
     # Checking for files
@@ -190,15 +193,13 @@ def download(path):
 error_messages = {404: "Page not Found", 403: "Forbidden", 410: "Gone", 500: "Internal Server Error"}
 
 
-@app.errorhandler(404)
 @app.errorhandler(403)
+@app.errorhandler(404)
 @app.errorhandler(410)
 @app.errorhandler(500)
 def page_error(error):
-    print(str(error))
     error_no = int(str(error)[:3])
     error_message = error_messages[error_no]
-    print(error_no, error_message)
     return render_template("index.html", type="error", error_no=error_no, error_message=error_message)
 
 

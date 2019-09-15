@@ -11,7 +11,15 @@ interested to choose CEP in Year 2), and get a consolidated
 picture of how they perceive the 9 weeks CS course based on student 
 feedback on their Year 1 CS experience.
 
-Surveyinator is written fully in [Python 3.6](https://python.org).
+Surveyinator is written fully in [Python 3.7](https://python.org).
+
+### Features
++ Analyse numerical, categorical and openended data
++ Able to give a consolidated picture of responses
++ Beautiful aesthetics
++ Intuitive interface
++ User-friendly
++ Able to export analysis
 
 ### Installation
 
