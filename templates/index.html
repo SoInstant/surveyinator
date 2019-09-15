@@ -131,9 +131,87 @@
                                         <h1 class="text-dark mb-4">Surveyinator</h1>
                                     </div>
                                     <form name="form" action="/results" method="post" enctype="multipart/form-data">
-                                        <h4>Excel file: </h4><input class="d-lg-flex" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
-                                        <h4>Config file: </h4><input class="d-lg-flex" type="file" name="config" accept="text/plain">
-                                        <input type="submit" value='upload' onclick="$('#loading').show();$('#content').hide();">
+                                        <h4>Excel file: </h4>
+                                        <div id="dropContainer" class="uploadcontainer text-black shadow" style="text-align:center">
+                                            <div id="uploadstuff">
+                                                <img src="static/upload.png" width=50px/>
+                                                <h3>Drag and Drop</h3>
+                                                <p>or</p>
+                                                <label class="btn btn-primary" style="cursor: pointer;"><input name="file" style="display: none;" type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" id="fileInput"/>click here to upload...</label>
+                                            </div>
+
+                                            <div id="uploadedstuff" style="display: none;">
+                                                <h3>File uploaded</h3>
+                                                <button class="btn btn-primary" onclick="showUploaded();">Upload again</button>
+                                            </div>
+                                        </div>
+                                        <script>
+                                        dropContainer.ondragover = dropContainer.ondragenter = function(evt) {
+                                            evt.preventDefault();
+                                        };
+
+                                        dropContainer.ondrop = function(evt) {
+                                          // pretty simple -- but not for IE :(
+                                          fileInput.files = evt.dataTransfer.files;
+                                          evt.preventDefault();
+                                          showUploaded();
+                                        };
+
+                                        function showUploaded(){
+                                            if (uploadstuff.style.display == "none"){
+                                                fileInput.value = null;
+                                                uploadstuff.style.display = "block";
+                                                uploadedstuff.style.display = "none";
+                                            }else{
+                                                uploadstuff.style.display = "none";
+                                                uploadedstuff.style.display = "block";
+                                            }
+                                        }
+                                        document.getElementById("fileInput").onchange = function() {
+                                            showUploaded();
+                                        };
+                                        </script>
+                                        <h4>Config file: </h4>
+                                        <div id="dropContainer2" class="uploadcontainer text-black shadow" style="text-align:center">
+                                            <div id="uploadstuff2">
+                                                <img src="static/upload.png" width=50px/>
+                                                <h3>Drag and Drop</h3>
+                                                <p>or</p>
+                                                <label class="btn btn-primary" style="cursor: pointer;"><input style="display: none;" type="file" name="config" accept="text/plain" id="fileInput2"/>click here to upload...</label>
+                                            </div>
+
+                                            <div id="uploadedstuff2" style="display: none;">
+                                                <h3>File uploaded</h3>
+                                                <button class="btn btn-primary" onclick="showUploaded2();">Upload again</button>
+                                            </div>
+                                        </div>
+                                        <script>
+                                        dropContainer2.ondragover = dropContainer2.ondragenter = function(evt) {
+                                            evt.preventDefault();
+                                        };
+
+                                        dropContainer2.ondrop = function(evt) {
+                                          // pretty simple -- but not for IE :(
+                                          fileInput2.files = evt.dataTransfer.files;
+                                          evt.preventDefault();
+                                          showUploaded2();
+                                        };
+
+                                        function showUploaded2(){
+                                            if (uploadstuff2.style.display == "none"){
+                                                fileInput2.value = null;
+                                                uploadstuff2.style.display = "block";
+                                                uploadedstuff2.style.display = "none";
+                                            }else{
+                                                uploadstuff2.style.display = "none";
+                                                uploadedstuff2.style.display = "block";
+                                            }
+                                        }
+                                        document.getElementById("fileInput2").onchange = function() {
+                                            showUploaded2();
+                                        };
+                                        </script>
+                                        <input class="btn btn-primary" type="submit" value='Analyse' onclick="$('#loading').show();$('#content').hide();">
                                     </form>
                                 </div>
                                 {% if error %}
