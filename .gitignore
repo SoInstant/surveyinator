@@ -216,4 +216,4 @@ dmypy.json
 static/uploads/*
 
 # PyCharm
-.idea/
+.idea/*
