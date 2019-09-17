@@ -8,3 +8,4 @@ openpyxl
 plotly
 matplotlib
 python-docx
+gunicorn
