@@ -212,6 +212,9 @@ def download(path):
         as_attachment=True,
     )
 
+@app.route("/faq")
+def faq():
+    return render_template("index.html", type="faq")
 
 # Error handling
 error_messages = {404: "Page not Found", 403: "Forbidden", 410: "Gone", 500: "Internal Server Error"}
