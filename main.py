@@ -229,5 +229,5 @@ def page_error(error):
     error_message = error_messages[error_no]
     return render_template("index.html", type="error", error_no=error_no, error_message=error_message)
 
-
-app.run(port=80)
+if __name__ == "__init__":
+    app.run(port=80)
