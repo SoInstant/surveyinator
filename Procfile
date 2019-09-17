@@ -1,1 +1,1 @@
-web: gunicorn main:app --preload --workers 1
+web: gunicorn 0.0.0.0:8080 main:app --preload --workers 1
