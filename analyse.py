@@ -27,7 +27,6 @@ This module analyses survey responses in an excel .xlsx file through various
 data analysis methods.
 """
 
-
 # Imports
 import os
 
@@ -57,6 +56,14 @@ def categorise(responses, datatypes):
     for i, items in enumerate(responses.items()):
         output[items[0]] = tuple([datatypes[i + 1], items[1]])
     return output
+
+
+def multi_categorical(responses):
+    output = []
+    for response in responses:
+        for option in response.split(";"):
+            output.append(option)
+    return categorical(output)
 
 
 def numerical(responses):
@@ -156,11 +163,14 @@ def analyse(directory, excel_file, config_file):
         list_of_responses = responses[1]
         if category == "numerical":
             analysed = ("numerical", numerical(list(map(int, list_of_responses))))
+        elif category == "multicategorical":
+            analysed = ("categorical", multi_categorical(list_of_responses))
         elif category == "categorical":
             analysed = ("categorical", categorical(list_of_responses))
         elif category == "openended":
             analysed = ("openended", openended(list_of_responses, directory))
         analysis[qn] = analysed
+        analysed = None
     return analysis
 
 
@@ -223,4 +233,4 @@ def generate_report(directory, analysis):
 
 
 if __name__ == "__main__":
-    pass  # Testing is over :D
+    pass # Testing finished for now

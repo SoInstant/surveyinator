@@ -103,7 +103,7 @@ def parse_config(config_file):
     Returns:
         A dictionary mapping the datatype to the question number
         For example:
-        {1: "categorical", 2: "numerical", 3: "ignore", 4: "openended"}
+        {1: "categorical", 2: "numerical", 3: "ignore", 4: "openended", 5: "multicategorical"}
 
     Raises:
         ValueError: Data-type not supported
@@ -111,7 +111,7 @@ def parse_config(config_file):
     with open(config_file, mode="r", encoding="utf-8") as f:
         lines = [line.lower() for line in f.read().split("\n") if line != ""]
         lines = [line.split(" ") for line in lines]
-        accepted = ("ignore", "numerical", "categorical", "openended",)
+        accepted = ("ignore", "numerical", "categorical", "openended","multicategorical")
         for i in lines:
             if not i[0].isdigit() or i[1] not in accepted:
                 raise TypeError(
