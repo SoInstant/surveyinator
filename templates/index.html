@@ -328,39 +328,33 @@ SOFTWARE.
                 <div class="faqgroup">
                     <button class="accordion">How to use?</button>
                     <div class="panel">
-                        <p>1. Export a google form result (from the google sheet) as .docx</p>
-                        <p>2. Create a config file, either manually (see below) or through the <a href="/">website</a>
+                        <p>1. Export a google form result (from the google sheet) as .csv</p>
+                        <p>2. Convert the csv to an excel spreadsheet (if needed, <a href="https://www.zamzar.com/convert/csv-to-xls/">here</a>)</p>
+                        <p>3. Create a config file, either manually (see below) or through the <a href="/">website</a>
                             (continue)</p>
-                        <p>3. Upload the excel file and the config file (if you made it) through the website</p>
-                        <p>4. If you have not submitted the config file, do so with the config page.</p>
+                        <p>4. Upload the excel file and the config file (if you made it) through the website</p>
+                        <p>5. If you have not submitted the config file, do so with the config page.</p>
                     </div>
                 </div>
                 <div class="faqgroup">
                     <button class="accordion">How to make config_file for various types of google forms qn</button>
                     <div class="panel">
                         <p>Config file format: [question number] [type of question]</p>
+                        <p>Accepted types are: ignore, numerical, categorical, openended and multicategorical</p>
                         <p>Example:</p>
-                        <pre><code>1 ignore
-2 ignore
-3 ignore
-5 categorical
-6 categorical
-7 categorical
-8 categorical
-9 categorical
-10 categorical
-11 categorical
-12 openended
-13 openended
-14 openended
-15 categorical
-16 numerical</code></pre>
+                        <pre><code>1 ignore<br>2 numerical<br>3 categorical<br>4 openended<br>5 multicategorical</code></pre>
                     </div>
                 </div>
                 <div class="faqgroup">
                     <button class="accordion">What sorts of data cannot be analysed</button>
                     <div class="panel">
-                        <p>Lorem ipsum...</p>
+                        <p>Surveyinator is unable to analyse the following types of responses:</p>
+                        <ul>
+                            <li>Timestamps</li>
+                            <li>Time</li>
+                            <li>Date</li>
+                        </ul>
+                        <p>That's it! :D</p>
                     </div>
                 </div>
                 <script src="static/js/accordion.js"></script>
