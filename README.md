@@ -1,4 +1,4 @@
-# Y2 CEP Final Project
+# Y2 CEP Final Project - _Surveyinator_
 ### Description
 Surveyinator is a survey analyser for anyone and everyone to use. 
 It analyses survey responses through a variety of analysis methods,
