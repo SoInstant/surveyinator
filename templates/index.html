@@ -57,13 +57,13 @@ SOFTWARE.
 
 {% if type == "analysis" or type == "config" or type == "faq" %}
     <body id="page-top">
+    <div id="page-container">
+    <div id="content-wrap">
     <div id="wrapper">
     <div class="d-flex flex-column" id="content-wrapper">
     <div id="content">
     <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
         <div class="container-fluid">
-            <button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop" type="button">
-                <i class="fas fa-bars"></i></button>
             <div class="card text-white bg-primary shadow">
                 <div class="card-body">
                     <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0"
@@ -152,195 +152,200 @@ SOFTWARE.
 {% elif type == "upload" %}
 
     <body class="bg-gradient-primary">
-    <div id="loading" style="display:none;">
-        <div class="spinner">
-            <div class="bounce1"></div>
-            <div class="bounce2"></div>
-            <div class="bounce3"></div>
-        </div>
-    </div>
-    <div id="content" class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-9 col-lg-12 col-xl-10">
-                <div class="card shadow-lg o-hidden border-0 my-5">
-                    <div class="card-body p-0">
-                        <div class="p-5">
-                            <div class="text-center">
-                                <h1 class="text-dark mb-4">Surveyinator</h1>
-                            </div>
-                            <form name="form" action="/results" method="post" enctype="multipart/form-data">
-                                <h4>Excel file: </h4>
-                                <div id="dropContainer" class="uploadcontainer text-black shadow"
-                                     style="text-align:center">
-                                    <div id="uploadstuff">
-                                        <img src="static/upload.png" width=50px/>
-                                        <h3>Drag and Drop</h3>
-                                        <p>or</p>
-                                        <label class="btn btn-primary" style="cursor: pointer;"><input
-                                                name="file"
-                                                style="display: none;"
-                                                type="file"
-                                                accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                                                id="fileInput"/>click
-                                            here to upload...</label>
-                                    </div>
-
-                                    <div id="uploadedstuff" style="display: none;">
-                                        <h3>File uploaded</h3>
-                                        <button class="btn btn-primary" onclick="showUploaded();">Upload
-                                            again
-                                        </button>
-                                    </div>
-                                </div>
-                                <h4>Config file: </h4>
-                                <div id="dropContainer2" class="uploadcontainer text-black shadow"
-                                     style="text-align:center">
-                                    <div id="uploadstuff2">
-                                        <img src="static/upload.png" width=50px/>
-                                        <h3>Drag and Drop</h3>
-                                        <p>or</p>
-                                        <label class="btn btn-primary" style="cursor: pointer;"><input
-                                                style="display: none;" type="file" name="config"
-                                                accept="text/plain"
-                                                id="fileInput2"/>click here to upload...</label>
-                                    </div>
-
-                                    <div id="uploadedstuff2" style="display: none;">
-                                        <h3>File uploaded</h3>
-                                        <button class="btn btn-primary" onclick="showUploaded2();">Upload
-                                            again
-                                        </button>
-                                    </div>
-                                </div>
-                                <script src="static/js/draganddrop.js"></script>
-                                <input class="btn btn-primary" type="submit" value='Analyse'
-                                       onclick="loading();">
-                            </form>
-                        </div>
-                        {% if error %}
-                            <div class="text-center">
-                                <div class="alert alert-danger">{{ error }}</div>
-                            </div>
-                        {% endif %}
-                    </div>
+    <div id="page-container">
+        <div id="content-wrap">
+            <div id="loading" style="display:none;">
+                <div class="spinner">
+                    <div class="bounce1"></div>
+                    <div class="bounce2"></div>
+                    <div class="bounce3"></div>
                 </div>
             </div>
-        </div>
-    </div>
-
-{% elif type == "config" %}
-    <div id="loading" style="display:none;">
-        <div class="spinner">
-            <div class="bounce1" style="background-color: #4e73df"></div>
-            <div class="bounce2" style="background-color: #4e73df"></div>
-            <div class="bounce3" style="background-color: #4e73df"></div>
-        </div>
-    </div>
-    <div id="container-fluid" class="container-fluid">
-        <div class="container-fluid">
-            <h3 class="text-dark mb-4">Config</h3>
-            <div class="card shadow">
-                <div class="card-header py-3">
-                    <p class="text-primary m-0 font-weight-bold">Question type</p>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive table mt-2" id="dataTable" role="grid"
-                         aria-describedby="dataTable_info">
-                        <form id="configform" action="/config" method="post">
-                            <table class="table dataTable my-0" id="dataTable">
-                                <thead>
-                                <tr>
-                                    <th>Question</th>
-                                    <th>Type</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for question in questions: %}
-                                    <tr>
-                                        <td>{{ question[1] }}</td>
-                                        <td>
-                                            <div class="form-group">
-                                                <select form="configform" class="form-control"
-                                                        name="{{ question[0] }}">
-                                                    <option value="ignore"
-                                                            {% if question[2] == "ignore": %}selected{% endif %}>
-                                                        Ignore
-                                                    </option>
-                                                    <option value="numerical"
-                                                            {% if question[2] == "numerical": %}selected{% endif %}>
-                                                        Numerical
-                                                    </option>
-                                                    <option value="openended"
-                                                            {% if question[2] == "openended": %}selected{% endif %}>
-                                                        Open-ended
-                                                    </option>
-                                                    <option value="categorical"
-                                                            {% if question[2] == "categorical": %}selected{% endif %}>
-                                                        Categorical
-                                                    </option>
-                                                    <option value="multicategorical"
-                                                            {% if question[2] == "multicategorical": %}selected{% endif %}>
-                                                        Multi-categorical
-                                                    </option>
-                                                </select>
+            <div id="content" class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-9 col-lg-12 col-xl-10">
+                        <div class="card shadow-lg o-hidden border-0 my-5">
+                            <div class="card-body p-0">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="text-dark mb-4">Surveyinator</h1>
+                                    </div>
+                                    <form name="form" action="/results" method="post" enctype="multipart/form-data">
+                                        <h4>Excel file: </h4>
+                                        <div id="dropContainer" class="uploadcontainer text-black shadow"
+                                             style="text-align:center">
+                                            <div id="uploadstuff">
+                                                <img src="static/upload.png" width=50px/>
+                                                <h3>Drag and Drop</h3>
+                                                <p>or</p>
+                                                <label class="btn btn-primary" style="cursor: pointer;"><input
+                                                        name="file"
+                                                        style="display: none;"
+                                                        type="file"
+                                                        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                                        id="fileInput"/>click
+                                                    here to upload...</label>
                                             </div>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
-                            <input class="btn btn-primary" type="submit"
-                                   onclick="$('#loading').show();$('#container-fluid').hide();">
-                        </form>
+
+                                            <div id="uploadedstuff" style="display: none;">
+                                                <h3>File uploaded</h3>
+                                                <button class="btn btn-primary" onclick="showUploaded();">Upload
+                                                    again
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <h4>Config file: </h4>
+                                        <div id="dropContainer2" class="uploadcontainer text-black shadow"
+                                             style="text-align:center">
+                                            <div id="uploadstuff2">
+                                                <img src="static/upload.png" width=50px/>
+                                                <h3>Drag and Drop</h3>
+                                                <p>or</p>
+                                                <label class="btn btn-primary" style="cursor: pointer;"><input
+                                                        style="display: none;" type="file" name="config"
+                                                        accept="text/plain"
+                                                        id="fileInput2"/>click here to upload...</label>
+                                            </div>
+
+                                            <div id="uploadedstuff2" style="display: none;">
+                                                <h3>File uploaded</h3>
+                                                <button class="btn btn-primary" onclick="showUploaded2();">Upload
+                                                    again
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <script src="static/js/draganddrop.js"></script>
+                                        <input class="btn btn-primary" type="submit" value='Analyse'
+                                               onclick="loading();">
+                                    </form>
+                                </div>
+                                {% if error %}
+                                    <div class="text-center">
+                                        <div class="alert alert-danger">{{ error }}</div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
+                </div>
+            </div>
+
+            {% elif type == "config" %}
+            <div id="loading" style="display:none;">
+                <div class="spinner">
+                    <div class="bounce1" style="background-color: #4e73df"></div>
+                    <div class="bounce2" style="background-color: #4e73df"></div>
+                    <div class="bounce3" style="background-color: #4e73df"></div>
+                </div>
+            </div>
+            <div id="container-fluid" class="container-fluid">
+                <div class="container-fluid">
+                    <h3 class="text-dark mb-4">Config</h3>
+                    <div class="card shadow">
+                        <div class="card-header py-3">
+                            <p class="text-primary m-0 font-weight-bold">Question type</p>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive table mt-2" id="dataTable" role="grid"
+                                 aria-describedby="dataTable_info">
+                                <form id="configform" action="/config" method="post">
+                                    <table class="table dataTable my-0" id="dataTable">
+                                        <thead>
+                                        <tr>
+                                            <th>Question</th>
+                                            <th>Type</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for question in questions: %}
+                                            <tr>
+                                                <td>{{ question[1] }}</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <select form="configform" class="form-control"
+                                                                name="{{ question[0] }}">
+                                                            <option value="ignore"
+                                                                    {% if question[2] == "ignore": %}selected{% endif %}>
+                                                                Ignore
+                                                            </option>
+                                                            <option value="numerical"
+                                                                    {% if question[2] == "numerical": %}selected{% endif %}>
+                                                                Numerical
+                                                            </option>
+                                                            <option value="openended"
+                                                                    {% if question[2] == "openended": %}selected{% endif %}>
+                                                                Open-ended
+                                                            </option>
+                                                            <option value="categorical"
+                                                                    {% if question[2] == "categorical": %}selected{% endif %}>
+                                                                Categorical
+                                                            </option>
+                                                            <option value="multicategorical"
+                                                                    {% if question[2] == "multicategorical": %}selected{% endif %}>
+                                                                Multi-categorical
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    <input class="btn btn-primary" type="submit"
+                                           onclick="$('#loading').show();$('#container-fluid').hide();">
+                                </form>
+                            </div>
 
 
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    </div>
     </div>
     </div>
 {% elif type == "error" %}
     <body id="page-top">
-    <div id="wrapper">
+    <div id="page-container">
+    <div id="content-wrap">
+        <div id="wrapper">
 
-        <div class="d-flex flex-column" id="content-wrapper">
-            <div id="content">
+            <div class="d-flex flex-column" id="content-wrapper">
+                <div id="content">
 
-                <div class="container-fluid">
-                    <div class="text-center mt-5">
-                        <div class="error mx-auto" data-text="{{ error_no }}">
-                            <p class="m-0"> {{ error_no }} </p>
-                        </div>
-                        <p class="text-dark mb-5 lead">{{ error_message }}</p>
-                        <p class="text-black-50 mb-0">It looks like you found a glitch in the matrix...</p><a
-                            href="/">←
-                        Back to upload page</a></div>
-                </div>
-            </div>
-            {% elif type == "faq" %}
-            <div class="container-fluid">
-                <div class="d-sm-flex justify-content-between align-items-center mb-4">
-                    <h3 class="text-dark mb-0">Frequently Asked Questions</h3>
-                </div>
-                <div class="faqgroup">
-                    <button class="accordion">How to use?</button>
-                    <div class="panel">
-                        <p>1. Export a google form result (from the google sheet) as .docx</p>
-                        <p>2. Create a config file, either manually (see below) or through the <a href="/">website</a>
-                            (continue)</p>
-                        <p>3. Upload the excel file and the config file (if you made it) through the website</p>
-                        <p>4. If you have not submitted the config file, do so with the config page.</p>
+                    <div class="container-fluid">
+                        <div class="text-center mt-5">
+                            <div class="error mx-auto" data-text="{{ error_no }}">
+                                <p class="m-0"> {{ error_no }} </p>
+                            </div>
+                            <p class="text-dark mb-5 lead">{{ error_message }}</p>
+                            <p class="text-black-50 mb-0">It looks like you found a glitch in the matrix...</p><a
+                                href="/">←
+                            Back to upload page</a></div>
                     </div>
                 </div>
-                <div class="faqgroup">
-                    <button class="accordion">How to make config_file for various types of google forms qn</button>
-                    <div class="panel">
-                        <p>Config file format: [question number] [type of question]</p>
-                        <p>Example:</p>
-                        <pre><code>1 ignore
+                {% elif type == "faq" %}
+                <div class="container-fluid">
+                    <div class="d-sm-flex justify-content-between align-items-center mb-4">
+                        <h3 class="text-dark mb-0">Frequently Asked Questions</h3>
+                    </div>
+                    <div class="faqgroup">
+                        <button class="accordion">How to use?</button>
+                        <div class="panel">
+                            <p>1. Export a google form result (from the google sheet) as .docx</p>
+                            <p>2. Create a config file, either manually (see below) or through the <a
+                                    href="/">website</a>
+                                (continue)</p>
+                            <p>3. Upload the excel file and the config file (if you made it) through the website</p>
+                            <p>4. If you have not submitted the config file, do so with the config page.</p>
+                        </div>
+                    </div>
+                    <div class="faqgroup">
+                        <button class="accordion">How to make config_file for various types of google forms qn</button>
+                        <div class="panel">
+                            <p>Config file format: [question number] [type of question]</p>
+                            <p>Example:</p>
+                            <pre><code>1 ignore
 2 ignore
 3 ignore
 5 categorical
@@ -355,25 +360,25 @@ SOFTWARE.
 14 openended
 15 categorical
 16 numerical</code></pre>
+                        </div>
                     </div>
-                </div>
-                <div class="faqgroup">
-                    <button class="accordion">What sorts of data cannot be analysed</button>
-                    <div class="panel">
-                        <p>Lorem ipsum...</p>
+                    <div class="faqgroup">
+                        <button class="accordion">What sorts of data cannot be analysed</button>
+                        <div class="panel">
+                            <p>Lorem ipsum...</p>
+                        </div>
                     </div>
-                </div>
-                <script src="static/js/accordion.js"></script>
+                    <script src="static/js/accordion.js"></script>
 
+                </div>
             </div>
         </div>
     </div>
-    </div>
 
 {% endif %}
-<footer class="bg-white sticky-footer"
-        style="{% if type == "error" or type == "faq" %}position: absolute;{% endif %}bottom:0px; width:100%;">
-    <div class="container my-auto">
+</div>
+<footer id="footer" style="background-color: white;">
+    <div class="container my-auto center">
         <div class="text-center my-auto"><span>Made with ♥ by Loh Yu Chen & Chi Junxiang 2019</span></div>
         <div class="text-center my-auto"><span>View <a href="https://github.com/Ycmelon/cssurvey/"
                                                        target="_blank">source</a> | <a href="/faq">FAQ</a></span>
@@ -385,7 +390,8 @@ SOFTWARE.
             3.0 BY</a></div>
     </div>
 </footer>
-</div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+</div>
+</div>
 </div>
 </body>
 

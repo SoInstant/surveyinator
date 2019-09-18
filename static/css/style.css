@@ -107,3 +107,19 @@ background-color: #ccc;
 .faqgroup {
     margin-bottom: 1rem;
 }
+
+#page-container {
+    position: relative;
+    min-height: 100vh;
+}
+
+#content-wrap {
+    padding-bottom: 8rem; /* Footer height */
+}
+
+#footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 8rem; /* Footer height */
+}
