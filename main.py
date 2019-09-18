@@ -85,6 +85,7 @@ def config_page():
     if not request.method == "POST":
         return redirect(url_for("main"))
     else:
+        print(app.config["TEMP_FOLDER"])
         config = utils.to_config(directory=app.config["TEMP_FOLDER"], config=request.form.to_dict())
         for file in os.listdir(app.config["TEMP_FOLDER"]):
             if file.endswith(".xlsx"):
