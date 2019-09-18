@@ -309,36 +309,15 @@ SOFTWARE.
     <body id="page-top">
     <div id="page-container">
     <div id="content-wrap">
-        <div id="wrapper">
+    <div id="wrapper">
 
-            <div class="d-flex flex-column" id="content-wrapper">
-                <div id="content">
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
 
-                    <div class="container-fluid">
-                        <div class="text-center mt-5">
-                            <div class="error mx-auto" data-text="{{ error_no }}">
-                                <p class="m-0"> {{ error_no }} </p>
-                            </div>
-                            <p class="text-dark mb-5 lead">{{ error_message }}</p>
-                            <p class="text-black-50 mb-0">It looks like you found a glitch in the matrix...</p><a
-                                href="/">←
-                            Back to upload page</a></div>
-                    </div>
-                </div>
-                {% elif type == "faq" %}
                 <div class="container-fluid">
-                    <div class="d-sm-flex justify-content-between align-items-center mb-4">
-                        <h3 class="text-dark mb-0">Frequently Asked Questions</h3>
-                    </div>
-                    <div class="faqgroup">
-                        <button class="accordion">How to use?</button>
-                        <div class="panel">
-                            <p>1. Export a google form result (from the google sheet) as .docx</p>
-                            <p>2. Create a config file, either manually (see below) or through the <a
-                                    href="/">website</a>
-                                (continue)</p>
-                            <p>3. Upload the excel file and the config file (if you made it) through the website</p>
-                            <p>4. If you have not submitted the config file, do so with the config page.</p>
+                    <div class="text-center mt-5">
+                        <div class="error mx-auto" data-text="{{ error_no }}">
+                            <p class="m-0"> {{ error_no }} </p>
                         </div>
                         <p class="text-dark mb-5 lead">{{ error_message }}</p>
                         <p class="text-black-50 mb-0">It looks like you found a glitch in the matrix...</p><a
@@ -355,7 +334,8 @@ SOFTWARE.
                     <button class="accordion">How to use?</button>
                     <div class="panel">
                         <p>1. Export a google form result (from the google sheet) as .csv</p>
-                        <p>2. Convert the csv to an excel spreadsheet (if needed, <a href="https://www.zamzar.com/convert/csv-to-xls/">here</a>)</p>
+                        <p>2. Convert the csv to an excel spreadsheet (if needed, <a
+                                href="https://www.zamzar.com/convert/csv-to-xls/">here</a>)</p>
                         <p>3. Create a config file, either manually (see below) or through the <a href="/">website</a>
                             (continue)</p>
                         <p>4. Upload the excel file and the config file (if you made it) through the website</p>
@@ -369,6 +349,20 @@ SOFTWARE.
                         <p>Accepted types are: ignore, numerical, categorical, openended and multicategorical</p>
                         <p>Example:</p>
                         <pre><code>1 ignore<br>2 numerical<br>3 categorical<br>4 openended<br>5 multicategorical</code></pre>
+                        <p>Short answer (openended)</p>
+                        <img src="static/faq/shortanswer.jpeg" height="10%">
+                        <br>
+                        <p>Paragraph (categorical)</p>
+                        <img src="static/faq/paragraph.jpeg" height="10%">
+                        <br>
+                        <p>Dropdown (numerical)</p>
+                        <img src="static/faq/dropdown.jpeg" height="10%">
+                        <br>
+                        <p>Linear scale (ignore)</p>
+                        <img src="static/faq/linearscale.jpeg" height="10%">
+                        <br>
+                        <p>Date and Time (ignore)</p>
+                        <img src="static/faq/dateandtime.jpeg" height="10%">
                     </div>
                 </div>
                 <div class="faqgroup">
