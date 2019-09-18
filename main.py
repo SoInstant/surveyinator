@@ -212,9 +212,11 @@ def download(path):
         as_attachment=True,
     )
 
+
 @app.route("/faq")
 def faq():
     return render_template("index.html", type="faq")
+
 
 # Error handling
 error_messages = {404: "Page not Found", 403: "Forbidden", 410: "Gone", 500: "Internal Server Error"}
@@ -229,5 +231,6 @@ def page_error(error):
     error_message = error_messages[error_no]
     return render_template("index.html", type="error", error_no=error_no, error_message=error_message)
 
-if __name__ == "__init__":
+
+if __name__ == "__main__":
     app.run(port=80)
