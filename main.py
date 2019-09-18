@@ -144,12 +144,14 @@ def analysis_page():
             )
         except ValueError as e:
             return render_template(
-                "index.html", type="upload",
-                error="ValueError! Perhaps you chose categorical for an all numerical input or timestamp."
+                "index.html", type="error",
+                error="ValueError! Perhaps you chose categorical for an all numerical input or timestamp.",
+                error_no="500", error_message=error_messages[500]
             )
         except Exception as e:
             return render_template(
-                "index.html", type="upload", error=f"Unknown error: {str(e)}"
+                "index.html", type="error", error=f"Unknown error: {str(e)}", error_no="500",
+                error_message=error_messages[500]
             )
 
         graphs, clouds, numerical = [], [], []

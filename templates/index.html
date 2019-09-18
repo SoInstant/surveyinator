@@ -318,11 +318,19 @@ SOFTWARE.
                     <div class="text-center mt-5">
                         <div class="error mx-auto" data-text="{{ error_no }}">
                             <p class="m-0"> {{ error_no }} </p>
+                            <p class="text-dark mb-5 lead">{{ error_message }}</p>
                         </div>
-                        <p class="text-dark mb-5 lead">{{ error_message }}</p>
+                        {% if error %}
+                            <div class="text-center">
+                                <div class="alert alert-danger">{{ error }}</div>
+                            </div>
+                        {% endif %}
                         <p class="text-black-50 mb-0">It looks like you found a glitch in the matrix...</p><a
                             href="/">←
-                        Back to upload page</a></div>
+                        Back to upload page</a>
+                        <p><a href="/faq">←
+                            or head over to the FAQ</a></p></div>
+
                 </div>
             </div>
             {% elif type == "faq" %}
