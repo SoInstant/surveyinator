@@ -138,9 +138,20 @@ def analysis_page():
             )
 
         # Start analysis
-        app.config["ANALYSIS"] = analyse.analyse(
-            directory, excel_filename, config_filename
-        )
+        try:
+            app.config["ANALYSIS"] = analyse.analyse(
+                directory, excel_filename, config_filename
+            )
+        except ValueError as e:
+            return render_template(
+                "index.html", type="upload",
+                error="ValueError! Perhaps you chose categorical for an all numerical input or timestamp."
+            )
+        except Exception as e:
+            return render_template(
+                "index.html", type="upload", error=f"Unknown error: {str(e)}"
+            )
+
         graphs, clouds, numerical = [], [], []
         for question, analysis in app.config["ANALYSIS"].items():
             if analysis:
