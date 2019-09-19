@@ -171,7 +171,7 @@ SOFTWARE.
                                         <h1 class="text-dark mb-4">Surveyinator</h1>
                                     </div>
                                     <form name="form" action="/results" method="post" enctype="multipart/form-data">
-                                        <h4>Excel file: </h4>
+                                        <h4>Excel/csv file: </h4>
                                         <div id="dropContainer" class="uploadcontainer text-black shadow"
                                              style="text-align:center">
                                             <div id="uploadstuff">
@@ -182,7 +182,7 @@ SOFTWARE.
                                                         name="file"
                                                         style="display: none;"
                                                         type="file"
-                                                        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                                        accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
                                                         id="fileInput"/>click
                                                     here to upload...</label>
                                             </div>
@@ -217,7 +217,8 @@ SOFTWARE.
                                         <br>
                                         <script src="static/js/draganddrop.js"></script>
                                         <input class="btn btn-primary" type="submit" value='Analyse'
-                                               onclick="loading.style.display = 'block';content.style.display = 'none'";>
+                                               onclick="loading.style.display = 'block';content.style.display = 'none'"
+                                               ;>
                                     </form>
                                 </div>
                                 {% if error %}
