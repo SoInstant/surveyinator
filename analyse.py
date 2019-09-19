@@ -133,7 +133,7 @@ def openended(responses, directory):
             For example: "./static/uploads/4SikvVjjqlWV44AW/zxmVHMV1QlAvYFq3.png"
     """
     text = " ".join(responses)
-    cloud = WordCloud(font_path="Nunito-Regular.ttf", background_color="white",
+    cloud = WordCloud(font_path="./static/fonts/Nunito-Regular.ttf", background_color="white",
                       color_func=random_colour).generate(text)
     image = cloud.to_image()
     path = os.path.join(directory, f"{secure(16)}.png")
@@ -141,16 +141,14 @@ def openended(responses, directory):
     return path
 
 
-def analyse(directory, config_file, excel_file=None, csv_file=None):
+def analyse(directory, survey_file, config_file):
     """Analyses survey responses
 
     Args:
         directory(str): path to the folder containing the excel file and config file
             For example: "./static/uploads/4SikvVjjqlWV44AW/"
-        excel_file(str): name of excel file
-            For example: "responses.xlsx"
-        csv_file(str): name of csv file
-            For example: "responses.csv"
+        survey_file(str): name of survey file (excel/csv)
+            For example: "responses.xlsx" or "responses.csv"
         config_file(str): name of config file
             For example: "config_file.txt"
 
@@ -158,10 +156,10 @@ def analyse(directory, config_file, excel_file=None, csv_file=None):
         A dictionary mapping each survey question to the analysis of its
         responses.
     """
-    if csv_file:
-        parsed_file = parse_csv(os.path.join(directory, csv_file))
+    if survey_file.endswith(".csv"):
+        parsed_file = parse_csv(os.path.join(directory, survey_file))
     else:
-        parsed_file = parse_excel(os.path.join(directory, excel_file))
+        parsed_file = parse_excel(os.path.join(directory, survey_file))
     categorised_responses = categorise(
         parsed_file,
         parse_config(os.path.join(directory, config_file)),

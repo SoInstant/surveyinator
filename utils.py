@@ -39,10 +39,9 @@ from flask import Markup
 from openpyxl import load_workbook
 from openpyxl.utils.cell import get_column_letter
 
+global COLORS
 COLORS = ["#4e73df", "#6610f2", "#6f42c1", "#e83e8c", "#e74a3b", "#fd7e14", "#f6c23e", "#1cc88a", "#20c9a6",
           "#36b9cc"]
-
-global COLORS
 
 
 # Misc
@@ -223,7 +222,7 @@ def pie(title, labels, values, hole=0.4):
                 hole=hole,
                 hoverinfo="label+percent",
                 text=labels,
-                marker=dict(colors=colors, line=dict(color="#FFFFFF", width=2)),
+                marker=dict(colors=COLORS, line=dict(color="#FFFFFF", width=2)),
                 sort=False,
                 showlegend=False,
             )
@@ -255,7 +254,7 @@ def chunk(input, size):
 
 
 def random_colour(word, font_size, position, orientation, font_path, random_state):
-    return choice(colors)
+    return choice(COLORS)
 
 
 if __name__ == "__main__":

@@ -89,19 +89,19 @@ def config_page():
         for file in os.listdir(session["TEMP_FOLDER"]):
             if file.endswith(".xlsx") or file.endswith(".csv"):
                 file = os.path.join(session["TEMP_FOLDER"], file)
-        return redirect(url_for("analysis_page", file=file, config=config))
+        return redirect(url_for("analysis_page", survey_file=file, config=config))
 
 
 @app.route("/results", methods=["GET", "POST"])
 def analysis_page():
     # Methods
-    excel, config = request.args.get("excel"), request.args.get("config")
-    if (not request.method == "POST") and (not excel and not config):
+    survey_file, config = request.args.get("survey_file"), request.args.get("config")
+    if (not request.method == "POST") and (not survey_file and not config):
         return redirect(url_for("main"))
     # Checking for files
     do_analysis = False
     if request.method == "GET":
-        if excel and config:
+        if survey_file and config:
             do_analysis = True
     elif request.method == "POST" and (request.files["file"] and request.files["config"]):
         do_analysis = True
@@ -110,13 +110,16 @@ def analysis_page():
     if do_analysis:
         # Saving files
         if request.method == "POST":
-            save = save_file(excel_file=request.files["file"], config_file=request.files["config"])
-            directory, excel_filename, config_filename = save["Directory"], save["Excel"], save["Config"]
+            save = save_file(survey_file=request.files["file"], config_file=request.files["config"])
+            directory, filename, config_filename = save["Directory"], save["File"], save["Config"]
         else:
-            directory, excel_filename = os.path.split(excel)
+            directory, filename = os.path.split(survey_file)
             config_filename = os.path.basename(config)
 
-        questions = list(utils.parse_excel(os.path.join(directory, excel_filename)).keys())
+        if filename.endswith(".xlsx"):
+            questions = list(utils.parse_excel(os.path.join(directory, filename)).keys())
+        else:
+            questions = list(utils.parse_csv(os.path.join(directory, filename)).keys())
         types = utils.parse_config(os.path.join(directory, config_filename))
 
         # Excel but incomplete config
@@ -139,7 +142,7 @@ def analysis_page():
         # Start analysis
         try:
             session["ANALYSIS"] = analyse.analyse(
-                directory, excel_filename, config_filename
+                directory, filename, config_filename
             )
         except ValueError as e:
             return render_template(
@@ -182,17 +185,20 @@ def analysis_page():
             graphs=graphs,
             clouds=clouds,
             numerical=numerical,
-            filename=excel_filename,
+            filename=filename,
             path=os.path.split(directory)[1],
         )
     elif not request.files["file"]:  # No excel
         return render_template("index.html", type="upload", error="Missing Excel file!")
 
     elif request.files["file"] and not request.files["config"]:  # Excel but no config
-        save = save_file(excel_file=request.files["file"])
-        directory, excel_filename = save["Directory"], save["Excel"]
+        save = save_file(survey_file=request.files["file"])
+        directory, filename = save["Directory"], save["File"]
         session["TEMP_FOLDER"] = directory
-        questions = list(utils.parse_excel(os.path.join(directory, excel_filename)).keys())
+        if filename.endswith(".xlsx"):
+            questions = list(utils.parse_excel(os.path.join(directory, filename)).keys())
+        else:
+            questions = list(utils.parse_csv(os.path.join(directory, filename)).keys())
         predictions = utils.Predictor().predict(questions)
         questions_index = [
             (i + 1, question, predictions[i]) for i, question in enumerate(questions)
