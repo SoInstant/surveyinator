@@ -14,7 +14,7 @@ feedback on their Year 1 CS experience.
 Surveyinator is written fully in [Python 3.7](https://python.org).
 
 ### Features
-+ Able to analyse **_all_** exported google forms data
++ Able to analyse **_all_** exported google forms data with obvious exceptions
 + Analyse numerical, categorical and openended data
 + Able to give a consolidated picture of responses
 + Beautiful aesthetics
