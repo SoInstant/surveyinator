@@ -25,7 +25,7 @@
 import os
 import zipfile
 
-from flask import Flask, render_template, request, redirect, url_for, send_file
+from flask import Flask, render_template, request, redirect, url_for, send_file, session
 from werkzeug.utils import secure_filename
 
 import analyse
@@ -33,7 +33,7 @@ import utils
 
 app = Flask("app")
 app.config["UPLOAD_FOLDER"] = "./static/uploads/"
-app.config["TEMP_FOLDER"] = None
+app.config["SECRET_KEY"] = "bruh"
 if not os.path.exists(app.config["UPLOAD_FOLDER"]):
     os.mkdir(app.config["UPLOAD_FOLDER"])
 
@@ -85,10 +85,10 @@ def config_page():
     if not request.method == "POST":
         return redirect(url_for("main"))
     else:
-        config = utils.to_config(directory=app.config["TEMP_FOLDER"], config=request.form.to_dict())
-        for file in os.listdir(app.config["TEMP_FOLDER"]):
+        config = utils.to_config(directory=session["TEMP_FOLDER"], config=request.form.to_dict())
+        for file in os.listdir(session["TEMP_FOLDER"]):
             if file.endswith(".xlsx"):
-                excel = os.path.join(app.config["TEMP_FOLDER"], file)
+                excel = os.path.join(session["TEMP_FOLDER"], file)
         return redirect(url_for("analysis_page", excel=excel, config=config))
 
 
@@ -121,7 +121,7 @@ def analysis_page():
 
         # Excel but incomplete config
         if len(questions) != len(types):
-            app.config["TEMP_FOLDER"] = directory
+            session["TEMP_FOLDER"] = directory
             predictor = utils.Predictor()
             qn_dict = {}
             for i, qn in enumerate(questions):
@@ -138,7 +138,7 @@ def analysis_page():
 
         # Start analysis
         try:
-            app.config["ANALYSIS"] = analyse.analyse(
+            session["ANALYSIS"] = analyse.analyse(
                 directory, excel_filename, config_filename
             )
         except ValueError as e:
@@ -154,7 +154,7 @@ def analysis_page():
             )
 
         graphs, clouds, numerical = [], [], []
-        for question, analysis in app.config["ANALYSIS"].items():
+        for question, analysis in session["ANALYSIS"].items():
             if analysis:
                 if analysis[0] == "categorical":
                     graphs.append(
@@ -191,7 +191,7 @@ def analysis_page():
     elif request.files["file"] and not request.files["config"]:  # Excel but no config
         save = save_file(excel_file=request.files["file"])
         directory, excel_filename = save["Directory"], save["Excel"]
-        app.config["TEMP_FOLDER"] = directory
+        session["TEMP_FOLDER"] = directory
         questions = list(utils.parse_excel(os.path.join(directory, excel_filename)).keys())
         predictions = utils.Predictor().predict(questions)
         questions_index = [
@@ -206,10 +206,10 @@ def analysis_page():
 @app.route("/download/<path>")
 def download(path):
     doc = analyse.generate_report(
-        os.path.join("./static/uploads/", path), app.config["ANALYSIS"]
+        os.path.join("./static/uploads/", path), session["ANALYSIS"]
     )
     file_names = [
-        i[1] for i in app.config["ANALYSIS"].values() if i if i[0] == "openended"
+        i[1] for i in session["ANALYSIS"].values() if i if i[0] == "openended"
     ]
     download_path = os.path.join("./static/uploads/", path, f"{utils.secure(4)}.zip")
 
