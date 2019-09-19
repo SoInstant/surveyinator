@@ -43,7 +43,17 @@ from openpyxl.utils.cell import get_column_letter
 # Misc
 
 def secure(length):
-    """Returns a random string of length"""
+    """Returns a random string of length
+
+    Args:
+        length(int): Length of the result
+
+    Returns:
+        Random string of length
+
+    >>> len(secure(16)) == 16
+    True
+    """
     return "".join(choices(ascii_letters + digits, k=length))
 
 
@@ -67,7 +77,7 @@ def parse_excel(excel_file):
     Returns:
         A dictionary mapping the question to a tuple of responses
         For example:
-        {"Do you like Python?": ("Yes","No","Yes")}
+        {"Do you like Python?": ("Yes", "No", "Yes")}
 
     Raises:
         KeyError: Question not present in column {i+1}
@@ -229,6 +239,9 @@ def chunk(input, size):
 
     Yields:
         One chunk
+
+    >>> chunk([1, 2, 3, 4], 2)
+    [[1, 2], [3, 4]]
     """
     for i in range(0, len(input), size):
         yield input[i: (i + size)]
