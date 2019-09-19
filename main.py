@@ -38,13 +38,13 @@ if not os.path.exists(app.config["UPLOAD_FOLDER"]):
     os.mkdir(app.config["UPLOAD_FOLDER"])
 
 
-def save_file(directory=None, excel_file=None, config_file=None):
+def save_file(directory=None, survey_file=None, config_file=None):
     """Saves file(s) to directory
 
     Args:
         directory(str): Directory in which to save the files
-        excel_file(class): An instance of the werkzeug.datastructures.FileStorage
-            class containing the excel_file
+        survey_file(class): An instance of the werkzeug.datastructures.FileStorage
+            class containing the survey_file
         config_file(class): An instance of the werkzeug.datastructures.FileStorage
             class containing the config_file
 
@@ -53,7 +53,7 @@ def save_file(directory=None, excel_file=None, config_file=None):
         the filename(s). For example:
         {
             "Directory": "./static/uploads/4SikvVjjqlWV44AW/",
-            "Excel": "responses.xlsx",
+            "File": "responses.xlsx",
             "Config": "config_file.txt"
         }
     """
@@ -62,16 +62,16 @@ def save_file(directory=None, excel_file=None, config_file=None):
     if not os.path.exists(directory):
         os.mkdir(directory)
     output = None
-    if excel_file and config_file:
-        excel_name = secure_filename(excel_file.filename)
+    if survey_file and config_file:
+        filename = secure_filename(survey_file.filename)
         config_name = secure_filename(config_file.filename)
-        excel_file.save(os.path.join(directory, excel_name))
+        survey_file.save(os.path.join(directory, filename))
         config_file.save(os.path.join(directory, config_name))
-        output = {"Directory": directory, "Excel": excel_name, "Config": config_name}
-    elif excel_file:
-        excel_name = secure_filename(excel_file.filename)
-        excel_file.save(os.path.join(directory, excel_name))
-        output = {"Directory": directory, "Excel": excel_name, "Config": None}
+        output = {"Directory": directory, "File": filename, "Config": config_name}
+    elif survey_file:
+        filename = secure_filename(survey_file.filename)
+        survey_file.save(os.path.join(directory, filename))
+        output = {"Directory": directory, "File": filename, "Config": None}
     return output
 
 
@@ -87,9 +87,9 @@ def config_page():
     else:
         config = utils.to_config(directory=session["TEMP_FOLDER"], config=request.form.to_dict())
         for file in os.listdir(session["TEMP_FOLDER"]):
-            if file.endswith(".xlsx"):
-                excel = os.path.join(session["TEMP_FOLDER"], file)
-        return redirect(url_for("analysis_page", excel=excel, config=config))
+            if file.endswith(".xlsx") or file.endswith(".csv"):
+                file = os.path.join(session["TEMP_FOLDER"], file)
+        return redirect(url_for("analysis_page", file=file, config=config))
 
 
 @app.route("/results", methods=["GET", "POST"])

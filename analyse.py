@@ -35,7 +35,7 @@ from numpy import mean, median
 from scipy.stats import mode
 from wordcloud import WordCloud
 
-from utils import parse_config, parse_excel, secure, random_colour
+from utils import parse_config, parse_excel, secure, random_colour, parse_csv
 
 
 def categorise(responses, datatypes):
@@ -141,7 +141,7 @@ def openended(responses, directory):
     return path
 
 
-def analyse(directory, excel_file, config_file):
+def analyse(directory, config_file, excel_file=None, csv_file=None):
     """Analyses survey responses
 
     Args:
@@ -149,6 +149,8 @@ def analyse(directory, excel_file, config_file):
             For example: "./static/uploads/4SikvVjjqlWV44AW/"
         excel_file(str): name of excel file
             For example: "responses.xlsx"
+        csv_file(str): name of csv file
+            For example: "responses.csv"
         config_file(str): name of config file
             For example: "config_file.txt"
 
@@ -156,8 +158,12 @@ def analyse(directory, excel_file, config_file):
         A dictionary mapping each survey question to the analysis of its
         responses.
     """
+    if csv_file:
+        parsed_file = parse_csv(os.path.join(directory, csv_file))
+    else:
+        parsed_file = parse_excel(os.path.join(directory, excel_file))
     categorised_responses = categorise(
-        parse_excel(os.path.join(directory, excel_file)),
+        parsed_file,
         parse_config(os.path.join(directory, config_file)),
     )
     analysis = {}

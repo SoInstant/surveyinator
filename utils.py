@@ -32,20 +32,20 @@ import os
 import pickle
 from random import choices, choice
 from string import ascii_letters, digits
-import csv
+from csv import reader
 
 import plotly
 from flask import Markup
 from openpyxl import load_workbook
 from openpyxl.utils.cell import get_column_letter
 
-global colors
-colors = ["#4e73df", "#6610f2", "#6f42c1", "#e83e8c", "#e74a3b", "#fd7e14", "#f6c23e", "#1cc88a", "#20c9a6",
+COLORS = ["#4e73df", "#6610f2", "#6f42c1", "#e83e8c", "#e74a3b", "#fd7e14", "#f6c23e", "#1cc88a", "#20c9a6",
           "#36b9cc"]
+
+global COLORS
 
 
 # Misc
-
 def secure(length):
     """Returns a random string of length
 
@@ -62,6 +62,35 @@ def secure(length):
 
 
 # File Utils
+def parse_csv(csv_file):
+    """Parses an csv file by column
+
+    Parse the csv file, which has the responses to a survey,
+    represented by csv_file
+
+    For example:
+    Do you like python?,What other languages do you use?
+    Yes,Go
+    No,Java
+    Yes,C++
+
+    Args:
+        csv_file(str): The file name of the excel_file to be parsed
+
+    Returns:
+        A dictionary mapping the question to a tuple of responses
+        For example:
+        {"Do you like Python?": ("Yes","No","Yes"),
+        "What other languages do you use?": ("Go","Java","C++")}
+    """
+    with open(csv_file, "r") as f:
+        rows = list(reader(f, delimiter=','))
+        responses = []
+        for i, header in enumerate(rows[0]):
+            responses.append((header, [row[i] for row in rows[1:]]))
+    return dict(responses)
+
+
 def parse_excel(excel_file):
     """Parses an Excel file by column
 
