@@ -35,7 +35,7 @@ from numpy import mean, median
 from scipy.stats import mode
 from wordcloud import WordCloud
 
-from utils import parse_config, parse_excel, secure
+from utils import parse_config, parse_excel, secure, random_colour
 
 
 def categorise(responses, datatypes):
@@ -51,6 +51,9 @@ def categorise(responses, datatypes):
         A dictionary which maps a tuple of the datatype of the response
         and the responses to their question. For example:
         {"Do you like python?": ("categorical", ("yes", "no", "yes"))}
+
+    >>> categorise({"Question 1": ("Answer 1", "Answer 2")}, {1: "categorical"})
+    {'Question 1': ('categorical', ('Answer 1', 'Answer 2'))}
     """
     output = {}
     for i, items in enumerate(responses.items()):
@@ -130,7 +133,8 @@ def openended(responses, directory):
             For example: "./static/uploads/4SikvVjjqlWV44AW/zxmVHMV1QlAvYFq3.png"
     """
     text = " ".join(responses)
-    cloud = WordCloud(background_color="white").generate(text)
+    cloud = WordCloud(font_path="Nunito-Regular.ttf", background_color="white",
+                      color_func=random_colour).generate(text)
     image = cloud.to_image()
     path = os.path.join(directory, f"{secure(16)}.png")
     image.save(path)
@@ -233,4 +237,4 @@ def generate_report(directory, analysis):
 
 
 if __name__ == "__main__":
-    pass # Testing finished for now
+    pass  # Testing finished for now

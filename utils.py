@@ -30,7 +30,7 @@ both of those scripts.
 # Imports
 import os
 import pickle
-from random import choices
+from random import choices, choice
 from string import ascii_letters, digits
 
 import plotly
@@ -38,6 +38,10 @@ from flask import Markup
 
 from openpyxl import load_workbook
 from openpyxl.utils.cell import get_column_letter
+
+global colors
+colors = ["#4e73df", "#6610f2", "#6f42c1", "#e83e8c", "#e74a3b", "#fd7e14", "#f6c23e", "#1cc88a", "#20c9a6",
+          "#36b9cc"]
 
 
 # Misc
@@ -121,7 +125,7 @@ def parse_config(config_file):
     with open(config_file, mode="r", encoding="utf-8") as f:
         lines = [line.lower() for line in f.read().split("\n") if line != ""]
         lines = [line.split(" ") for line in lines]
-        accepted = ("ignore", "numerical", "categorical", "openended","multicategorical")
+        accepted = ("ignore", "numerical", "categorical", "openended", "multicategorical")
         for i in lines:
             if not i[0].isdigit() or i[1] not in accepted:
                 raise TypeError(
@@ -182,7 +186,6 @@ def pie(title, labels, values, hole=0.4):
     Returns:
         HTML div of the pie chart
     """
-    colors = ["#1cc88a", "#36b9cc", "#4e73df", "#f6c23e", "#e74a3b"]
     fig = plotly.graph_objs.Figure(
         data=[
             plotly.graph_objs.Pie(
@@ -203,31 +206,6 @@ def pie(title, labels, values, hole=0.4):
     return Markup(plotly.offline.plot(fig, include_plotlyjs=False, output_type="div"))
 
 
-def split_lines(text, length=50):
-    """Splits text
-
-    Splits text into multiple lines without breaking words
-
-    Args:
-        text(str): Text to be split
-        length(int): Size of each line
-
-    Returns:
-        String containing text split into lines
-    """
-    output = [""]
-    for word in text.split(" "):
-        if len(word) > length:
-            output.append(word + "<br>")
-        else:
-            if len(output[-1]) + len(word) <= length:
-                output[-1] += word + " "
-            else:
-                output[-1] += "<br>"
-                output.append(word + " ")
-    return "".join(output)
-
-
 def chunk(input, size):
     """Splits iterable into chunks
 
@@ -240,11 +218,15 @@ def chunk(input, size):
     Yields:
         One chunk
 
-    >>> chunk([1, 2, 3, 4], 2)
+    >>> list(chunk([1, 2, 3, 4], 2))
     [[1, 2], [3, 4]]
     """
     for i in range(0, len(input), size):
         yield input[i: (i + size)]
+
+
+def random_colour(word, font_size, position, orientation, font_path, random_state):
+    return choice(colors)
 
 
 if __name__ == "__main__":
