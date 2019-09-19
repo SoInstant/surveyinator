@@ -32,10 +32,10 @@ import os
 import pickle
 from random import choices
 from string import ascii_letters, digits
+import csv
 
 import plotly
 from flask import Markup
-
 from openpyxl import load_workbook
 from openpyxl.utils.cell import get_column_letter
 
@@ -111,7 +111,7 @@ def parse_config(config_file):
     with open(config_file, mode="r", encoding="utf-8") as f:
         lines = [line.lower() for line in f.read().split("\n") if line != ""]
         lines = [line.split(" ") for line in lines]
-        accepted = ("ignore", "numerical", "categorical", "openended","multicategorical")
+        accepted = ("ignore", "numerical", "categorical", "openended", "multicategorical")
         for i in lines:
             if not i[0].isdigit() or i[1] not in accepted:
                 raise TypeError(
@@ -235,4 +235,5 @@ def chunk(input, size):
 
 
 if __name__ == "__main__":
-    pass  # Testing is over :D
+    parse_csv()
+    # pass  # Testing is over :D
