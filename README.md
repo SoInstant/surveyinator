@@ -50,5 +50,6 @@ For more information on installation, refer to these websites:
 - templates/index.html (Mainly Yu Chen, Junxiang did some)
 - static/favicon.ico (Drawn by Yu Chen :sparkles:)
 - model.pickle (Trained by Junxiang)
+- README.md (Written by Junxiang)
 ### Licence
 Surveyinator is licenced under the [MIT Licence](LICENCE.txt)
