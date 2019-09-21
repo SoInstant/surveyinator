@@ -189,7 +189,7 @@ def analysis_page():
             path=os.path.split(directory)[1],
         )
     elif not request.files["file"]:  # No excel
-        return render_template("index.html", type="upload", error="Missing Excel file!")
+        return render_template("index.html", type="upload", error="Missing Excel/CSV file!")
 
     elif request.files["file"] and not request.files["config"]:  # Excel but no config
         save = save_file(survey_file=request.files["file"])
