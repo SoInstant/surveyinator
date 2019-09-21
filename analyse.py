@@ -62,11 +62,23 @@ def categorise(responses, datatypes):
 
 
 def multi_categorical(responses):
-    output = []
+    """Analyses multi-categorical responses
+
+    Args:
+        responses(list/tuple): list/tuple of the responses
+            For example: ["Good aesthetics;Intuitive UI","Good aesthetics;Intuitive UI;Free software"]
+            or ("Good aesthetics;Intuitive UI","Good aesthetics;Intuitive UI;Free software")
+
+    Returns:
+        A dictionary containing the sorted percentages of each response.
+        For example:
+        {"Percentages": {"Free software": 0.2, "Good aesthetics": 0.4, "Intuitive UI": 0.4}}
+    """
+    separated_responses = []
     for response in responses:
         for option in response.split(";"):
-            output.append(option)
-    return categorical(output)
+            separated_responses.append(option)
+    return categorical(separated_responses)
 
 
 def numerical(responses):
@@ -101,10 +113,9 @@ def categorical(responses):
     Returns:
         A dictionary containing the sorted percentages of each response.
         For example:
-        {"Percentages": {"Yes": 0.6666666666666666, "No": 0.3333333333333333}}
+        {"Percentages": {"No": 0.3333333333333333, "Yes": 0.6666666666666666}}
     """
     categories = {}
-    # Count responses per category
     for i in responses:
         if i not in categories.keys():
             categories[i] = 1
@@ -114,8 +125,7 @@ def categorical(responses):
     for category, freq in categories.items():
         categories[category] = freq / len(responses)
     sorting = sorted(categories.items(), key=lambda x: x[1])
-    output = dict(sorting)
-    return {"Percentages": output}
+    return {"Percentages": dict(sorting)}
 
 
 def openended(responses, directory):
@@ -160,6 +170,7 @@ def analyse(directory, survey_file, config_file):
         parsed_file = parse_csv(os.path.join(directory, survey_file))
     else:
         parsed_file = parse_excel(os.path.join(directory, survey_file))
+
     categorised_responses = categorise(
         parsed_file,
         parse_config(os.path.join(directory, config_file)),
@@ -205,20 +216,28 @@ def generate_report(directory, analysis):
     core_properties.category = "Report"
     core_properties.language = "English"
 
-    document.add_heading("Report of responses.xlsx", 0)
-    for qn, j in analysis.items():
-        if j is None:
+    # Title
+    filename = "survey file"
+    for file in os.listdir(directory):
+        if file.endswith(".xlsx") or file.endswith(".csv"):
+            filename = os.path.basename(file)
+            break
+    document.add_heading(f"Report of {filename}", 0)
+
+    # Adding analysis
+    for qn, analysed in analysis.items():
+        if analysed is None:
             continue
-        elif j[0] == "numerical":
+        elif analysed[0] == "numerical":
             document.add_heading(qn, level=1)
             # Content
-            document.add_paragraph(f"Mean: {j[1]['Mean']}", style="List Bullet")
-            document.add_paragraph(f"Median: {j[1]['Median']}", style="List Bullet")
-            document.add_paragraph(f"Mode: {j[1]['Mode']}", style="List Bullet")
-        elif j[0] == "categorical":
+            document.add_paragraph(f"Mean: {analysed[1]['Mean']}", style="List Bullet")
+            document.add_paragraph(f"Median: {analysed[1]['Median']}", style="List Bullet")
+            document.add_paragraph(f"Mode: {analysed[1]['Mode']}", style="List Bullet")
+        elif analysed[0] == "categorical":
             document.add_heading(qn, level=1)
             # Content
-            records = j[1]["Percentages"]
+            records = analysed[1]["Percentages"]
             table = document.add_table(rows=1, cols=2)
             hdr_cells = table.rows[0].cells
             hdr_cells[0].text, hdr_cells[1].text = (
@@ -229,10 +248,10 @@ def generate_report(directory, analysis):
                 row_cells = table.add_row().cells
                 row_cells[0].text, row_cells[1].text = list(map(str, row))
                 row_cells[1].text = f"{float(row_cells[1].text) * 100}%"
-        elif j[0] == "openended":
+        elif analysed[0] == "openended":
             document.add_heading(qn, level=1)
             # Content
-            document.add_picture(os.path.join(j[1]))
+            document.add_picture(os.path.join(analysed[1]))
 
     path = os.path.join(directory, f"{secure(8)}.docx")
     document.save(path)
@@ -241,4 +260,4 @@ def generate_report(directory, analysis):
 
 
 if __name__ == "__main__":
-    pass  # Testing finished for now
+    pass  # Testing finished :D
