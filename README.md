@@ -27,7 +27,7 @@ Usage is quick and simple!
 Head to [surveyinator.ml](surveyinator.ml) to use the hosted version.
 
 Alternatively, you can simply click on this [link](https://google.com) to download the latest version. 
-Make sure you have python>=3.7
+Make sure you have python>=3.7. Head to the project root and then run main.py.
  
 #### Dependencies
 Refer to [requirements.txt](requirements.txt)
@@ -42,5 +42,13 @@ For more information on installation, refer to these websites:
 + [Plotly](https://plot.ly/python/getting-started/#installation)
 + [matplotlib](https://matplotlib.org/users/installing.html)
 + [python-docx](https://python-docx.readthedocs.io/en/latest/user/install.html)
+
+### Work distribution
+- main.py (Mainly Yu Chen, Junxiang helped out in certain places)
+- analyse.py (Junxiang)
+- utils.py (Both)
+- templates/index.html (Mainly Yu Chen, Junxiang did some)
+- static/favicon.ico (Drawn by Yu Chen :sparkles:)
+- model.pickle (Trained by Junxiang)
 ### Licence
 Surveyinator is licenced under the [MIT Licence](LICENCE.txt)
