@@ -148,7 +148,7 @@ def analysis_page():
         except ValueError as e:
             return render_template(
                 "index.html", type="error",
-                error="ValueError! Perhaps you chose categorical for an all numerical input or timestamp.",
+                error="ValueError! Perhaps you chose a wrong category for your data",
                 error_no="500", error_message=error_messages[500]
             )
         except Exception as e:
