@@ -44,6 +44,7 @@ COLORS = ["#4e73df", "#6610f2", "#6f42c1", "#e83e8c", "#e74a3b", "#fd7e14", "#f6
           "#36b9cc"]
 COLORS = ["#0c1941", "#183281", "#2043ac", "#2854d7", "#4e73df"]
 
+
 # Misc
 def secure(length):
     """Returns a random string of length
@@ -191,8 +192,8 @@ class Predictor(object):
 
     def __init__(self):
         """Loads pre-trained TextBlob classifier."""
-        with open("model.pickle", "rb") as f:
-            self.classifier = pickle.load(f)
+        with open("model.pickle", "rb") as pick:
+            self.classifier = pickle.load(pick)
 
     def predict(self, qns):
         """Predicts if qns in qns are either categorical, numerical, or openended."""
@@ -234,13 +235,13 @@ def pie(title, labels, values, hole=0.4):
     return Markup(plotly.offline.plot(fig, include_plotlyjs=False, output_type="div"))
 
 
-def chunk(input, size):
+def chunk(iterable, size):
     """Splits iterable into chunks
 
     Splits iterable into multiple chunks
 
     Args:
-        input(iterable): Iterable to be split
+        iterable(iterable): Iterable to be split
         size(int): Size of each chunk
 
     Yields:
@@ -249,8 +250,8 @@ def chunk(input, size):
     >>> list(chunk([1, 2, 3, 4], 2))
     [[1, 2], [3, 4]]
     """
-    for i in range(0, len(input), size):
-        yield input[i: (i + size)]
+    for i in range(0, len(iterable), size):
+        yield iterable[i: (i + size)]
 
 
 def random_colour(word, font_size, position, orientation, font_path, random_state):
