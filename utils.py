@@ -42,7 +42,7 @@ from openpyxl.utils.cell import get_column_letter
 global COLORS
 COLORS = ["#4e73df", "#6610f2", "#6f42c1", "#e83e8c", "#e74a3b", "#fd7e14", "#f6c23e", "#1cc88a", "#20c9a6",
           "#36b9cc"]
-
+COLORS = ["#0c1941", "#183281", "#2043ac", "#2854d7", "#4e73df"]
 
 # Misc
 def secure(length):
