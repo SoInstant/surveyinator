@@ -89,6 +89,7 @@ def config_page():
         for file in os.listdir(session["TEMP_FOLDER"]):
             if file.endswith(".xlsx") or file.endswith(".csv"):
                 file = os.path.join(session["TEMP_FOLDER"], file)
+                break
         return redirect(url_for("analysis_page", survey_file=file, config=config))
 
 
