@@ -215,13 +215,13 @@ def download(path):
     doc = analyse.generate_report(
         os.path.join("./static/uploads/", path), session["ANALYSIS"]
     )
-    file_names = [
+    filenames = [
         i[1] for i in session["ANALYSIS"].values() if i if i[0] == "openended"
     ]
     download_path = os.path.join("./static/uploads/", path, f"{utils.secure(4)}.zip")
 
     with zipfile.ZipFile(download_path, "w", zipfile.ZIP_DEFLATED) as zipf:
-        for i in file_names:
+        for i in filenames:
             zipf.write(i, os.path.basename(i))
         zipf.write(doc, os.path.basename(doc))
 
