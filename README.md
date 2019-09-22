@@ -46,10 +46,11 @@ For more information on installation, refer to these websites:
 ### Work distribution
 - main.py (Mainly Yu Chen, Junxiang helped out in certain places)
 - analyse.py (Junxiang)
-- utils.py (Both)
+- utils.py (Both) :wrench:
 - templates/index.html (Mainly Yu Chen, Junxiang did some)
 - static/favicon.ico (Drawn by Yu Chen :sparkles:)
 - model.pickle (Trained by Junxiang)
 - README.md (Written by Junxiang)
+- Deployment to [website](https://surveyinator.ml) by Yu Chen :computer:
 ### Licence
 Surveyinator is licenced under the [MIT Licence](LICENCE.txt)
