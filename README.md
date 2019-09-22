@@ -1,17 +1,17 @@
 # Y2 CEP Final Project - _Surveyinator_
 ### Description
-Surveyinator is a survey analyser for anyone and everyone to use. 
+_Surveyinator_ is a survey analyser for anyone and everyone to use. 
 It analyses survey responses through a variety of analysis methods,
 such as mean, median and mode. It allows surveyors to get an general idea of what
 the survey responses are like.
 
-Surveyinator was originally developed to help our [Computing teacher](https://github.com/lorrainewang)
+_Surveyinator_ was originally developed to help our [Computing teacher](https://github.com/lorrainewang)
 to find out about the demand of Y2 CEP (i.e how many of them are 
 interested to choose CEP in Year 2), and get a consolidated 
 picture of how they perceive the 9 weeks CS course based on student 
 feedback on their Year 1 CS experience.
 
-Surveyinator is written fully in [Python 3.7](https://python.org).
+_Surveyinator_ is written fully in [Python 3.7](https://python.org).
 
 ### Features
 + Able to analyse **_all_** exported google forms data with obvious exceptions
@@ -44,12 +44,13 @@ For more information on installation, refer to these websites:
 + [python-docx](https://python-docx.readthedocs.io/en/latest/user/install.html)
 
 ### Work distribution
-- main.py (Mainly Yu Chen, Junxiang helped out in certain places)
-- analyse.py (Junxiang)
-- utils.py (Both)
-- templates/index.html (Mainly Yu Chen, Junxiang did some)
+- main.py (Mainly Yu Chen, Junxiang helped out in certain places):page_with_curl:
+- analyse.py (Junxiang) :computer:
+- utils.py (Both) :wrench:
+- templates/index.html (Mainly Yu Chen, Junxiang did some) :page_with_curl:
 - static/favicon.ico (Drawn by Yu Chen :sparkles:)
-- model.pickle (Trained by Junxiang)
-- README.md (Written by Junxiang)
+- model.pickle (Trained by Junxiang) :computer:
+- README.md (Written by Junxiang):pencil2:
+- Deployment to [website](https://surveyinator.ml) by Yu Chen :computer:
 ### Licence
-Surveyinator is licenced under the [MIT Licence](LICENCE.txt)
+_Surveyinator_ is licenced under the [MIT Licence](LICENCE.txt)
