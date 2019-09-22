@@ -44,13 +44,13 @@ For more information on installation, refer to these websites:
 + [python-docx](https://python-docx.readthedocs.io/en/latest/user/install.html)
 
 ### Work distribution
-- main.py (Mainly Yu Chen, Junxiang helped out in certain places)
-- analyse.py (Junxiang)
+- main.py (Mainly Yu Chen, Junxiang helped out in certain places):page_with_curl:
+- analyse.py (Junxiang) :computer:
 - utils.py (Both) :wrench:
-- templates/index.html (Mainly Yu Chen, Junxiang did some)
+- templates/index.html (Mainly Yu Chen, Junxiang did some) :page_with_curl:
 - static/favicon.ico (Drawn by Yu Chen :sparkles:)
-- model.pickle (Trained by Junxiang)
-- README.md (Written by Junxiang)
+- model.pickle (Trained by Junxiang) :computer:
+- README.md (Written by Junxiang):pencil2:
 - Deployment to [website](https://surveyinator.ml) by Yu Chen :computer:
 ### Licence
 Surveyinator is licenced under the [MIT Licence](LICENCE.txt)
