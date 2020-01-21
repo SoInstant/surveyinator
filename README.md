@@ -24,7 +24,7 @@ _Surveyinator_ is written fully in [Python 3.7](https://python.org).
 
 ### Usage
 Usage is quick and simple!  
-Head to [surveyinator.ml](surveyinator.ml) to use the hosted version.
+Head to [https://surveyinator.ml](surveyinator.ml) to use the hosted version.
 
 Alternatively, you can simply click on this [link](https://google.com) to download the latest version. 
 Make sure you have python>=3.7. Head to the project root and then run main.py.
