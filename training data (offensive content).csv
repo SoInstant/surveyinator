@@ -1,0 +1,106 @@
+ignore, Timestamp
+ignore, Your Name
+ignore, Class
+ignore, Index Number
+ignore, What is your date of birth?
+categorical,I am excited about the skills I learnt during CS.
+categorical,I feel confident in my technical skills.
+categorical,I know how to work through problems when I get stumped.
+categorical,Learning about technology is exciting.
+categorical,I wish I had more opportunities to learn technical skill
+categorical,I would like to own a Microbit set for my own learning
+categorical,I would consider using Microbit for my future school projects
+categorical,I am interested to sign up for Computer Elective Programme (Year 2 - Year 4)
+categorical,IN WHAT STATE IS THIS SAMPLE DWELLING UNIT (SDU) LOCATED?
+categorical,I agree that there are enough recycling bins in school.
+categorical,I like red coloured water bottles.
+categorical,Would you say that you recycle often?
+categorical,Are you from Singapore or Japan?
+categorical,Learning about recycling is important.
+categorical,I am interested in water bottles.
+categorical,I enjoy reading
+categorical,Is your water bottle red or blue in colour?
+categorical,I like learning about programming.
+categorical,I am interested in taking Biology RA.
+categorical,Do you play the Clarinet or Flute?
+categorical,I agree that Blue is a superior colour.
+categorical,Do you think Android or Apple is better?
+categorical,Do you prefer iOS or Android?
+categorical,I am interested in eating Junxiang.
+categorical,Have you been to Africa recently?
+categorical,I agree that the whiteboard duster is effective in reducing whiteboard glare.
+categorical,I agree that I cannot write very well on the whiteboard.
+categorical,I agree that I cannot write very well on my computer.
+categorical,I agree that spelling is very difficult.
+categorical,Obesity causes cancer. Yes or no?
+openended, What was your favourite part of the course?
+openended,What was your least favourite part of the course?
+openended,What could be improved?
+openended,Why do you think climate change is a problem?
+openended,Why do you think Christopher Cheng is retarded?
+openended,Why do you prefer Windows over MacOS?
+openended,Which browser do you prefer and why?
+openended,Why do you not recycle?
+openended,What is your favourite part of CEP and why?
+openended,What brand of water bottle is the best?
+openended,What was your favourite part of visiting Africa?
+openended,State the symptoms of cancer.
+openended,How many diseases did you get from your visit to Africa?
+openended,State process and materials needed to craft an enchantment table.
+openended,State how you would go about reducing glare on the whiteboard.
+openended,How would you conduct an English lesson about podcasts?
+openended,How do you think your English teacher can improve her lessons?
+openended Why do you think your English teacher is terrible at teaching?
+openended,Explain why Zelig has no mom.
+openended,Describe Eric’s relationship with Jenny.
+openended,Describe the contents of Eric’s stomach.
+openended,How does the writer vividly portray Eric in this passage?
+openended,State the process to make an automatic farm in Minecraft.
+openended,What prompted you/ your company to look into this?
+openended,What are your expectations/ requirements for this product/ service?
+openended,What process did you go through to determine your needs?
+openended,How do you see this happening?
+openended,What is it that you’d like to see accomplished?
+openended,With whom have you had success in the past?
+openended,With whom have you had difficulties in the past?
+openended,Can you help me understand that a little better?
+openended,What does that mean?
+openended,How does that process work now?
+openended,What challenges does that process create?
+openended,What challenges has that created in the past?
+openended,What are the best things about that process?
+openended,What other items should we discuss?
+openended,How have you been portrayed during this questionnaire?
+openended,How was your experience with Zelig Sister?
+numerical,How old were you the first time you smoked part or all of a cigarette?
+numerical,How many mothers do you have?
+numerical,How many diseases did you contract from your visit to Africa?
+numerical,How many things have you learnt from Mrs Obanor’s English lessons?
+numerical,How many letters are there in the word definition?
+numerical,How many children do you have?
+numerical,How many chins do you have?
+numerical,How many times does your mic screech on a daily basis?
+numerical,State the number of seconds until Drama Challenge.
+numerical,State the number of fingers you have.
+numerical,State the number of times Julius had to write a reflection for Ms Au.
+numerical,State the number of lines Julius has to write for Ms Au.
+numerical,How many tabs do you have open right now?
+numerical,How many times do you refill your bottle on a daily basis?
+numerical,How many customers does Zelig sister have every hour?
+numerical,How many brain cells does Zelig have?
+numerical,State the amount of times Jason has gotten angsty.
+numerical,State the number of times Samuel pull the frisbee.
+numerical,How many python modules do you have installed?
+numerical,How much money do you earn in a month?
+numerical,How many times a week do you eat breakfast?
+numerical,What is your default font size in Google Docs?
+numerical,How many water bottles do you own?
+numerical,How many kgs of fats does Eric have?
+numerical,How many hours do you waste every week on English lesson?
+numerical,State the sum of the serial number of the $7000 iMac Pro.
+numerical,State your computer temperature in Celsius and Kelvin.
+numerical,How many times a day does Jason talk about new heatsink and heatpipe related matters?
+numerical,How many times does Jason say ME? to Mrs Obanor?
+numerical,How many times does Mrs Obanor shout in class on average?
+numerical,What level do you mine on for the highest chance of getting diamonds?
+numerical,How many episodes of PewDiePie’s Minecraft series have you watched?
