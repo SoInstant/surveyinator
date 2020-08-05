@@ -43,6 +43,9 @@ For more information on installation, refer to these websites:
 + [matplotlib](https://matplotlib.org/users/installing.html)
 + [python-docx](https://python-docx.readthedocs.io/en/latest/user/install.html)
 
+### Contributors
+- [SoInstant (Junxiang)](https://github.com/SoInstant)
+- [Ycmelon (Yu Chen)](https://github.com/Ycmelon)
 ### Work distribution
 - main.py (Mainly Yu Chen, Junxiang helped out in certain places):page_with_curl:
 - analyse.py (Junxiang) :computer:
