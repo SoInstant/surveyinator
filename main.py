@@ -77,7 +77,7 @@ def save_file(directory=None, survey_file=None, config_file=None):
 
 @app.route("/", methods=["GET", "POST"])
 def main():  # Homepage
-    return render_template("index.html", type="upload", error=None)
+    return render_template("upload.html")
 
 
 @app.route("/config", methods=["GET", "POST"])
@@ -85,7 +85,9 @@ def config_page():
     if not request.method == "POST":
         return redirect(url_for("main"))
     else:
-        config = utils.to_config(directory=session["TEMP_FOLDER"], config=request.form.to_dict())
+        config = utils.to_config(
+            directory=session["TEMP_FOLDER"], config=request.form.to_dict()
+        )
         for file in os.listdir(session["TEMP_FOLDER"]):
             if file.endswith(".xlsx") or file.endswith(".csv"):
                 file = os.path.join(session["TEMP_FOLDER"], file)
@@ -104,21 +106,31 @@ def analysis_page():
     if request.method == "GET":
         if survey_file and config:
             do_analysis = True
-    elif request.method == "POST" and (request.files["file"] and request.files["config"]):
+    elif request.method == "POST" and (
+        request.files["file"] and request.files["config"]
+    ):
         do_analysis = True
 
     # Do analysis
     if do_analysis:
         # Saving files
         if request.method == "POST":
-            save = save_file(survey_file=request.files["file"], config_file=request.files["config"])
-            directory, filename, config_filename = save["Directory"], save["File"], save["Config"]
+            save = save_file(
+                survey_file=request.files["file"], config_file=request.files["config"]
+            )
+            directory, filename, config_filename = (
+                save["Directory"],
+                save["File"],
+                save["Config"],
+            )
         else:
             directory, filename = os.path.split(survey_file)
             config_filename = os.path.basename(config)
 
         if filename.endswith(".xlsx"):
-            questions = list(utils.parse_excel(os.path.join(directory, filename)).keys())
+            questions = list(
+                utils.parse_excel(os.path.join(directory, filename)).keys()
+            )
         else:
             questions = list(utils.parse_csv(os.path.join(directory, filename)).keys())
         types = utils.parse_config(os.path.join(directory, config_filename))
@@ -136,25 +148,24 @@ def analysis_page():
                     qn_dict[i + 1] = (qn, types[i + 1])
             questions_index = [(i[0], i[1][0], i[1][1]) for i in qn_dict.items()]
 
-            return render_template(
-                "index.html", type="config", questions=questions_index, error=None
-            )
+            return render_template("config.html", questions=questions_index, error=None)
 
         # Start analysis
         try:
-            session["ANALYSIS"] = analyse.analyse(
-                directory, filename, config_filename
-            )
+            session["ANALYSIS"] = analyse.analyse(directory, filename, config_filename)
         except ValueError as e:
             return render_template(
-                "index.html", type="error",
+                "error.html",
                 error="ValueError! Perhaps you chose a wrong category for your data",
-                error_no="500", error_message=error_messages[500]
+                error_no="500",
+                error_message=error_messages[500],
             )
         except Exception as e:
             return render_template(
-                "index.html", type="error", error=f"Unknown error: {str(e)}", error_no="500",
-                error_message=error_messages[500]
+                "error.html",
+                error=f"Unknown error: {str(e)}",
+                error_no="500",
+                error_message=error_messages[500],
             )
 
         graphs, clouds, numerical = [], [], []
@@ -181,8 +192,7 @@ def analysis_page():
         numerical = tuple(utils.chunk(numerical, 4))
 
         return render_template(
-            "index.html",
-            type="analysis",
+            "analysis.html",
             graphs=graphs,
             clouds=clouds,
             numerical=numerical,
@@ -190,14 +200,16 @@ def analysis_page():
             path=os.path.split(directory)[1],
         )
     elif not request.files["file"]:  # No excel
-        return render_template("index.html", type="upload", error="Missing Excel/CSV file!")
+        return render_template("upload.html", error="Missing Excel/CSV file!")
 
     elif request.files["file"] and not request.files["config"]:  # Excel but no config
         save = save_file(survey_file=request.files["file"])
         directory, filename = save["Directory"], save["File"]
         session["TEMP_FOLDER"] = directory
         if filename.endswith(".xlsx"):
-            questions = list(utils.parse_excel(os.path.join(directory, filename)).keys())
+            questions = list(
+                utils.parse_excel(os.path.join(directory, filename)).keys()
+            )
         else:
             questions = list(utils.parse_csv(os.path.join(directory, filename)).keys())
         predictions = utils.Predictor().predict(questions)
@@ -205,9 +217,7 @@ def analysis_page():
             (i + 1, question, predictions[i]) for i, question in enumerate(questions)
         ]
 
-        return render_template(
-            "index.html", type="config", questions=questions_index, error=None
-        )
+        return render_template("config.html", questions=questions_index, error=None)
 
 
 @app.route("/download/<path>")
@@ -215,9 +225,7 @@ def download(path):
     doc = analyse.generate_report(
         os.path.join("./static/uploads/", path), session["ANALYSIS"]
     )
-    filenames = [
-        i[1] for i in session["ANALYSIS"].values() if i if i[0] == "openended"
-    ]
+    filenames = [i[1] for i in session["ANALYSIS"].values() if i if i[0] == "openended"]
     download_path = os.path.join("./static/uploads/", path, f"{utils.secure(4)}.zip")
 
     with zipfile.ZipFile(download_path, "w", zipfile.ZIP_DEFLATED) as zipf:
@@ -235,11 +243,16 @@ def download(path):
 
 @app.route("/faq")
 def faq():
-    return render_template("index.html", type="faq")
+    return render_template("faq.html")
 
 
 # Error handling
-error_messages = {404: "Page not Found", 403: "Forbidden", 410: "Gone", 500: "Internal Server Error"}
+error_messages = {
+    404: "Page not Found",
+    403: "Forbidden",
+    410: "Gone",
+    500: "Internal Server Error",
+}
 
 
 @app.errorhandler(403)
@@ -249,8 +262,8 @@ error_messages = {404: "Page not Found", 403: "Forbidden", 410: "Gone", 500: "In
 def page_error(error):
     error_no = int(str(error)[:3])
     error_message = error_messages[error_no]
-    return render_template("index.html", type="error", error_no=error_no, error_message=error_message)
+    return render_template("error.html", error_no=error_no, error_message=error_message)
 
 
 if __name__ == "__main__":
-    app.run(port=80)
+    app.run(port=80, debug=True)

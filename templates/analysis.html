@@ -1,0 +1,82 @@
+{% extends "template.html" %} 
+
+{% block type %}Analysis{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="d-sm-flex justify-content-between align-items-center mb-4">
+    <h3 class="text-dark mb-0">Analysis Report</h3>
+    <a
+      class="btn btn-primary btn-sm d-none d-sm-inline-block"
+      role="button"
+      href="/download/{{ path }}"
+      ><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Generate
+      Report</a
+    >
+  </div>
+
+  {% for group in numerical %}
+  <div class="row">
+    {% for nums in group %}
+    <div class="col-md-6 col-xl-3 mb-4">
+      <div class="card shadow border-left-primary py-2">
+        <div class="card-body">
+          <div class="row align-items-center no-gutters">
+            <div class="col mr-2">
+              <div
+                class="text-uppercase text-primary font-weight-bold text-xs mb-1"
+              >
+                <span>{{ nums[0] }}</span>
+              </div>
+              <div class="text-dark font-weight-bold h5 mb-0">
+                {% for type, value in nums[1].items() %}
+                <span>{{ type }}: {{ value }}</span><br />
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endfor %} 
+  
+  {% for group in graphs %}
+  <div class="row">
+    {% for graph in group %}
+    <div class="col-lg-4 col-xl-4">
+      <div class="card shadow mb-4">
+        <div
+          class="card-header d-flex justify-content-between align-items-center"
+        >
+          <h6 class="text-primary font-weight-bold m-0">{{ graph[0] }}</h6>
+        </div>
+        <div class="card-body">{{ graph[1] }}</div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endfor %} 
+  
+  {% for group in clouds %}
+  <div class="row">
+    {% for cloud in group %}
+    <div class="col-md-6 col-xl-6" height="100%">
+      <div class="card shadow mb-4">
+        <div
+          class="card-header d-flex justify-content-between align-items-center"
+        >
+          <h6 class="text-primary font-weight-bold m-0">{{ cloud[0] }}</h6>
+        </div>
+        <div class="card-body">
+          <img src="{{ cloud[1] }}" width="100%" />
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endfor %}
+
+</div>
+{% endblock %}

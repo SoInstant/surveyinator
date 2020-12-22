@@ -1,0 +1,97 @@
+{% extends "template.html" %} 
+
+{% block type %}FAQ{% endblock %} 
+
+{% block content %}
+<div class="container-fluid">
+  <div class="d-sm-flex justify-content-between align-items-center mb-4">
+    <h3 class="text-dark mb-0">Frequently Asked Questions</h3>
+  </div>
+  <div class="faqgroup">
+    <button class="accordion">How to use?</button>
+    <div class="panel">
+      <p>If you are using google forms:</p>
+      <p>
+        1. Export a google form result (from the google sheet) as .csv, then
+        extract the csv file from the zip file.
+      </p>
+      <img src="static/faq/tutorial.png" height="10%" />
+      <p>Otherwise,</p>
+      <p>
+        1. Create a config file, either manually (see below) or through the
+        <a href="/">website</a> (continue)
+      </p>
+      <p>
+        2. Upload the excel/csv file and the config file (if you made it)
+        through the website
+      </p>
+      <p>
+        3. If you have not submitted the config file, do so with the config
+        page.
+      </p>
+    </div>
+  </div>
+  <div class="faqgroup">
+    <button class="accordion">
+      How to make config_file for various types of google forms qn
+    </button>
+    <div class="panel">
+      <p>Config file format: [question number] [type of question]</p>
+      <p>
+        Accepted types are: ignore, numerical, categorical, openended and
+        multicategorical
+      </p>
+      <p>Example:</p>
+      <pre><code>1 ignore<br>2 numerical<br>3 categorical<br>4 openended<br>5 multicategorical</code></pre>
+      <h4>Short answer (openended)</h4>
+      <img src="static/faq/shortanswer.jpeg" height="10%" />
+      <br />
+      <h4>Paragraph (openended)</h4>
+      <img src="static/faq/paragraph.jpeg" height="10%" />
+      <br />
+      <h4>Multiple choice (categorical)</h4>
+      <img src="static/faq/multiplechoice.jpeg" height="10%" />
+      <br />
+      <h4>Checkbox (multicategorical)</h4>
+      <img src="static/faq/checkbox.jpeg" height="10%" />
+      <br />
+      <h4>Dropdown (categorical)</h4>
+      <img src="static/faq/dropdown.jpeg" height="10%" />
+      <br />
+      <h4>Linear scale (numerical)</h4>
+      <img src="static/faq/linearscale.jpeg" height="10%" />
+      <br />
+      <h4>Multiple choice grid (categorical)</h4>
+      <p>Note: Put categorical for every sub-question. For example:</p>
+      <img src="static/faq/multiplechoicegrid.png" height="10%" />
+      <p>would be formatted as such</p>
+      <code>1 categorical<br />2 categorical<br />3 categorical</code>
+      <br />
+      <h4>Checkbox grid (multicategorical)</h4>
+      <p>Note: Put multicategorical for every sub-question. For example:</p>
+      <img src="static/faq/checkboxgrid.png" height="10%" />
+      <p>would be formatted as such</p>
+      <code
+        >1 multicategorical<br />2 multicategorical<br />3
+        multicategorical</code
+      >
+      <br />
+      <h4>Date and Time (ignore)</h4>
+      <img src="static/faq/dateandtime.jpeg" height="10%" />
+    </div>
+  </div>
+  <div class="faqgroup">
+    <button class="accordion">What sorts of data cannot be analysed</button>
+    <div class="panel">
+      <p>Surveyinator is unable to analyse the following types of responses:</p>
+      <ul>
+        <li>Timestamps</li>
+        <li>Time</li>
+        <li>Date</li>
+      </ul>
+      <p>That's it! :D</p>
+    </div>
+    <script src="static/js/accordion.js"></script>
+  </div>
+</div>
+{% endblock %}
